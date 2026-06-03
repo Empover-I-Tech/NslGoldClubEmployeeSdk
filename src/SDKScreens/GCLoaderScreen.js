@@ -5,8 +5,8 @@ import { changeLanguage } from '../Localisation/Localisation';
 import { useNavigation } from '@react-navigation/native';
 
 
-const LoaderScreen = ({ route }) => {
-    console.log("LoaderScreen route params:", route?.params);
+const GCLoaderScreen = ({ route }) => {
+    console.log("GCLoaderScreen route params:", route?.params);
     const mobileNumber = route?.params?.navigateItem?.mobileNumber
     const fcmToken = route?.params?.navigateItem?.fcmToken
     const buildType = route?.params?.navigateItem?.buildType
@@ -35,4 +35,4 @@ const LoaderScreen = ({ route }) => {
 
 }
 
-export default LoaderScreen
+export default GCLoaderScreen

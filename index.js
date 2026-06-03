@@ -3,7 +3,7 @@
 // ✅ Redux store
 export { store, persistor } from './src/redux/store/store';
 export { initLocalisation } from './src/Localisation/Localisation';
-export { default as LoaderScreen } from './src/SDKScreens/LoaderScreen';
+export { default as GCLoaderScreen } from './src/SDKScreens/GCLoaderScreen';
 
 export { default as Splash } from './src/Login/Splash';
 export { default as LanguageScreen } from './src/Login/LanguageScreen';
