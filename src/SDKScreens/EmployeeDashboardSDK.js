@@ -14,7 +14,7 @@ import CustomCircularImageView from '../Components/CustomCircularImageView';
 import { PERMISSIONS, request } from 'react-native-permissions';
 import DeviceInfo from 'react-native-device-info';
 import messaging from '@react-native-firebase/messaging';
-import firestore from '@react-native-firebase/firestore';
+// import firestore from '@react-native-firebase/firestore';
 import { changeLanguage, translate } from '../Localisation/Localisation';
 import { getCompanyStyles } from '../redux/store/slices/CompanyStyleSlice';
 import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
@@ -29,11 +29,11 @@ import { GetMastersComplaint } from '../Profile/Complaint';
 import { GetComplaintsApiCallGlobal, uploadAllComplaintsGlobal } from '../Profile/HelpDesk';
 import { GetFAQDATA } from '../Profile/FAQ';
 import { getDataOfScanHistory, getProgramsList } from '../QRScanner/ScanHistory';
-import { getMasterForProgramDetails } from './ProgramDetails';
-import { getCompaniesListPlanningTool, getCropsListPlanningTool, getExistedRetailersDataPlanningTOol, getHybridsListPlanningTool, saveAPIPlanningTool } from './PlanningTool';
-import { getYieldCalcMasters, SaveYieldCalcValues } from './YieldCalculator';
-import { getFertilizerCalcRes, getMastersFertilizer } from './FertilizerCalculator';
-import { getMastersSeedCalc, saveSavedSeedCalData } from './SeedCalculator';
+import { getMasterForProgramDetails } from '../Dashboard/ProgramDetails';
+import { getCompaniesListPlanningTool, getCropsListPlanningTool, getExistedRetailersDataPlanningTOol, getHybridsListPlanningTool, saveAPIPlanningTool } from '../Dashboard/PlanningTool';
+import { getYieldCalcMasters, SaveYieldCalcValues } from '../Dashboard/YieldCalculator';
+import { getFertilizerCalcRes, getMastersFertilizer } from '../Dashboard/FertilizerCalculator';
+import { getMastersSeedCalc, saveSavedSeedCalData } from '../Dashboard/SeedCalculator';
 import EmployeeActivityAlertModal from '../Modals/EmployeeActivityAlertModal';
 import CustomSuccessLoader from '../Components/CustomSuccessLoader';
 
@@ -145,7 +145,7 @@ function EmployeeDashboardSDK({ route }) {
       if (appState.current.match(/inactive|background/) && nextAppState === 'active') {
         console.log("App has come to the foreground");
 
-        checkForceUpdate();
+        // checkForceUpdate();
       }
       appState.current = nextAppState;
     });
@@ -163,7 +163,7 @@ function EmployeeDashboardSDK({ route }) {
       try {
         await Promise.all([
           dashboardSummaryApiCall(),
-          checkForceUpdate(),
+          // checkForceUpdate(),
           getCarouselData(),
         ]);
       } catch (e) {
@@ -303,99 +303,99 @@ function EmployeeDashboardSDK({ route }) {
     }
   }
 
-  async function checkForceUpdate() {
-    try {
-      const subscriber = firestore()
-        .collection(FIREBASE_VERSION_COLLECTION_NAME)
-        .doc(FIREBASE_VERSION_DOC_ID)
-        .onSnapshot(documentSnapshot => {
-          console.log('Document snapshot received');
+  // async function checkForceUpdate() {
+  //   try {
+  //     const subscriber = firestore()
+  //       .collection(FIREBASE_VERSION_COLLECTION_NAME)
+  //       .doc(FIREBASE_VERSION_DOC_ID)
+  //       .onSnapshot(documentSnapshot => {
+  //         console.log('Document snapshot received');
 
-          if (documentSnapshot.exists) {
-            const data = documentSnapshot.data();
-            console.log('Document data:', data);
+  //         if (documentSnapshot.exists) {
+  //           const data = documentSnapshot.data();
+  //           console.log('Document data:', data);
 
-            if (data) {
-              setTimeout(() => {
-                if (Platform.OS == 'android') {
-                  checkAppversionUpdate(data);
-                } else {
-                  checkAppversionUpdateIOS(data);
-                }
-              }, 500);
-            } else {
-              console.error('Document data is undefined');
-            }
-          } else {
-            console.error('Document does not exist');
-          }
-        });
+  //           if (data) {
+  //             setTimeout(() => {
+  //               if (Platform.OS == 'android') {
+  //                 checkAppversionUpdate(data);
+  //               } else {
+  //                 checkAppversionUpdateIOS(data);
+  //               }
+  //             }, 500);
+  //           } else {
+  //             console.error('Document data is undefined');
+  //           }
+  //         } else {
+  //           console.error('Document does not exist');
+  //         }
+  //       });
 
-      return () => subscriber();
-    } catch (error) {
-      console.error('Error fetching document:', error);
-    }
-  }
-  async function checkAppversionUpdateIOS(documentSnapshot) {
+  //     return () => subscriber();
+  //   } catch (error) {
+  //     console.error('Error fetching document:', error);
+  //   }
+  // }
+  // async function checkAppversionUpdateIOS(documentSnapshot) {
 
-    const localVersion = DeviceInfo.getVersion(); // Need to change for Android in future
+  //   const localVersion = DeviceInfo.getVersion(); // Need to change for Android in future
 
-    let remoteVersion = '';
+  //   let remoteVersion = '';
 
-    if (APP_ENV_PROD) {
-      if (Platform.OS === 'android') {
-        remoteVersion = documentSnapshot.androidAppVersionPROD;
-      } else {
-        remoteVersion = documentSnapshot.iosAppVersionPROD;
-      }
-    } else {
-      if (Platform.OS === 'android') {
-        remoteVersion = documentSnapshot.androidAppVersionUAT;
-      } else {
-        remoteVersion = documentSnapshot.iosAppVersionUAT;
-      }
-    }
-    let showForceUpdate = Platform.OS == 'ios' ? documentSnapshot?.showForceUpdateIOS : documentSnapshot?.showForceUpdate;
-    let isMandatory = Platform.OS == 'ios' ? documentSnapshot.isMandatoryForIOS : documentSnapshot.isMandatoryForAndroid;
+  //   if (APP_ENV_PROD) {
+  //     if (Platform.OS === 'android') {
+  //       remoteVersion = documentSnapshot.androidAppVersionPROD;
+  //     } else {
+  //       remoteVersion = documentSnapshot.iosAppVersionPROD;
+  //     }
+  //   } else {
+  //     if (Platform.OS === 'android') {
+  //       remoteVersion = documentSnapshot.androidAppVersionUAT;
+  //     } else {
+  //       remoteVersion = documentSnapshot.iosAppVersionUAT;
+  //     }
+  //   }
+  //   let showForceUpdate = Platform.OS == 'ios' ? documentSnapshot?.showForceUpdateIOS : documentSnapshot?.showForceUpdate;
+  //   let isMandatory = Platform.OS == 'ios' ? documentSnapshot.isMandatoryForIOS : documentSnapshot.isMandatoryForAndroid;
 
-    console.log(`Local: ${localVersion} | Remote: ${remoteVersion}`);
-    if (showForceUpdate) {
-      if (compareVersions(localVersion, remoteVersion) < 0) {
-        showAlertWithMessage(translate('alert'), true, true, documentSnapshot.message || translate('update_message'), true, !isMandatory, translate('update'), translate('cancel'));
-      }
-    } else {
-      setShowAlert(false)
-    }
-  }
+  //   console.log(`Local: ${localVersion} | Remote: ${remoteVersion}`);
+  //   if (showForceUpdate) {
+  //     if (compareVersions(localVersion, remoteVersion) < 0) {
+  //       showAlertWithMessage(translate('alert'), true, true, documentSnapshot.message || translate('update_message'), true, !isMandatory, translate('update'), translate('cancel'));
+  //     }
+  //   } else {
+  //     setShowAlert(false)
+  //   }
+  // }
 
-  async function checkAppversionUpdate(documentSnapshot) {
-    try {
-      if (documentSnapshot) {
-        const appDetails = await getAppVersion();
-        const appVersionCode = await getBuildNumber();
-        const showForceUpdateOrNOT = documentSnapshot?.showForceUpdate;
-        const messageToRender = documentSnapshot?.message || translate('update_message');
-        const version = documentSnapshot?.androidAppVersion;
-        const platformProdVersion = documentSnapshot?.androidAppVersionPROD;
-        const platformUATVersion = documentSnapshot?.androidAppVersionUAT;
-        const isMandatory = documentSnapshot?.isMandatoryForAndroid;
-        const shouldShowUpdate = (versionToCheck) => versionToCheck && versionToCheck > appVersionCode;
-        const showUpdateAlert = () => showAlertWithMessage(translate('alert'), true, true, messageToRender, true, !isMandatory, translate('update'), translate('cancel'));
-        if (APP_ENV_PROD ? shouldShowUpdate(platformProdVersion) : shouldShowUpdate(platformUATVersion)) {
-          showUpdateAlert()
-        } else if (showForceUpdateOrNOT && version && version !== appDetails) {
-          showUpdateAlert()
-        } else {
-          setShowAlert(false);
-        }
-      } else {
-        setShowAlert(false);
-      }
-    } catch (error) {
-      console.error('Error in checkAppversionUpdate:', error);
-      setShowAlert(false);
-    }
-  }
+  // async function checkAppversionUpdate(documentSnapshot) {
+  //   try {
+  //     if (documentSnapshot) {
+  //       const appDetails = await getAppVersion();
+  //       const appVersionCode = await getBuildNumber();
+  //       const showForceUpdateOrNOT = documentSnapshot?.showForceUpdate;
+  //       const messageToRender = documentSnapshot?.message || translate('update_message');
+  //       const version = documentSnapshot?.androidAppVersion;
+  //       const platformProdVersion = documentSnapshot?.androidAppVersionPROD;
+  //       const platformUATVersion = documentSnapshot?.androidAppVersionUAT;
+  //       const isMandatory = documentSnapshot?.isMandatoryForAndroid;
+  //       const shouldShowUpdate = (versionToCheck) => versionToCheck && versionToCheck > appVersionCode;
+  //       const showUpdateAlert = () => showAlertWithMessage(translate('alert'), true, true, messageToRender, true, !isMandatory, translate('update'), translate('cancel'));
+  //       if (APP_ENV_PROD ? shouldShowUpdate(platformProdVersion) : shouldShowUpdate(platformUATVersion)) {
+  //         showUpdateAlert()
+  //       } else if (showForceUpdateOrNOT && version && version !== appDetails) {
+  //         showUpdateAlert()
+  //       } else {
+  //         setShowAlert(false);
+  //       }
+  //     } else {
+  //       setShowAlert(false);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error in checkAppversionUpdate:', error);
+  //     setShowAlert(false);
+  //   }
+  // }
 
 
   useEffect(() => {
@@ -753,7 +753,7 @@ function EmployeeDashboardSDK({ route }) {
         await Promise.all([
           callMasters(),
           dashboardSummaryApiCall(),
-          checkForceUpdate(),
+          // checkForceUpdate(),
           getCarouselData(),
           dashboardUserMenuApiCall(),
         ]);
