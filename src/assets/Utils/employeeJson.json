@@ -1,0 +1,246 @@
+{
+  "statusCode": 200,
+  "message": "Success",
+  "response": {
+    "userList": [
+      {
+        "territoryName": "",
+        "loginId": "10172",
+        "gender": "",
+        "city": "",
+        "mobileNumber": "9963759686",
+        "regionName": "",
+        "emailId": "jyosthna.m@empover.com",
+        "headquarterName": "",
+        "profileImage": "http://123.176.45.59:8080/VyaparMitra/DashboardIcons/profileIcon.png",
+        "countryId": 0,
+        "landMark": "",
+        "stateName": "",
+        "headquarterId": 0,
+        "territoryId": 0,
+        "zoneId": 0,
+        "block": "",
+        "id": 1371,
+        "zoneName": "",
+        "village": "",
+        "address": "",
+        "districtName": "",
+        "notificationCount": 0,
+        "roleId": 1,
+        "stateId": 0,
+        "employeeId": "10172",
+        "districtId": 0,
+        "regionId": 0,
+        "pinCode": "",
+        "name": "Balaraju",
+        "roleName": "Super Admin",
+        "location": "",
+        "roleBased": "Super Admin",
+        "countryName": "",
+        "status": true,
+        "alternativeMobileNumber": ""
+      }
+    ],
+    "programsList": [
+      {
+        "id": 1,
+        "name": "KARIF-2026"
+      },
+      {
+        "id": 2,
+        "name": "RABHI-2026"
+      },
+      {
+        "id": 3,
+        "name": "All"
+      }
+    ],
+    "activitySummaryList": [
+      {
+        "id": 3163,
+        "imageUrl": "http://123.176.45.59:8080/VyaparMitra/icons/retailers.png",
+        "itemName": "Registered Retailers",
+        "isVisible": true,
+        "fontColor": "#000000",
+        "itemCount": "990040",
+        "bgColor": "#F2F6F9"
+      },
+      {
+        "id": 3164,
+        "imageUrl": "http://123.176.45.59:8080/VyaparMitra/icons/retailers.png",
+        "itemName": "Active Retailers",
+        "isVisible": true,
+        "fontColor": "#000000",
+        "itemCount": "153036",
+        "bgColor": "#F2F6F9"
+      },
+      {
+        "id": 3165,
+        "imageUrl": "http://123.176.45.59:8080/VyaparMitra/icons/retailers.png",
+        "itemName": "MDO Activity Participants",
+        "isVisible": true,
+        "fontColor": "#000000",
+        "itemCount": "44589",
+        "bgColor": "#F2F6F9"
+      },
+      {
+        "id": 3166,
+        "imageUrl": "http://123.176.45.59:8080/VyaparMitra/icons/retailers.png",
+        "itemName": "BDP Tool",
+        "isVisible": true,
+        "fontColor": "#000000",
+        "itemCount": "9984",
+        "bgColor": "#F2F6F9"
+      }
+    ],
+    "showWeatherCard": true,
+    "showCarouselCard": true,
+    "showNotification": true,
+    "showScanned": true,
+    "cropInsightsList": [
+      {
+        "itemName": "Paddy",
+        "imageUrl": "http://123.176.45.59:8080/VyaparMitra/icons/paddyInsight.png",
+        "id": 3187,
+        "isVisible": true,
+        "fontColor": "#000000",
+        "itemCount": "7596.5 kgs",
+        "bgColor": "#F2F6F9",
+        "couponCount": "Coupons Count : 751"
+      },
+      {
+        "itemName": "Paddy",
+        "imageUrl": "http://123.176.45.59:8080/VyaparMitra/icons/paddyInsight.png",
+        "id": 3187,
+        "isVisible": true,
+        "fontColor": "#000000",
+        "itemCount": "7596.5 kgs",
+        "bgColor": "#F2F6F9",
+        "couponCount": "Coupons Count : 751"
+      },
+      {
+        "itemName": "Rice",
+        "imageUrl": "http://123.176.45.59:8080/VyaparMitra/icons/paddyInsight.png",
+        "id": 3187,
+        "isVisible": true,
+        "fontColor": "#000000",
+        "itemCount": "5896.5 kgs",
+        "bgColor": "#F2F6F9",
+        "couponCount": "Coupons Count : 751"
+      },
+      {
+        "itemName": "Paddy",
+        "imageUrl": "http://123.176.45.59:8080/VyaparMitra/icons/paddyInsight.png",
+        "id": 3187,
+        "isVisible": true,
+        "fontColor": "#000000",
+        "itemCount": "8596.5 kgs",
+        "bgColor": "#F2F6F9",
+        "couponCount": "Coupons Count : 751"
+      }
+    ],
+    "retailerServices": [
+      {
+        "layout": "Products & Programs",
+        "displayName": "Products & Programs",
+        "servicesList": [
+          {
+            "translatedTitle": "products",
+            "imageUrl": "http://123.176.45.59:8080/VyaparMitra/DashboardIcons/dashProducts.png",
+            "localImage": "../assets/images/homepageIcons/1.png",
+            "id": 2604,
+            "isVisible": true,
+            "title": "Products",
+            "fontColor": "#000000",
+            "status": true,
+            "statusFlaseMsg": ""
+          },
+          {
+            "translatedTitle": "Program Details",
+            "imageUrl": "http://123.176.45.59:8080/VyaparMitra/DashboardIcons/dashProducts.png",
+            "localImage": "../assets/images/homepageIcons/2.png",
+            "id": 2605,
+            "isVisible": true,
+            "title": "Program Details",
+            "fontColor": "#000000",
+            "status": true,
+            "statusFlaseMsg": ""
+          },
+          {
+            "translatedTitle": "HDPS",
+            "imageUrl": "http://123.176.45.59:8080/VyaparMitra/DashboardIcons/dashProducts.png",
+            "urlPath": "https://www.youtube.com/watch?v=ZattVJnxsDQ&list=PL3oAgn-rIMlTsWK2dMPhDNF4L0ss6hO-m",
+            "localImage": "../assets/images/homepageIcons/3.png",
+            "id": 2605,
+            "isVisible": true,
+            "title": "HDPS",
+            "fontColor": "#000000",
+            "status": true,
+            "statusFlaseMsg": ""
+          },
+          {
+            "translatedTitle": "MediaRoom",
+            "imageUrl": "http://123.176.45.59:8080/VyaparMitra/DashboardIcons/dashProducts.png",
+            "localImage": "../assets/images/homepageIcons/4.png",
+            "id": 2605,
+            "isVisible": true,
+            "title": "Media Room",
+            "fontColor": "#000000",
+            "status": true,
+            "statusFlaseMsg": ""
+          }
+        ]
+      }
+    ],
+    "moreItemServices": [
+      {
+        "layout": "Loyalty History",
+        "displayName": "Loyalty History",
+        "servicesList": [
+          {
+            "translatedTitle": "scan_history",
+            "imageUrl": "http://123.176.45.59:8080/VyaparMitra/DashboardIcons/dashProducts.png",
+            "localImage": "",
+            "id": 2604,
+            "isVisible": true,
+            "title": "Scan History",
+            "fontColor": "#000000",
+            "status": true,
+            "statusFlaseMsg": "",
+            "bgColor": ""
+          },
+          {
+            "translatedTitle": "redemptions_history",
+            "imageUrl": "http://123.176.45.59:8080/VyaparMitra/DashboardIcons/dashProducts.png",
+            "localImage": "",
+            "id": 2605,
+            "isVisible": true,
+            "title": "Redemptions History",
+            "fontColor": "#000000",
+            "status": true,
+            "statusFlaseMsg": "",
+            "bgColor": ""
+          }
+        ]
+      },
+      {
+        "layout": "Help",
+        "displayName": "Help",
+        "servicesList": [
+          {
+            "translatedTitle": "HelpDesk",
+            "imageUrl": "http://123.176.45.59:8080/VyaparMitra/DashboardIcons/dashProducts.png",
+            "localImage": "",
+            "id": 2606,
+            "isVisible": true,
+            "title": "Help Desk",
+            "fontColor": "#000000",
+            "status": true,
+            "statusFlaseMsg": "",
+            "bgColor": ""
+          }
+        ]
+      }
+    ]
+  }
+}
