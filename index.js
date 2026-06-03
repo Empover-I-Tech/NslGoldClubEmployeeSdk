@@ -3,6 +3,7 @@
 // ✅ Redux store
 export { store, persistor } from './src/redux/store/store';
 export { initLocalisation } from './src/Localisation/Localisation';
+export { default as LoaderScreen } from './src/SDKScreens/LoaderScreen';
 
 export { default as Splash } from './src/Login/Splash';
 export { default as LanguageScreen } from './src/Login/LanguageScreen';
@@ -34,7 +35,7 @@ export { default as CardDetail } from './src/Dashboard/CardDetail';
 export { default as ProgramDetails } from './src/Dashboard/ProgramDetails';
 export { default as Dashboard } from './src/Dashboard/Dashboard';
 export { default as EmpScanHistory } from './src/QRScanner/EmpScanHistory';
-export { default as EmployeeDashboard } from './src/Dashboard/EmployeeDashboard';
+export { default as EmployeeDashboardSDK } from './src/SDKScreens/EmployeeDashboardSDK';
 export { default as RetailerDashboard } from './src/Dashboard/RetailerDashboard';
 export { default as RedemptionsHistory } from './src/RedemptionsHistory/RedemptionsHistory';
 export { default as Redeem } from './src/Redeem/Redeem';
