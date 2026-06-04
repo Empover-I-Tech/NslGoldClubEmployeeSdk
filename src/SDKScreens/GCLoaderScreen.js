@@ -16,8 +16,9 @@ const GCLoaderScreen = ({ route }) => {
 
 
     useEffect(() => {
-
+        console.log("GCLoaderScreen useEffect triggered with route params:", route?.params);
         if (route?.params !== undefined) {
+            Alert.alert("GCLoaderScreen", `Received params: ${JSON.stringify(route.params)}`);
             changeLanguage(languageCode || 'en')
             // navigation.navigate('EmployeeDashboardSDK')
             navigation.navigate('LoginOTPNew')
