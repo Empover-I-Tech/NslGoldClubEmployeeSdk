@@ -1,25 +1,26 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   value: {},
 };
 
 export const companyStylesSlice = createSlice({
-  name: "COMPANY_STYLES",
+  name: 'COMPANY_STYLES',
   initialState,
   reducers: {
     updateCompanyStyles: (state, action) => {
-      console.log("Updating company styles with:", action.payload);
-        state.value = action.payload
-      }
+      console.log('Updating company styles with:', action.payload);
+      state.value = action.payload || {};
+    },
   },
-})
+});
 
-// Action creators are generated for each case reducer function
+// Actions
+export const { updateCompanyStyles } = companyStylesSlice.actions;
 
-export const { updateCompanyStyles } = companyStylesSlice.actions
+// Safe selector
+export const getCompanyStyles = (state) =>
+  state?.COMPANY_STYLES || initialState;
 
-export const getCompanyStyles = (state) => state.COMPANY_STYLES
-
-export default companyStylesSlice.reducer
-
+// Reducer
+export default companyStylesSlice.reducer;
