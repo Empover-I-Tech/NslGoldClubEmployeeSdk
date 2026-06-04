@@ -3,13 +3,14 @@ import { View, Text, Alert } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux';
 import { changeLanguage } from '../Localisation/Localisation';
 import { useNavigation } from '@react-navigation/native';
+import { setEnvironment } from '../helpers/URLConstants';
 
 
 const GCLoaderScreen = ({ route }) => {
     console.log("GCLoaderScreen route params:", route?.params);
     const mobileNumber = route?.params?.navigateItem?.mobileNumber
     const fcmToken = route?.params?.navigateItem?.fcmToken
-    const buildType = route?.params?.navigateItem?.buildType
+    const buildEnvironment = route?.params?.navigateItem?.buildEnvironment
     const languageCode = route?.params?.navigateItem?.languageCode
     const [loaderImage, setLoaderImage] = useState(require('../assets/images/neutralloader.gif'))
     const navigation = useNavigation()
@@ -20,6 +21,7 @@ const GCLoaderScreen = ({ route }) => {
         if (route?.params !== undefined) {
             Alert.alert("GCLoaderScreen", `Received params: ${JSON.stringify(route.params)}`);
             changeLanguage(languageCode || 'en')
+            setEnvironment(buildEnvironment || 'PROD');
             // navigation.navigate('EmployeeDashboardSDK')
             navigation.navigate('LoginNew')
         }
