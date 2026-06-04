@@ -6,7 +6,7 @@ import CustomButton from '../Components/CustomButton';
 import { createStyles } from '../assets/style/createStyles';
 import { Colors } from '../assets/Utils/Color';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { GetApiHeaders, PostRequest, GetRequest } from '../NetworkUtils/NetworkUtils';
+import { GetApiHeaders, PostRequest, GetRequest, getNetworkStatus } from '../NetworkUtils/NetworkUtils';
 import { APP_ENV_PROD, FIREBASE_VERSION_COLLECTION_NAME, FIREBASE_VERSION_DOC_ID, HTTP_OK, HTTP_SWITCHING_PROTOCOLS, IOS_STORE_LINK, SECOND_LOGIN, configs } from '../helpers/URLConstants';
 import SimpleToast from 'react-native-simple-toast';
 import { EDITDATA, FCM_TOKEN, LOGINONCE, TERMS_CONDITIONS, WHATSAPPCHECKED, compareVersions, getAppVersion, getBuildNumber, storeData } from '../assets/Utils/Utils';
@@ -29,7 +29,6 @@ var styles = BuildStyleOverwrite(Styles);
 
 function LoginNew() {
   styles = useMemo(() => createStyles(), [global.selectedLanguageCode]);
-  const networkStatus = useSelector(state => state?.networkStatus?.value ?? false)
   const [loading, setLoading] = useState(false)
   const [successLoading, setSuccessLoading] = useState(false)
   const [errorLoading, setErrorLoading] = useState(false)
@@ -280,6 +279,7 @@ function LoginNew() {
   }
 
   const GetTermsConditionDetailsApiCall = async () => {
+     var networkStatus = await getNetworkStatus()
     if (networkStatus) {
       try {
         var getURL = configs.BASE_URL + configs.AUTH.getTermsConditionsAndPrivacyPolicy;
@@ -404,6 +404,7 @@ function LoginNew() {
 
 
   const sendOTPApiCall = async (userAcceptanceKey) => {
+     var networkStatus = await getNetworkStatus()
     if (networkStatus) {
       try {
         setLoading(true)
