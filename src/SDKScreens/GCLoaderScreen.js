@@ -60,7 +60,7 @@ const GCLoaderScreen = ({ route }) => {
             try {
                 startLoading(translate('loading'));
 
-                var getloginURL = configs.BASE_URL + configs.AUTH.VERIFY_OTP;
+                var getloginURL = configs.BASE_URL + configs.AUTH.VALIDATE_SDK_LOGIN;
                 var getHeaders = await GetApiHeaders();
                 var deviceId = await getDeviceId();
                 var dataList = {
