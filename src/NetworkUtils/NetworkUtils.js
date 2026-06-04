@@ -1,7 +1,7 @@
 
 import store from '../redux/store/store';
 import NetInfo from "@react-native-community/netinfo";
-import { DEVICE_TOKEN, FCM_TOKEN, MOBILE_NUMBER, MODULENAME, ROLENAME, USER_ID, USER_NAME, getAppVersion, getAppVersionCode, getDeviceId, retrieveData } from "../assets/Utils/Utils";
+import { DEVICE_TOKEN, FCM_TOKEN, MOBILE_NUMBER, MODULENAME, ROLENAME, SDK_AUTH_ID, SDK_AUTH_TOKEN, USER_ID, USER_NAME, getAppName, getAppVersion, getAppVersionCode, getDeviceId, retrieveData } from "../assets/Utils/Utils";
 import { Platform } from "react-native";
 import { strings } from "../strings/strings";
 import axios from "axios";
@@ -12,6 +12,7 @@ import { MAP_MY_INDIA_KEY } from '../helpers/URLConstants';
 import { selectUser } from '../redux/store/slices/UserSlice';
 import { translate } from '../Localisation/Localisation';
 import { useSelector } from 'react-redux';
+import DeviceInfo from 'react-native-device-info';
 
 const REQUEST_TIMEOUT = 60000;
 
@@ -33,14 +34,17 @@ export async function GetApiHeaders() {
     var mobileNumber = await retrieveData(MOBILE_NUMBER);
     var userName = await retrieveData(USER_NAME);
     var deviceId = await getDeviceId();
+    var clientAppName = await getAppName();
+    var clientPackageName = DeviceInfo.getBundleId();
     var fcmToken = await retrieveData(FCM_TOKEN)
     var appVersion = await getAppVersion();
     var appVersionCode = await getAppVersionCode();
     var deviceToken = await AsyncStorage.getItem(DEVICE_TOKEN);
     let roleTypeCheck = await retrieveData(ROLENAME)
-    let applicationName = strings.VyaparMitraTwo
     const language = state.language;
     const moduleName = await retrieveData(MODULENAME)  // added 15092025 bcz of points dropdown only need to show some 1.0 value
+    const sdk_auth_token = await retrieveData(SDK_AUTH_TOKEN)
+    const sdk_auth_id = await retrieveData(SDK_AUTH_ID)
 
 
     console.log(roleTypeCheck, "check roleee")
@@ -69,12 +73,16 @@ export async function GetApiHeaders() {
         'fcmToken': fcmToken,
         'deviceToken': deviceToken,
         'userName': userName,
-        'applicationName': applicationName,
+        'applicationName': sdk_auth_id == "" ? strings.VyaparMitraTwo :strings.goldClubSDK, 
         "userCompanyCode": userData[0]?.companyCode,
         "companyCode": userData[0]?.companyCode,
         languageId: languageId || '1',
         moduleName: moduleName || '',
-        roleName: roleTypeCheck
+        roleName: roleTypeCheck,
+        clientAppName: clientAppName,
+        clientPackageName: clientPackageName,
+        authId: sdk_auth_id,
+        authToken: sdk_auth_token,
     };
     return headers;
 

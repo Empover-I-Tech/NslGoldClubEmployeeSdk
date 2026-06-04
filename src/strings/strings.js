@@ -517,5 +517,6 @@ export const strings = {
     "AdvancedKnowledgeCenter": "Advanced Knowledge Center",
     "KnowledgeCenter": "Knowledge Center",
     "Scan_Activity_QR": "Scan Activity QR",
-    "Field_activity_QR": "Field Activity QR"
+    "Field_activity_QR": "Field Activity QR",
+    "goldClubSDK" : "goldClubSDK"
 }  

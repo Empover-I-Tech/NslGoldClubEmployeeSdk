@@ -16,7 +16,7 @@ import { getCompanyStyles } from "../redux/store/slices/CompanyStyleSlice";
 import CustomButton from "../Components/CustomButton";
 import { Styles } from "../assets/style/styles";
 import { BuildStyleOverwrite } from "../assets/style/BuildStyle";
-// import MapplsGL from 'mappls-map-react-native';
+import MapplsGL from 'mappls-map-react-native';
 import { MAP_MY_INDIA_URL } from '../helpers/URLConstants';
 import CustomLoaderDefault from "../Components/CustomLoaderDefault";
 import { translate } from "../Localisation/Localisation";
@@ -26,10 +26,10 @@ import { Colors } from "../assets/Utils/Color";
 
 
 // Mappls keys setup
-// MapplsGL.setMapSDKKey("hgxmpb6gldoe2jb2r3upyje5rej6v72p");
-// MapplsGL.setRestAPIKey("5zf2txekry89tciw19sgmjpo7w133ioj");
-// MapplsGL.setAtlasClientId("qwj3TMxdzY7SIXZq8s3A4xDzY3LBjO3xAepnlJFBOjA_DQ7xzJWYtgfi1mKTFeTCLePMnWjzcGfP3PeOP6QozA==");
-// MapplsGL.setAtlasClientSecret("NdJUAD9O1c0LyinGBY0q0A17p-U96zMmvmehrrw4OVI91FWsWwBD2VCd3HVpTBawIi_g0BxxNireuLAJZpwie4283oO0mRYf");
+MapplsGL.setMapSDKKey("hgxmpb6gldoe2jb2r3upyje5rej6v72p");
+MapplsGL.setRestAPIKey("5zf2txekry89tciw19sgmjpo7w133ioj");
+MapplsGL.setAtlasClientId("qwj3TMxdzY7SIXZq8s3A4xDzY3LBjO3xAepnlJFBOjA_DQ7xzJWYtgfi1mKTFeTCLePMnWjzcGfP3PeOP6QozA==");
+MapplsGL.setAtlasClientSecret("NdJUAD9O1c0LyinGBY0q0A17p-U96zMmvmehrrw4OVI91FWsWwBD2VCd3HVpTBawIi_g0BxxNireuLAJZpwie4283oO0mRYf");
 
 var styles = BuildStyleOverwrite(Styles);
 
@@ -255,7 +255,7 @@ const Location = ({ route }) => {
             </View>
 
             <View style={{ flex: 1 }}>
-                {/* {loading ? (
+                {loading ? (
                     <ActivityIndicator />
                 ) : (
                     <MapplsGL.MapView
@@ -277,7 +277,7 @@ const Location = ({ route }) => {
                         />
                         <MapplsGL.UserLocation visible={true} showsUserHeadingIndicator={true} />
                     </MapplsGL.MapView>
-                )} */}
+                )}
             </View>
 
             {isMapReady && !loading && (

@@ -635,10 +635,10 @@ function MyAccountEmployee() {
     console.log('848461', new Date())
 
     return (
-        <View style={[styles['full_screen'], styles['bg_themeRed']]}>
+        <View style={[styles['full_screen'], { backgroundColor: dynamicStyles.primaryColor }]}>
             {Platform.OS === 'android' && <StatusBar backgroundColor={dynamicStyles.primaryColor} barStyle='dark-content' />}
 
-            <View style={[{ backgroundColor: dynamicStyles.backgroundColor, padding: 20, borderBottomStartRadius: 10, borderBottomEndRadius: 10, paddingTop: Platform.OS == 'ios' ? 60 : 0 }]}>
+            <View style={[{ backgroundColor: dynamicStyles.primaryColor, padding: 20, borderBottomStartRadius: 10, borderBottomEndRadius: 10, paddingTop: Platform.OS == 'ios' ? 60 : 0 }]}>
                 <TouchableOpacity style={[styles['flex_direction_row'], {alignItems:'center'}]} onPress={() => { goBack() }}>
                     <Image style={[styles['tint_color_white'], { height: 15, width: 20 }]} source={require('../assets/images/previous.png')}></Image>
                     <Text style={[styles['margin_left_10'], styles['font_size_18_bold'], { color: dynamicStyles.secondaryColor }]}>{translate('myaccount')}</Text>

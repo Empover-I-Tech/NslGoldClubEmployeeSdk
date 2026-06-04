@@ -43,6 +43,9 @@ export const EDITDATA = 'EditData'
 export const TERMS_CONDITIONS = 'termsConditionsAccepted'
 export const WHATSAPPCHECKED = 'WhatsappChecked'
 export const LOADER_GIF = "LOADER_GIF";
+export const SDK_AUTH_TOKEN = "SDK_AUTH_TOKEN";
+export const SDK_AUTH_ID = "SDK_AUTH_ID";
+
 
 
 export async function getSystemVersion() {

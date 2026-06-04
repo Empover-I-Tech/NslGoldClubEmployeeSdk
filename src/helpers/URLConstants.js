@@ -2,6 +2,15 @@ export const ANDROID_STORE_LINK = "https://play.google.com/store/apps/details?id
 export const IOS_STORE_LINK = "https://apps.apple.com/us/app/nsl-gold-club/id6748138634";
 
 export const FIREBASE_LOG = true;
+// export const APP_ENV_PROD = true; // Live
+export let APP_ENV_PROD = false; // UAT
+ 
+//This is for SDK Purpose
+export const setEnvironment = (buildType) => { 
+    APP_ENV_PROD = buildType === 'PROD';
+    console.log('APP_ENV_PROD:', APP_ENV_PROD);
+};
+
 export const LOCAL_SERVER = '';
 // Informational responses (1xx)
 export const HTTP_CONTINUE = 100;
@@ -78,13 +87,6 @@ export const MAP_MY_INDIA_URL = `https://apis.mapmyindia.com/advancedmaps/v1/${M
 
 export const FIREBASE_VERSION_COLLECTION_NAME = "getAppVersion"
 export const FIREBASE_VERSION_DOC_ID = "OXbbvOZlBVnKgcIj19Qw"
-
-export let APP_ENV_PROD = false;
-
-export const setEnvironment = (buildType) => {
-    APP_ENV_PROD = buildType === 'PROD';
-    console.log('APP_ENV_PROD:', APP_ENV_PROD);
-};
 
 export const configs = {
     BASE_URL: APP_ENV_PROD ? 'https://nvmretailpro.com:8443/rest/nsl/' : 'http://3.110.159.82:8080/vyapar_mitra/rest/nsl/',

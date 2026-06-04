@@ -30,7 +30,7 @@ import firestore from '@react-native-firebase/firestore';
 import CustomBorderDocumetUpload from '../Components/CustomBorderDocumetUpload';
 import { EventRegister } from 'react-native-event-listeners';
 import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
-// import LinearGradient from 'react-native-linear-gradient';
+import LinearGradient from 'react-native-linear-gradient';
 import Geolocation from 'react-native-geolocation-service';
 import { setLocation } from '../redux/store/slices/locationSlice';
 import CustomGalleryPopup from '../Components/CustomGalleryPopup';
@@ -1791,31 +1791,30 @@ function RetailerDashboard({ route }) {
                       </TouchableOpacity>
                     </View>
                   ) : (
-                    <View></View>
-                    // <LinearGradient
-                    //   colors={['rgba(255, 255, 255, 1)', 'rgba(242, 246, 249, 1)']}
-                    //   style={{
-                    //     width: '100%',
-                    //     borderRadius: 10,
-                    //     alignItems: 'center',
-                    //     borderColor: 'rgba(242, 246, 249, 1)',
-                    //     borderWidth: 1,
-                    //   }}
-                    // >
-                    //   <TouchableOpacity
-                    //     style={{ width: '50%', alignItems: 'center', padding: 15, borderRadius: 10 }}
-                    //     onPress={() => handleBuy()}
-                    //   >
-                    //     <Image
-                    //       style={{
-                    //         height: 40,
-                    //         width: 40,
-                    //         resizeMode: 'contain',
-                    //       }}
-                    //       source={require('../assets/images/buy.png')}
-                    //     />
-                    //   </TouchableOpacity>
-                    // </LinearGradient>
+                    <LinearGradient
+                      colors={['rgba(255, 255, 255, 1)', 'rgba(242, 246, 249, 1)']}
+                      style={{
+                        width: '100%',
+                        borderRadius: 10,
+                        alignItems: 'center',
+                        borderColor: 'rgba(242, 246, 249, 1)',
+                        borderWidth: 1,
+                      }}
+                    >
+                      <TouchableOpacity
+                        style={{ width: '50%', alignItems: 'center', padding: 15, borderRadius: 10 }}
+                        onPress={() => handleBuy()}
+                      >
+                        <Image
+                          style={{
+                            height: 40,
+                            width: 40,
+                            resizeMode: 'contain',
+                          }}
+                          source={require('../assets/images/buy.png')}
+                        />
+                      </TouchableOpacity>
+                    </LinearGradient>
                   )}
                   <Text allowFontScaling={false} style={[{ color: 'rgba(58, 68, 73, 1)', marginTop: 2.5 }, styles['font_size_10_bold']]}>
                     {translate('Buy')}
