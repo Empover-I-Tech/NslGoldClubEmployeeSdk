@@ -1,13 +1,11 @@
 import { useDispatch, useSelector } from 'react-redux';
 import React, { useMemo, useState } from 'react';
 import { View, Text, TextInput, Platform } from 'react-native';
-import { strings } from '../strings/strings';
 import { Styles } from '../assets/style/styles';
 import { BuildStyleOverwrite } from '../assets/style/BuildStyle';
 import { Colors } from '../assets/Utils/Color';
 import { selectUser } from '../redux/store/slices/UserSlice';
 import { getCompanyStyles } from '../redux/store/slices/CompanyStyleSlice';
-import { updateCompanyStyles } from '../redux/store/slices/CompanyStyleSlice';
 import { translate } from '../Localisation/Localisation';
 import { createStyles } from '../assets/style/createStyles';
 
@@ -16,7 +14,7 @@ var styles = BuildStyleOverwrite(Styles);
 function CustomTextInput({ props, labelName, IsRequired, defaultValue, value, placeholder, editable, contextMenuHidden, maxLength, onFocus, onChangeText, onEndEditing, keyboardType, textFiledWidth, leftSpace, autoCapitalize,addSpace,removeNumber }) {
     const getUserData = useSelector(selectUser);
     const companyStyle = useSelector(getCompanyStyles);
-    const [dynamicStyles, setDynamicStyles] = useState(companyStyle.value);
+    const [dynamicStyles, setDynamicStyles] = useState(companyStyle?.value || {});
     styles = useMemo(() => createStyles(), [global.selectedLanguageCode]);
     return (
         <View style={[textFiledWidth == undefined || textFiledWidth == "" ? { width: '91.5%' } : { width: textFiledWidth, top: 10, marginBottom: 8 },
