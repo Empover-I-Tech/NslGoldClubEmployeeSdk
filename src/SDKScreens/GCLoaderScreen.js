@@ -21,7 +21,7 @@ const GCLoaderScreen = ({ route }) => {
             Alert.alert("GCLoaderScreen", `Received params: ${JSON.stringify(route.params)}`);
             changeLanguage(languageCode || 'en')
             // navigation.navigate('EmployeeDashboardSDK')
-            navigation.navigate('LoginOTPNew')
+            navigation.navigate('LoginNew')
         }
 
     }, [route?.params])
