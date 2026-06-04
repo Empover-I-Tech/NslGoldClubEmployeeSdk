@@ -12,14 +12,15 @@ const GCLoaderScreen = ({ route }) => {
     const buildType = route?.params?.navigateItem?.buildType
     const languageCode = route?.params?.navigateItem?.languageCode
     const [loaderImage, setLoaderImage] = useState(require('../assets/images/neutralloader.gif'))
-      const navigation = useNavigation()
+    const navigation = useNavigation()
 
 
     useEffect(() => {
 
-        if(route?.params!==undefined){
+        if (route?.params !== undefined) {
             changeLanguage(languageCode || 'en')
             // navigation.navigate('EmployeeDashboardSDK')
+            navigation.navigate('LoginOTPNew')
         }
 
     }, [route?.params])
