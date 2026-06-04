@@ -16,7 +16,6 @@ import messaging from '@react-native-firebase/messaging';
 import { WebView } from 'react-native-webview';
 import { useSelector } from 'react-redux';
 import firestore from '@react-native-firebase/firestore';
-import CustomTextInput from '../Components/CustomTextInput';
 import CustomErrorLoaderDefault from '../Components/CustomErrorLoaderDefault';
 import CustomSuccessLoaderDefault from '../Components/CustomSuccessLoaderDefault';
 import CustomLoaderDefault from '../Components/CustomLoaderDefault';
@@ -30,7 +29,7 @@ var styles = BuildStyleOverwrite(Styles);
 
 function LoginNew() {
   styles = useMemo(() => createStyles(), [global.selectedLanguageCode]);
-  const networkStatus = useSelector(state => state.networkStatus.value)
+  const networkStatus = useSelector(state => state?.networkStatus?.value ?? false)
   const [loading, setLoading] = useState(false)
   const [successLoading, setSuccessLoading] = useState(false)
   const [errorLoading, setErrorLoading] = useState(false)
@@ -75,7 +74,7 @@ function LoginNew() {
     storeData(TERMS_CONDITIONS, true)
     storeData(WHATSAPPCHECKED, true)
     handleLoading();
-    getFCMtoken()
+    // getFCMtoken()
     requestNotificationPermission();
   }, [])
 
@@ -97,7 +96,7 @@ function LoginNew() {
       if (appState.current.match(/inactive|background/) && nextAppState === 'active') {
         console.log("App has come to the foreground");
 
-        checkForceUpdate();
+        // checkForceUpdate();
       }
       appState.current = nextAppState;
     });
@@ -109,106 +108,106 @@ function LoginNew() {
   }, []);
 
   useEffect(() => {
-    checkForceUpdate();
+    // checkForceUpdate();
   }, []);
 
-  async function checkForceUpdate() {
-    try {
-      const subscriber = firestore()
-        .collection(FIREBASE_VERSION_COLLECTION_NAME)
-        .doc(FIREBASE_VERSION_DOC_ID)
-        .onSnapshot(documentSnapshot => {
-          console.log('Document snapshot received');
+  // async function checkForceUpdate() {
+  //   try {
+  //     const subscriber = firestore()
+  //       .collection(FIREBASE_VERSION_COLLECTION_NAME)
+  //       .doc(FIREBASE_VERSION_DOC_ID)
+  //       .onSnapshot(documentSnapshot => {
+  //         console.log('Document snapshot received');
 
-          if (documentSnapshot.exists) {
-            const data = documentSnapshot.data();
-            console.log('Document data:', data);
+  //         if (documentSnapshot.exists) {
+  //           const data = documentSnapshot.data();
+  //           console.log('Document data:', data);
 
-            if (data) {
-              setLoading(false);
-              setTimeout(() => {
-                if (Platform.OS == 'android') {
-                  checkAppversionUpdate(data);
-                } else {
-                  checkAppversionUpdateIOS(data);
-                }
-              }, 500);
-            } else {
-              console.error('Document data is undefined');
-              setLoading(false);
-            }
-          } else {
-            console.error('Document does not exist');
-            setLoading(false);
-          }
-        });
+  //           if (data) {
+  //             setLoading(false);
+  //             setTimeout(() => {
+  //               if (Platform.OS == 'android') {
+  //                 checkAppversionUpdate(data);
+  //               } else {
+  //                 checkAppversionUpdateIOS(data);
+  //               }
+  //             }, 500);
+  //           } else {
+  //             console.error('Document data is undefined');
+  //             setLoading(false);
+  //           }
+  //         } else {
+  //           console.error('Document does not exist');
+  //           setLoading(false);
+  //         }
+  //       });
 
-      return () => subscriber();
-    } catch (error) {
-      console.error('Error fetching document:', error);
-      setLoading(false);
-    }
-  }
-  async function checkAppversionUpdateIOS(documentSnapshot) {
+  //     return () => subscriber();
+  //   } catch (error) {
+  //     console.error('Error fetching document:', error);
+  //     setLoading(false);
+  //   }
+  // }
+  // async function checkAppversionUpdateIOS(documentSnapshot) {
 
-    const localVersion = DeviceInfo.getVersion(); // Need to change for Android in future
+  //   const localVersion = DeviceInfo.getVersion(); // Need to change for Android in future
 
-    let remoteVersion = '';
+  //   let remoteVersion = '';
 
-    if (APP_ENV_PROD) {
-      if (Platform.OS === 'android') {
-        remoteVersion = documentSnapshot.androidAppVersionPROD;
-      } else {
-        remoteVersion = documentSnapshot.iosAppVersionPROD;
-      }
-    } else {
-      if (Platform.OS === 'android') {
-        remoteVersion = documentSnapshot.androidAppVersionUAT;
-      } else {
-        remoteVersion = documentSnapshot.iosAppVersionUAT;
-      }
-    }
-    let showForceUpdate = Platform.OS == 'ios' ? documentSnapshot?.showForceUpdateIOS : documentSnapshot?.showForceUpdate;
-    let isMandatory = Platform.OS == 'ios' ? documentSnapshot.isMandatoryForIOS : documentSnapshot.isMandatoryForAndroid;
+  //   if (APP_ENV_PROD) {
+  //     if (Platform.OS === 'android') {
+  //       remoteVersion = documentSnapshot.androidAppVersionPROD;
+  //     } else {
+  //       remoteVersion = documentSnapshot.iosAppVersionPROD;
+  //     }
+  //   } else {
+  //     if (Platform.OS === 'android') {
+  //       remoteVersion = documentSnapshot.androidAppVersionUAT;
+  //     } else {
+  //       remoteVersion = documentSnapshot.iosAppVersionUAT;
+  //     }
+  //   }
+  //   let showForceUpdate = Platform.OS == 'ios' ? documentSnapshot?.showForceUpdateIOS : documentSnapshot?.showForceUpdate;
+  //   let isMandatory = Platform.OS == 'ios' ? documentSnapshot.isMandatoryForIOS : documentSnapshot.isMandatoryForAndroid;
 
-    console.log(`Local: ${localVersion} | Remote: ${remoteVersion}`);
-    if (showForceUpdate) {
-      if (compareVersions(localVersion, remoteVersion) < 0) {
-        showAlertWithMessage(translate('alert'), true, true, documentSnapshot.message || translate('update_message'), true, !isMandatory, translate('update'), translate('cancel'));
-      }
-    } else {
-      setShowAlert(false)
-    }
-  }
+  //   console.log(`Local: ${localVersion} | Remote: ${remoteVersion}`);
+  //   if (showForceUpdate) {
+  //     if (compareVersions(localVersion, remoteVersion) < 0) {
+  //       showAlertWithMessage(translate('alert'), true, true, documentSnapshot.message || translate('update_message'), true, !isMandatory, translate('update'), translate('cancel'));
+  //     }
+  //   } else {
+  //     setShowAlert(false)
+  //   }
+  // }
 
-  async function checkAppversionUpdate(documentSnapshot) {
-    try {
-      if (documentSnapshot) {
-        const appDetails = await getAppVersion();
-        const appVersionCode = await getBuildNumber();
-        const showForceUpdateOrNOT = documentSnapshot?.showForceUpdate;
-        const messageToRender = documentSnapshot?.message || translate('update_message');
-        const version = documentSnapshot?.androidAppVersion;
-        const platformProdVersion = documentSnapshot?.androidAppVersionPROD;
-        const platformUATVersion = documentSnapshot?.androidAppVersionUAT;
-        const isMandatory = documentSnapshot?.isMandatoryForAndroid;
-        const shouldShowUpdate = (versionToCheck) => versionToCheck && versionToCheck > appVersionCode;
-        const showUpdateAlert = () => showAlertWithMessage(translate('alert'), true, true, messageToRender, true, !isMandatory, translate('update'), translate('cancel'));
-        if (APP_ENV_PROD ? shouldShowUpdate(platformProdVersion) : shouldShowUpdate(platformUATVersion)) {
-          showUpdateAlert()
-        } else if (showForceUpdateOrNOT && version && version !== appDetails) {
-          showUpdateAlert()
-        } else {
-          setShowAlert(false);
-        }
-      } else {
-        setShowAlert(false);
-      }
-    } catch (error) {
-      console.error('Error in checkAppversionUpdate:', error);
-      setShowAlert(false);
-    }
-  }
+  // async function checkAppversionUpdate(documentSnapshot) {
+  //   try {
+  //     if (documentSnapshot) {
+  //       const appDetails = await getAppVersion();
+  //       const appVersionCode = await getBuildNumber();
+  //       const showForceUpdateOrNOT = documentSnapshot?.showForceUpdate;
+  //       const messageToRender = documentSnapshot?.message || translate('update_message');
+  //       const version = documentSnapshot?.androidAppVersion;
+  //       const platformProdVersion = documentSnapshot?.androidAppVersionPROD;
+  //       const platformUATVersion = documentSnapshot?.androidAppVersionUAT;
+  //       const isMandatory = documentSnapshot?.isMandatoryForAndroid;
+  //       const shouldShowUpdate = (versionToCheck) => versionToCheck && versionToCheck > appVersionCode;
+  //       const showUpdateAlert = () => showAlertWithMessage(translate('alert'), true, true, messageToRender, true, !isMandatory, translate('update'), translate('cancel'));
+  //       if (APP_ENV_PROD ? shouldShowUpdate(platformProdVersion) : shouldShowUpdate(platformUATVersion)) {
+  //         showUpdateAlert()
+  //       } else if (showForceUpdateOrNOT && version && version !== appDetails) {
+  //         showUpdateAlert()
+  //       } else {
+  //         setShowAlert(false);
+  //       }
+  //     } else {
+  //       setShowAlert(false);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error in checkAppversionUpdate:', error);
+  //     setShowAlert(false);
+  //   }
+  // }
 
   const getFCMtoken = async () => {
 
