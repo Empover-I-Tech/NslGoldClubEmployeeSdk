@@ -237,7 +237,7 @@ function EmployeeDashboardSDK({ route }) {
         }
         else if (APIResponse.statusCode == 601) {
           SimpleToast.show(APIResponse?.message)
-          await getUserLoggedOut()
+          // await getUserLoggedOut()
           // showAlertWithMessage(translate('alert'), true, true, APIResponse.message, true, false, translate('ok'), translate('cancel'))
         }
         else {
@@ -288,7 +288,7 @@ function EmployeeDashboardSDK({ route }) {
         }
         else if (APIResponse.statusCode == 601) {
           SimpleToast.show(APIResponse?.message)
-          await getUserLoggedOut()
+          // await getUserLoggedOut()
           // showAlertWithMessage(translate('alert'), true, true, APIResponse.message, true, false, translate('ok'), translate('cancel'))
         }
         else {
@@ -779,7 +779,7 @@ function EmployeeDashboardSDK({ route }) {
       }
     }
     if (alertMessage == translate('are_you_sure_want_to_logout') || alertMessage == translate('logged_in_other_device') || alertMessage == "New Update Is Available Please Update") {
-      await getUserLoggedOut()
+      // await getUserLoggedOut()
     }
   }
   const handleFocus = async () => {

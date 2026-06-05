@@ -102,7 +102,7 @@ const GCLoaderScreen = ({ route }) => {
                                 }
                             }
                             let navigateTo = (verifyOTPResponse[0]?.roleName === 'Retailer' || verifyOTPResponse[0]?.roleName === 'Distributor') ? 'RetailerDashboard' : 'EmployeeDashboardSDK';
-                            navigation.navigate(navigateTo, { userData: userDatafrom })
+                            navigation.navigate(navigateTo, { userData: {} })
 
                         } else {
                             setTimeout(() => {
