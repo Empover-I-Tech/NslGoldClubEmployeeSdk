@@ -155,8 +155,8 @@ const GCLoaderScreen = ({ route }) => {
 
     const storeAuthData = async () => {
         try {
-            await AsyncStorage.setItem(SDK_AUTH_TOKEN, authToken || '');
-            await AsyncStorage.setItem(SDK_AUTH_ID, authId || '');
+            await storeData(SDK_AUTH_TOKEN, authToken || '');
+            await storeData(SDK_AUTH_ID, authId || '');
             console.log("Auth data stored successfully:", { authId, authToken });
         } catch (error) {
             console.error("Error storing auth data:", error);
