@@ -25,6 +25,7 @@ const GCLoaderScreen = ({ route }) => {
     const [loaderImage, setLoaderImage] = useState(require('../assets/images/neutralloader.gif'))
     const navigation = useNavigation()
     const [loadingCount, setLoadingCount] = useState(0);
+    const [loadingMessage, setLoadingMessage] = useState('');
     let [roleNameNav, setRoleNameNav] = useState('')
     const startLoading = (msg = '') => {
         setLoadingMessage(msg);
@@ -59,7 +60,6 @@ const GCLoaderScreen = ({ route }) => {
 
                 var getloginURL = configs.BASE_URL + configs.AUTH.VALIDATE_SDK_LOGIN;
                 var getHeaders = await GetApiHeaders();
-                var deviceId = await getDeviceId();
                 var dataList = {
                     "mobileNumber": mobileNumber,
                 }
@@ -101,9 +101,9 @@ const GCLoaderScreen = ({ route }) => {
                                     }, 1500)
                                 }
                             }
-                                    let navigateTo = (verifyOTPResponse[0]?.roleName === 'Retailer' || verifyOTPResponse[0]?.roleName === 'Distributor') ? 'RetailerDashboard' : 'EmployeeDashboardSDK';
-                                    navigation.navigate(navigateTo, { userData: userDatafrom })
-                        
+                            let navigateTo = (verifyOTPResponse[0]?.roleName === 'Retailer' || verifyOTPResponse[0]?.roleName === 'Distributor') ? 'RetailerDashboard' : 'EmployeeDashboardSDK';
+                            navigation.navigate(navigateTo, { userData: userDatafrom })
+
                         } else {
                             setTimeout(() => {
                                 SimpleToast.show(translate('something_went_wrong'));
@@ -126,23 +126,23 @@ const GCLoaderScreen = ({ route }) => {
 
                     }
                     else {
-                    Alert.alert(
-                        translate('alert'),
-                        APIResponse?.message || translate('something_went_wrong'),
-                        [
-                            {
-                                text: translate('ok'),
-                                onPress: () => { navigation.goBack()}
-                            }
-                        ],
-                        { cancelable: false }
-                    );
+                        Alert.alert(
+                            translate('alert'),
+                            APIResponse?.message || translate('something_went_wrong'),
+                            [
+                                {
+                                    text: translate('ok'),
+                                    onPress: () => { navigation.goBack() }
+                                }
+                            ],
+                            { cancelable: false }
+                        );
                     }
 
                 }
             }
             catch (error) {
-               
+
             }
             finally {
                 stopLoading();
