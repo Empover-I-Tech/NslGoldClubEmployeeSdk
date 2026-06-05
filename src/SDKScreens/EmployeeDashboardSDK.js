@@ -36,6 +36,7 @@ import { getFertilizerCalcRes, getMastersFertilizer } from '../Dashboard/Fertili
 import { getMastersSeedCalc, saveSavedSeedCalData } from '../Dashboard/SeedCalculator';
 import EmployeeActivityAlertModal from '../Modals/EmployeeActivityAlertModal';
 import CustomSuccessLoader from '../Components/CustomSuccessLoader';
+import { setNetworkConnectionStatus } from '../redux/store/slices/NetworkSlice';
 
 function EmployeeDashboardSDK({ route }) {
 
@@ -728,11 +729,15 @@ function EmployeeDashboardSDK({ route }) {
     }
   }
 
-
-  useFocusEffect(
+   useFocusEffect(
     React.useCallback(() => {
+      const fetchDataOnFocus = async () => {
       handleFocus();
+        console.log("Calling dashboard API on fetch");
+        const networkStatus = await getNetworkStatus()
+        dispatch(setNetworkConnectionStatus(networkStatus))
       if (networkStatus) {
+        console.log("Calling dashboard API on focus", networkStatus);
         dashboardUserMenuApiCall(),
           callMasters()
       }
@@ -740,6 +745,8 @@ function EmployeeDashboardSDK({ route }) {
       return () => {
         console.log('Screen is no longer focused!');
       };
+    };
+    fetchDataOnFocus();
     }, [networkStatus])
   );
 
