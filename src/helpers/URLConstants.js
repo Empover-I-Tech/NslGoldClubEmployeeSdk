@@ -104,7 +104,7 @@ export const configs = {
     AUTH: {
         SEND_OTP: 'sendOTP',
         VERIFY_OTP: 'validateOTP_v1',
-        VALIDATE_SDK_LOGIN : 'validateSDKLogin',
+        VALIDATE_SDK_LOGIN : 'validateGCSDKAuthentication',
         RESEND_OTP: 'reSendOTP',
         SIGNUP: 'addRetailer_v1',
         FORCE_UPDATE: 'Login/ForceUpdate',
