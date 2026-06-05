@@ -45,8 +45,6 @@ const GCLoaderScreen = ({ route }) => {
         if (route?.params !== undefined) {
             changeLanguage(languageCode || 'en')
             setEnvironment(buildEnvironment || 'PROD');
-            // navigation.navigate('EmployeeDashboardSDK')
-            navigation.navigate('LoginNew')
             storeAuthData();
             verifyOTPApiCall();
         }
@@ -54,7 +52,6 @@ const GCLoaderScreen = ({ route }) => {
     }, [route?.params])
 
     const verifyOTPApiCall = async () => {
-        // const verifyOTPApiCall = async (otpFromAutoFetch = undefined) => {
         const networkStatus = await getNetworkStatus();
         if (networkStatus) {
             try {
@@ -104,7 +101,7 @@ const GCLoaderScreen = ({ route }) => {
                                     }, 1500)
                                 }
                             }
-                                    let navigateTo = (verifyOTPResponse[0]?.roleName === 'Retailer' || verifyOTPResponse[0]?.roleName === 'Distributor') ? 'RetailerDashboard' : 'EmployeeDashboard';
+                                    let navigateTo = (verifyOTPResponse[0]?.roleName === 'Retailer' || verifyOTPResponse[0]?.roleName === 'Distributor') ? 'RetailerDashboard' : 'EmployeeDashboardSDK';
                                     navigation.navigate(navigateTo, { userData: userDatafrom })
                         
                         } else {
@@ -114,8 +111,6 @@ const GCLoaderScreen = ({ route }) => {
                         }
                     }
                     else if (APIResponse?.statusCode == HTTP_SWITCHING_PROTOCOLS) {
-                        // navigation.navigate('CompanySelection',{loginMobileNumber:loginMobileNumber});
-
                         setTimeout(() => {
                             navigation.reset({
                                 index: 0,
@@ -131,7 +126,6 @@ const GCLoaderScreen = ({ route }) => {
 
                     }
                     else {
-                    //   showAlertWithMessage(translate('alert'), true, true, APIResponse.message, false, true, translate('ok'), translate('cancel'))
                     Alert.alert(
                         translate('alert'),
                         APIResponse?.message || translate('something_went_wrong'),
