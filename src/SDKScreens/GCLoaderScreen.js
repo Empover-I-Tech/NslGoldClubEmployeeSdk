@@ -5,13 +5,13 @@ import { changeLanguage, translate } from '../Localisation/Localisation';
 import { useNavigation } from '@react-navigation/native';
 import { configs, HTTP_OK, HTTP_SWITCHING_PROTOCOLS, setEnvironment } from '../helpers/URLConstants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getDeviceId, SDK_AUTH_ID, SDK_AUTH_TOKEN, storeData, USER_ID } from '../assets/Utils/Utils';
 import { GetApiHeaders, getNetworkStatus, PostRequest } from '../NetworkUtils/NetworkUtils';
 import CustomLoader from '../Components/CustomLoader';
 import { setUser } from '../redux/store/slices/UserSlice';
-import { DEVICE_TOKEN, EDITDATA, LOGINONCE, MOBILE_NUMBER, PROFILEIMAGE, ROLEID, ROLENAME, SELECTEDCOMPANY, TERMS_CONDITIONS, USERMENU, USER_ID, USER_NAME, WHATSAPPCHECKED, downloadFileToLocal, getDeviceId, retrieveData, storeData } from '../assets/Utils/Utils';
+import { DEVICE_TOKEN, EDITDATA, LOGINONCE, MOBILE_NUMBER, PROFILEIMAGE, ROLEID, ROLENAME, SELECTEDCOMPANY, TERMS_CONDITIONS, USERMENU, USER_ID, USER_NAME, WHATSAPPCHECKED, downloadFileToLocal, getDeviceId, retrieveData, storeData, SDK_AUTH_ID, SDK_AUTH_TOKEN } from '../assets/Utils/Utils';
 import { updateCompanyStyles } from '../redux/store/slices/CompanyStyleSlice';
 import SimpleToast from 'react-native-simple-toast';
+import { Colors } from '../assets/Utils/Color';
 
 
 const GCLoaderScreen = ({ route }) => {
