@@ -36,6 +36,7 @@ import { getMastersSeedCalc, saveSavedSeedCalData } from '../Dashboard/SeedCalcu
 import EmployeeActivityAlertModal from '../Modals/EmployeeActivityAlertModal';
 import CustomSuccessLoader from '../Components/CustomSuccessLoader';
 import { setNetworkConnectionStatus } from '../redux/store/slices/NetworkSlice';
+import realm from '../realmOffline/realmConfig'
 
 function EmployeeDashboardSDK({ route }) {
 
@@ -645,7 +646,7 @@ function EmployeeDashboardSDK({ route }) {
 
 
   const callMasters = async () => {
-    var realm = new Realm({ path: 'User.realm' });
+    // var realm = new Realm({ path: 'User.realm' });
     try {
       // 1. sync call for seed calc
       const seedCalcRes = realm.objects('SeedCalSubmit');

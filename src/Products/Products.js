@@ -32,11 +32,12 @@ import RNFetchBlob from "react-native-blob-util";
 import store from '../redux/store/store';
 import { traverseAndReplaceUrlsGlobal } from '../Dashboard/ProgramDetails';
 import { createStyles } from '../assets/style/createStyles';
+import realm from '../realmOffline/realmConfig'
 
 var styles = BuildStyleOverwrite(Styles);
 
 export const getOfflineProductsData = async () => {
-  let realm = new Realm({ path: 'User.realm' });
+  // let realm = new Realm({ path: 'User.realm' });
   var networkStatus = await getNetworkStatus()
   const state = store.getState();
   const getUserData = selectUser(state);
@@ -72,7 +73,7 @@ export const getOfflineProductsData = async () => {
 }
 
 export let getCropsListMasterProducts = async (companyCOde = '') => {
-  let realm = new Realm({ path: 'User.realm' });
+  // let realm = new Realm({ path: 'User.realm' });
   var networkStatus = await getNetworkStatus()
   const state = store.getState();
   const getUserData = selectUser(state);
@@ -114,7 +115,7 @@ export let getCropsListMasterProducts = async (companyCOde = '') => {
 
 function Products({ route }) {
   styles = useMemo(() => createStyles(), [global.selectedLanguageCode]);
-  var realm = new Realm({ path: 'User.realm' });
+  // var realm = new Realm({ path: 'User.realm' });
   const getUserData = useSelector(selectUser);
   console.log("getUserData", JSON.stringify(getUserData))
   const companyStyle = useSelector(getCompanyStyles);

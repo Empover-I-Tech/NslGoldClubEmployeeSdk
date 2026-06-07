@@ -4,7 +4,7 @@
 export { default as store, default as persistor } from './src/redux/store/store';
 export { initLocalisation } from './src/Localisation/Localisation';
 export { default as GCLoaderScreen } from './src/SDKScreens/GCLoaderScreen';
-export { default as EmployeeDashboardSDK } from './src/SDKScreens/EmployeeDashboardSDK';
+export { default as EmployeeDashboardSDK } from './src/SDKScreens/EmployeeDashboardSDK' 
 
 
 //Dashboard
