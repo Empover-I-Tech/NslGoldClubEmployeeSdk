@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { changeLanguage, translate } from '../Localisation/Localisation';
 import { useNavigation } from '@react-navigation/native';
 import { configs, HTTP_OK, HTTP_SWITCHING_PROTOCOLS, setEnvironment } from '../helpers/URLConstants';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { GetApiHeaders, getNetworkStatus, PostRequest } from '../NetworkUtils/NetworkUtils';
 import CustomLoader from '../Components/CustomLoader';
 import { setUser } from '../redux/store/slices/UserSlice';

@@ -125,6 +125,7 @@ function MyAccount({ route }) {
   const [sectionAddressOpen, setSectionAddressOpen] = useState(comingFromDashboard ? true : false)
   const companyStyle = useSelector(getCompanyStyles);
   const [dynamicStyles, setDynamicStyles] = useState(companyStyle.value);
+  console.log('company style in my account', dynamicStyles)
   const [mapZoomingLevel, setMapZoomingLevel] = useState(18)
 
 

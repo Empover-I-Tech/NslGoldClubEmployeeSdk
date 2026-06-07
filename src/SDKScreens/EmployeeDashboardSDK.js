@@ -12,7 +12,6 @@ import SimpleToast from 'react-native-simple-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import CustomCircularImageView from '../Components/CustomCircularImageView';
 import { PERMISSIONS, request } from 'react-native-permissions';
-import DeviceInfo from 'react-native-device-info';
 import messaging from '@react-native-firebase/messaging';
 // import firestore from '@react-native-firebase/firestore';
 import { changeLanguage, translate } from '../Localisation/Localisation';

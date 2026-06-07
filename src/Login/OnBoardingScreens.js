@@ -4,7 +4,6 @@ import { Styles } from '../assets/style/styles';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { GetApiHeaders, GetRequest } from '../NetworkUtils/NetworkUtils';
-import SimpleToast from 'react-native-simple-toast';
 import { strings } from '../strings/strings';
 import CustomLoader from '../Components/CustomLoader';
 import CustomSuccessLoader from '../Components/CustomSuccessLoader';

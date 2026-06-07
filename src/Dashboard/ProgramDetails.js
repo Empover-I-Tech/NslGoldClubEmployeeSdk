@@ -25,7 +25,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import CustomAlert from '../Components/CustomAlert';
 import { downloadFileToLocal } from '../assets/Utils/Utils';
 import { createStyles } from '../assets/style/createStyles';
-import { getRealm } from '../../App';
+import { getRealm } from '../realmOffline/realmConfig';
 var realm;
 
 export const traverseAndReplaceUrlsGlobal = async (data) => {

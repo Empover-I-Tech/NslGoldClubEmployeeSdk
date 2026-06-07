@@ -49,6 +49,17 @@ export async function GetApiHeaders() {
 
     console.log(roleTypeCheck, "check roleee")
     const { languageCode, languageName, languageId } = language;
+    // let langID;
+    // if (roleTypeCheck) {
+    //     if ((roleTypeCheck === 'Retailer' || roleTypeCheck === 'Distributor')) {
+    //         langID = languageId || '1'
+    //     } else {
+    //         langID = '1';
+    //     }
+    // } else {
+    //     langID = languageId || '1'
+    // }
+
 
     var headers = {
         'Accept': 'application/json',

@@ -27,13 +27,18 @@ const CustomLoaderDefault = ({
   const dynamicStyles = companyStyle.value;
 
   // Determine the image source
-  let imageSource = loaderImage;
-  console.log('uiuuuiu', uriSent + " " + dynamicStyles?.loaderPath)
+  let imageSource;
 
-  if (uriSent && loaderImage) {
-    imageSource = { uri: loaderImage };
+  if (uriSent) {
+    if (loaderImage) {
+      imageSource = { uri: loaderImage };
+    } else if (dynamicStyles?.loaderPath) {
+      imageSource = { uri: `file://${dynamicStyles.loaderPath}` };
+    }
   } else if (dynamicStyles?.loaderPath) {
     imageSource = { uri: `file://${dynamicStyles.loaderPath}` };
+  } else {
+    imageSource = loaderImage;
   }
 
 

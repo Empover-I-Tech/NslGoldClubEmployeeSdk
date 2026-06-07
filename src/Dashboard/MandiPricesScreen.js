@@ -38,6 +38,7 @@ const MandiPricesScreen = () => {
     const FILTERS = [translate('thisWeek'), translate('thisMonth'), translate('thisYear')];
     const [selectedFilter, setSelectedFilter] = useState(FILTERS[0]);
     const getUserData = useSelector(selectUser);
+    console.log("getUserData===>", getUserData)
     const userDatafrom = getUserData[0]
     let navigation = useNavigation()
     const [loading, setLoading] = useState(false)
@@ -136,6 +137,7 @@ const MandiPricesScreen = () => {
     }, [selectedFilter])
 
     const onSelectedState = async (item) => {
+        console.log("selected state===>", item)
         setShowDropDowns(false);
         setState(item.name)
         setDistrict('')
@@ -192,11 +194,19 @@ const MandiPricesScreen = () => {
             if (response && response.statusCode == HTTP_OK) {
                 setDistrictListOriginal(response?.response?.districtList || []);
                 let states = getUpdatedUserData?.value?.stateName ? getUpdatedUserData?.value?.stateName : userDatafrom?.stateName
-                let b = await response?.response?.districtList.filter((data) => {
-                    return data.state.tagName?.toLowerCase() === (extractStateName(states)?.toLowerCase())
-                })
-                setDistrictsList(b)
-                SimpleToast.show(translate('Please_Select_District'), SimpleToast.LONG)
+                console.log("states in district master===>", states)
+                if (states) {
+                    let b = await response?.response?.districtList.filter((data) => {
+                        return data.state.tagName?.toLowerCase() === (extractStateName(states)?.toLowerCase())
+                    })
+                    console.log("district list===>", b)
+                    setDistrictsList(b)
+
+                }
+                else {
+                    SimpleToast.show(translate('please')+" "+translate('select')+" "+translate('state'), SimpleToast.LONG)
+                }
+
             }
         } catch (error) {
             console.error('Error fetching state and district masters:', error);
