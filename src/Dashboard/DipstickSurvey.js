@@ -25,7 +25,7 @@ const DipstickSurvey = ({ route }) => {
   newStyles = useMemo(() => createStyles(), [global.selectedLanguageCode]);
   const getUserData = useSelector(selectUser);
   const getUpdatedUserData = useSelector(getUpdateRetailerInfoData);
-  const userDatafrom = getUserData[0]
+  const userDatafrom = getUserData
   const { languageCode,languageId } = useSelector((state) => state.language);
   const calcType = route?.params?.calcType;
   const companyStyle = useSelector(getCompanyStyles);
@@ -97,7 +97,7 @@ const DipstickSurvey = ({ route }) => {
         //  alert(JSON.stringify(getUpdatedUserData.value.stateId))
         var APIResponse = await PostRequest(getYeildCalcURL, getHeaders, {
           "StateName": getUpdatedUserData?.value?.stateName ? getUpdatedUserData?.value?.stateName :  userDatafrom?.stateName,
-          "companyCode": getUserData[0]?.companyCode
+          "companyCode": getUserData?.companyCode
         });
         // var APIResponse = await GetRequest(getYeildCalcURL, getHeaders);
         if (APIResponse != undefined && APIResponse != null) {
@@ -257,8 +257,8 @@ const DipstickSurvey = ({ route }) => {
             </View>
             <View style={{flex: 1, width: "100%"}}>
               <WebView
-                // source={{ uri: `${selectedSurvey?.pageLink}?retailerId=${saveUserID}&mobileNumber=${saveMobileNumber}&buttonColor=${hexToRgbA(dynamicStyles.primaryColor)}&companyCode=${getUserData[0]?.companyCode}` }}
-                source={{ uri: `${selectedSurvey?.pageLink}?retailerId=${saveUserID}&mobileNumber=${saveMobileNumber}&buttonColor=${hexToRgbA(dynamicStyles.primaryColor)}&applicationName=${strings.VyaparMitraTwo}&companyCode=${getUserData[0]?.companyCode}&productName=${selectedSurvey?.productName}&surveyId=${selectedSurvey?.id}&languageId=${languageId}` }}
+                // source={{ uri: `${selectedSurvey?.pageLink}?retailerId=${saveUserID}&mobileNumber=${saveMobileNumber}&buttonColor=${hexToRgbA(dynamicStyles.primaryColor)}&companyCode=${getUserData?.companyCode}` }}
+                source={{ uri: `${selectedSurvey?.pageLink}?retailerId=${saveUserID}&mobileNumber=${saveMobileNumber}&buttonColor=${hexToRgbA(dynamicStyles.primaryColor)}&applicationName=${strings.VyaparMitraTwo}&companyCode=${getUserData?.companyCode}&productName=${selectedSurvey?.productName}&surveyId=${selectedSurvey?.id}&languageId=${languageId}` }}
                 style={{ width: '100%', height: '100%',flex:1,alignItems:"center",justifyContent:"center" }}
                 javaScriptEnabled={true}
                 startInLoadingState={true}

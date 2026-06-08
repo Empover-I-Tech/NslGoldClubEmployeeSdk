@@ -759,7 +759,7 @@ function SignUp({ route }) {
               setSuccessLoadingMessage(translate('account_created_successfully'))
               var verifyOTPResponse = APIResponse?.response.retailerInfo;
               if (verifyOTPResponse != undefined && verifyOTPResponse != null && verifyOTPResponse.length > 0) {
-                dispatch(setUser(verifyOTPResponse))
+                dispatch(setUser(verifyOTPResponse[0]))
                 setRoleNameNav(verifyOTPResponse[0].roleName)
                 storeData(USER_ID, verifyOTPResponse[0].id);
                 storeData(USER_NAME, verifyOTPResponse[0].roleName == 'Retailer' ? verifyOTPResponse[0].proprietorName : verifyOTPResponse[0].name);

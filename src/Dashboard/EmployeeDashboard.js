@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { View, Platform, StatusBar, Text, Image, AppState, Dimensions, Keyboard, TouchableOpacity, ScrollView, FlatList, ImageBackground, PermissionsAndroid, Modal, Linking, Alert, StyleSheet, ActivityIndicator } from 'react-native';
 import { strings } from '../strings/strings';
 import { Colors } from '../assets/Utils/Color';
@@ -36,6 +36,7 @@ import { getFertilizerCalcRes, getMastersFertilizer } from './FertilizerCalculat
 import { getMastersSeedCalc, saveSavedSeedCalData } from './SeedCalculator';
 import EmployeeActivityAlertModal from '../Modals/EmployeeActivityAlertModal';
 import CustomSuccessLoader from '../Components/CustomSuccessLoader';
+import realm from '../realmOffline/realmConfig';
 
 function EmployeeDashboard({ route }) {
 
@@ -121,6 +122,13 @@ function EmployeeDashboard({ route }) {
   };
 
   const loading = loadingCount > 0;
+
+  useLayoutEffect(() => {
+    let setData = async () => {
+      setUserImage(await retrieveData(PROFILEIMAGE))
+    }
+    setData()
+  }, [])
 
 
   // Auto scroll logic
@@ -645,7 +653,11 @@ function EmployeeDashboard({ route }) {
 
 
   const callMasters = async () => {
-    var realm = new Realm({ path: 'User.realm' });
+    // var realm = new Realm({ path: 'User.realm' });
+    if (!realm) {
+      console.log("Realm not initialized");
+      return;
+    }
     try {
       // 1. sync call for seed calc
       const seedCalcRes = realm.objects('SeedCalSubmit');
@@ -946,7 +958,6 @@ function EmployeeDashboard({ route }) {
         requestPermissionsProductScan()
       }
       else if (item.title == strings.scan_history) {
-        // navigation.navigate('EmployeeScanHistory', { roleid: (await retrieveData(ROLEID)) })
         navigation.navigate('EmpScanHistory', { roleid: (await retrieveData(ROLEID)) })
       }
       else if (item.title == strings.helpCenter || item?.title == strings.HelpDesk) {

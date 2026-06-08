@@ -36,12 +36,18 @@ import { getLangaugeDetails } from '../redux/store/slices/LanguageSlice';
 import { updateOfflineCount } from '../Dashboard/synchCountUtils';
 import moment from 'moment';
 import { createStyles } from '../assets/style/createStyles';
+import realm from '../realmOffline/realmConfig';
 var styles = BuildStyleOverwrite(Styles);
 
 const fs = require('fs');
 
 export const GetMastersComplaint = async () => {
-  let realm = new Realm({ path: 'User.realm' });
+  // let realm = new Realm({ path: 'User.realm' });
+  
+  if (!realm) {
+    console.log("Realm not initialized");
+    return;
+  }
   const state = store.getState();
   const lang = getLangaugeDetails(state);
   var networkStatus = await getNetworkStatus()
@@ -84,7 +90,12 @@ export const GetMastersComplaint = async () => {
 
 function Complaint() {
   styles = useMemo(() => createStyles(), [global.selectedLanguageCode]);
-  var realm = new Realm({ path: 'User.realm' });
+  // var realm = new Realm({ path: 'User.realm' });
+ 
+  if (!realm) {
+    console.log("Realm not initialized");
+    return;
+  }
   const dispatch = useDispatch()
   const [loading, setLoading] = useState(false)
   const [successLoading, setSuccessLoading] = useState(false)

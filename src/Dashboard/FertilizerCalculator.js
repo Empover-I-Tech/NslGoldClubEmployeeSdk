@@ -24,10 +24,16 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { BuildStyleOverwrite } from '../assets/style/BuildStyle';
 import { Styles } from '../assets/style/styles';
 import { createStyles } from '../assets/style/createStyles';
+import realm from '../realmOffline/realmConfig';
 
 
 export let getMastersFertilizer = async () => {
-    let realm = new Realm({ path: 'User.realm' });
+    // let realm = new Realm({ path: 'User.realm' });
+
+    if (!realm) {
+        console.log("Realm not initialized");
+        return;
+    }
     let networkStatus = await getNetworkStatus()
     if (networkStatus) {
         try {
@@ -68,7 +74,12 @@ export let getMastersFertilizer = async () => {
 }
 
 export const getFertilizerCalcRes = async () => {
-    let realm = new Realm({ path: 'User.realm' });
+    // let realm = new Realm({ path: 'User.realm' });
+    
+    if (!realm) {
+        console.log("Realm not initialized");
+        return;
+    }
     var networkStatus = await getNetworkStatus()
     if (networkStatus) {
         try {
@@ -112,8 +123,13 @@ export const getFertilizerCalcRes = async () => {
 var styles = BuildStyleOverwrite(Styles);
 
 
-const FertilizerCalculator = ({ route }) => {
-    var realm = new Realm({ path: 'User.realm' });
+const FertilizerCalculator =  ({ route }) => {
+    // var realm = new Realm({ path: 'User.realm' });
+    
+    if (!realm) {
+        console.log("Realm not initialized");
+        return;
+    }
     styles = useMemo(() => createStyles(), [global.selectedLanguageCode]);
     const networkStatusval = useSelector(state => state.networkStatus.value)
     const calcType = route?.params?.calcType;

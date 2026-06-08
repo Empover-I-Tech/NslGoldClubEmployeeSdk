@@ -28,9 +28,10 @@ import { translate } from '../Localisation/Localisation';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { updateOfflineCount } from '../Dashboard/synchCountUtils';
 import { createStyles } from '../assets/style/createStyles';
+import realm from '../realmOffline/realmConfig';
 
 var styles = BuildStyleOverwrite(Styles);
-var realm;
+// var realm;
 let scannedCoupons;
 var camDevice;
 function QRScannerNew({ route }) {
@@ -283,10 +284,20 @@ function QRScannerNew({ route }) {
     // }, [animatedValue]);
 
     useEffect(() => {
-        realm = new Realm({ path: 'User.realm' })
-        scannedCoupons = realm.objects('scannedCoupons')
 
-        console.log("SCANNED_OFFLINE", scannedCoupons);
+        const callQRScaner = async () => {
+            // realm = new Realm({ path: 'User.realm' })
+
+            if (!realm) {
+                console.log("Realm not initialized");
+                return;
+            }
+            scannedCoupons = realm.objects('scannedCoupons')
+
+            console.log("SCANNED_OFFLINE", scannedCoupons);
+        }
+
+        callQRScaner()
     }, [qrActivate])
 
     const submitQRData = async () => {
@@ -409,7 +420,7 @@ function QRScannerNew({ route }) {
     }
 
 
-    
+
 
     let renderSuccessOrFailurePopup = () => {
         // console.log(scannedResponse,"scanned response<<<<<<<<<<<<<<<<<<<<<<")

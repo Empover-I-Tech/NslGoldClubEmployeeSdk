@@ -9,13 +9,19 @@ import { updateCompanyStyles } from '../redux/store/slices/CompanyStyleSlice';
 import { updateRetailerInfoData } from '../redux/store/slices/UpdatedReatilerInfoDataSlice';
 import { setUser } from '../redux/store/slices/UserSlice';
 import { translate } from '../Localisation/Localisation';
+import realm from '../realmOffline/realmConfig';
 
 const useLogout = () => {
     const navigation = useNavigation();
     const dispatch = useDispatch();
     const [loadingCount, setLoadingCount] = useState(0);
     const [loadingMessage, setLoadingMessage] = useState('');
-    var realm = new Realm({ path: 'User.realm' });
+    // var realm = new Realm({ path: 'User.realm' });
+    
+    if (!realm) {
+        console.log("Realm not initialized");
+        return;
+    }
 
     const startLoading = (msg = '') => {
         setLoadingMessage(msg);
@@ -85,7 +91,7 @@ const useLogout = () => {
     };
 
     return {
-        logout , loading
+        logout, loading
     };
 };
 

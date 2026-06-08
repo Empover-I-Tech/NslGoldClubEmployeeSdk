@@ -32,12 +32,18 @@ import RNFetchBlob from "react-native-blob-util";
 import store from '../redux/store/store';
 import { traverseAndReplaceUrlsGlobal } from '../Dashboard/ProgramDetails';
 import { createStyles } from '../assets/style/createStyles';
-import realm from '../realmOffline/realmConfig'
+import realm from '../realmOffline/realmConfig';
 
 var styles = BuildStyleOverwrite(Styles);
 
 export const getOfflineProductsData = async () => {
   // let realm = new Realm({ path: 'User.realm' });
+
+  if (!realm) {
+    console.log("Realm not initialized");
+    return;
+  }
+
   var networkStatus = await getNetworkStatus()
   const state = store.getState();
   const getUserData = selectUser(state);
@@ -51,6 +57,7 @@ export const getOfflineProductsData = async () => {
         if (APIResponse.statusCode == HTTP_OK) {
           var productsResp = APIResponse.response.productList
           let convertedData = await traverseAndReplaceUrlsGlobal(productsResp)
+          console.log("convertedData", JSON.stringify(convertedData))
           try {
             realm.write(() => {
               realm.delete(realm.objects('productsMasterOffline'));
@@ -77,12 +84,13 @@ export let getCropsListMasterProducts = async (companyCOde = '') => {
   var networkStatus = await getNetworkStatus()
   const state = store.getState();
   const getUserData = selectUser(state);
+  console.log("getUserData=====>", getUserData)
   if (networkStatus) {
     try {
       var getURL = configs.BASE_URL + configs.PRODUCTS.getCropMasterByCompanayCode;
       var getHeaders = await GetApiHeaders();
       var dataList = {
-        "companyCode": companyCOde ? companyCOde : getUserData[0]?.companyCode
+        "companyCode": companyCOde ? companyCOde : getUserData?.companyCode
       }
       var APIResponse = await PostRequest(getURL, getHeaders, dataList);
       console.log('crops list response is:', JSON.stringify(APIResponse))
@@ -162,7 +170,7 @@ function Products({ route }) {
   const [selectedCrop, setSelectedCrop] = useState(translate('select'))
   const [selectedCompany, setSelectedCompany] = useState(translate('select'))
   const [selectedCropId, setSelectedCropId] = useState(0)
-  const [selectedCompanyId, setSelectedCompanyId] = useState(getUserData[0]?.companyCode)
+  const [selectedCompanyId, setSelectedCompanyId] = useState(getUserData?.companyCode)
   const [dropDownData, setdropDownData] = useState();
   const [showDropDowns, setShowDropDowns] = useState(false)
   const [dropDownType, setDropDownType] = useState("");
@@ -306,6 +314,9 @@ function Products({ route }) {
     let cropsListProductsData = realm.objects('cropsListProducts');
     const cropMasterPlanningToolData = realm.objects('cropMasterPlanningTool');
     let companyCodeMasters = realm.objects('companyCodeMasterPlanningTool')
+
+    console.log("companyCodeMasters====>", JSON.stringify(companyCodeMasters))
+
     if (cropsListProductsData !== 0) {
       let data = cropsListProductsData[0];
       const masterResp = JSON.parse(data?.data);
@@ -317,7 +328,7 @@ function Products({ route }) {
     if (companyCodeMasters.length !== 0) {
       let dataOfCompanyCodes = JSON.parse(companyCodeMasters[0].companyCodeMasterPlanningToolData)
       setCompanyList(dataOfCompanyCodes)
-      let currentCompanyCode = getUserData[0]?.companyCode;
+      let currentCompanyCode = getUserData?.companyCode;
       let currentCompanyName = dataOfCompanyCodes?.find((item) => item.companyCode === currentCompanyCode).name
       setSelectedCompany(currentCompanyName)
       setSelectedCompanyId(currentCompanyCode);
@@ -408,56 +419,57 @@ function Products({ route }) {
   };
 
   let getOfflineProductsData = async () => {
-    // const productsOfflineData = realm.objects('productsMasterOffline');
-    // if (productsOfflineData.length === 0) {
-    if (networkStatus) {
-      try {
-        const productsOfflineData = realm.objects('productsMasterOffline');
-        if (productsOfflineData.length === 0) {
-          setLoading(true)
-          setLoadingMessage(translate('please_wait_getting_data'))
-        }
-        else {
-
-        }
-        var getURL = configs.BASE_URL + configs.PRODUCTS.PRODUCTS_MASTERSV1;
-        var getHeaders = await GetApiHeaders();
-        var APIResponse = await GetRequest(getURL, getHeaders);
-        console.log('products response is:', APIResponse)
-        if (APIResponse != undefined && APIResponse != null) {
-          if (APIResponse.statusCode == HTTP_OK) {
-            setWholeData(APIResponse.response.productList)
-            if (productsOfflineData.length === 0) {
-              let productsResp = APIResponse?.response?.productList?.filter((item, index) => {
-                return item.companyCode === getUserData[0]?.companyCode
-              })
-              console.log("productsResp", productsResp)
-              setProductsData(productsResp)
-              setFilterProductsData(productsResp)
-              filterCropData(productsResp)
-              setTimeout(() => {
-                setLoadingMessage()
-                setLoading(false)
-              }, 500);
-            } else { }
+    const productsOfflineData = realm.objects('productsMasterOffline');
+    if (productsOfflineData.length === 0) {
+      if (networkStatus) {
+        try {
+          const productsOfflineData = realm.objects('productsMasterOffline');
+          if (productsOfflineData.length === 0) {
+            setLoading(true)
+            setLoadingMessage(translate('please_wait_getting_data'))
           }
           else {
-            showAlertWithMessage(translate('alert'), true, true, APIResponse.message, false, true, translate('ok'), translate('cancel'))
+
           }
-        } else {
+          var getURL = configs.BASE_URL + configs.PRODUCTS.PRODUCTS_MASTERSV1;
+          var getHeaders = await GetApiHeaders();
+          var APIResponse = await GetRequest(getURL, getHeaders);
+          console.log('products response is:', APIResponse)
+          if (APIResponse != undefined && APIResponse != null) {
+            if (APIResponse.statusCode == HTTP_OK) {
+              setWholeData(APIResponse.response.productList)
+              if (productsOfflineData.length === 0) {
+                let productsResp = APIResponse?.response?.productList?.filter((item, index) => {
+                  return item.companyCode === getUserData?.companyCode
+                })
+                console.log("productsResp", productsResp)
+                setProductsData(productsResp)
+                setFilterProductsData(productsResp)
+                filterCropData(productsResp)
+                setTimeout(() => {
+                  setLoadingMessage()
+                  setLoading(false)
+                }, 500);
+              } else { }
+            }
+            else {
+              showAlertWithMessage(translate('alert'), true, true, APIResponse.message, false, true, translate('ok'), translate('cancel'))
+            }
+          } else {
+            setTimeout(() => {
+              setLoading(false)
+              setLoadingMessage()
+            }, 500);
+          }
+        }
+        catch (error) {
           setTimeout(() => {
             setLoading(false)
-            setLoadingMessage()
-          }, 500);
+            setSuccessLoadingMessage(error.message)
+          }, 1000);
         }
-      }
-      catch (error) {
-        setTimeout(() => {
-          setLoading(false)
-          setSuccessLoadingMessage(error.message)
-        }, 1000);
-      }
-    } else { }
+      } else { }
+    }
   }
 
   const showAlertWithMessage = (title, header, heaertext, message, yesBtn, noBtn, yesText, noText) => {
@@ -478,7 +490,7 @@ function Products({ route }) {
       let masterResp;
       masterResp = wholeData
       let productsResp = masterResp?.filter((item, index) => {
-        return item.companyCode === getUserData[0]?.companyCode
+        return item.companyCode === getUserData?.companyCode
       })
       setProductsData(productsResp)
       setFilterProductsData(productsResp)
@@ -490,7 +502,7 @@ function Products({ route }) {
       masterResp = JSON.parse(data?.data)
 
       let productsResp = masterResp?.filter((item, index) => {
-        return item.companyCode === getUserData[0]?.companyCode
+        return item.companyCode === getUserData?.companyCode
       })
       console.log(productsResp, "productsRespproductsRespproductsRespproductsRespproductsResp")
       setProductsData(productsResp)

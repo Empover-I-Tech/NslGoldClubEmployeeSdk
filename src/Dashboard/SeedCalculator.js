@@ -26,9 +26,15 @@ import { updateOfflineCount } from './synchCountUtils';
 import { BuildStyleOverwrite } from '../assets/style/BuildStyle';
 import { Styles } from '../assets/style/styles';
 import { createStyles } from '../assets/style/createStyles';
+import realm from '../realmOffline/realmConfig';
 
 export const getMastersSeedCalc = async () => {
-    let realm = new Realm({ path: 'User.realm' });
+    // let realm = new Realm({ path: 'User.realm' });
+
+    if (!realm) {
+        console.log("Realm not initialized");
+        return;
+    }
     let networkStatus = await getNetworkStatus()
     if (networkStatus) {
         try {
@@ -67,7 +73,11 @@ export const getMastersSeedCalc = async () => {
 }
 
 export const saveSavedSeedCalData = async (jsonData, dispatch) => {
-    let realm = new Realm({ path: 'User.realm' });
+    // let realm = new Realm({ path: 'User.realm' });
+    if (!realm) {
+        console.log("Realm not initialized");
+        return;
+    }
     const networkStatus = await getNetworkStatus()
     if (networkStatus) {
         try {
@@ -110,7 +120,12 @@ var styles = BuildStyleOverwrite(Styles);
 
 const SeedCalculator = ({ route }) => {
     styles = useMemo(() => createStyles(), [global.selectedLanguageCode]);
-    var realm = new Realm({ path: 'User.realm' });
+    // var realm = new Realm({ path: 'User.realm' });
+   
+    if (!realm) {
+        console.log("Realm not initialized");
+        return;
+    }
     const calcType = route?.params?.calcType;
     const viewShotRef = useRef();
     const dispatch = useDispatch();

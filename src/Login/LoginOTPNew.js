@@ -146,7 +146,7 @@ function LoginOTPNew({ route }) {
             if (verifyOTPResponse != undefined && verifyOTPResponse != null && verifyOTPResponse.length > 0) {
               setRoleNameNav(verifyOTPResponse[0].roleName)
               setOTPApiresponse(verifyOTPResponse)
-              dispatch(setUser(verifyOTPResponse))
+              dispatch(setUser(verifyOTPResponse[0]))
               storeData(USER_ID, verifyOTPResponse[0].id);
               storeData(USER_NAME, verifyOTPResponse[0].roleName == 'Retailer' ? verifyOTPResponse[0].proprietorName : verifyOTPResponse[0].name);
               storeData(MOBILE_NUMBER, verifyOTPResponse[0].mobileNumber);

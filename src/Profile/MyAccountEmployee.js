@@ -635,13 +635,13 @@ function MyAccountEmployee() {
     console.log('848461', new Date())
 
     return (
-        <View style={[styles['full_screen'], { backgroundColor: dynamicStyles.primaryColor }]}>
-            {Platform.OS === 'android' && <StatusBar backgroundColor={dynamicStyles.primaryColor} barStyle='dark-content' />}
+        <View style={[styles['full_screen'], { backgroundColor: dynamicStyles?.primaryColor }]}>
+            {Platform.OS === 'android' && <StatusBar backgroundColor={dynamicStyles?.primaryColor} barStyle='dark-content' />}
 
-            <View style={[{ backgroundColor: dynamicStyles.primaryColor, padding: 20, borderBottomStartRadius: 10, borderBottomEndRadius: 10, paddingTop: Platform.OS == 'ios' ? 60 : 0 }]}>
+            <View style={[{ backgroundColor: dynamicStyles?.primaryColor, padding: 20, borderBottomStartRadius: 10, borderBottomEndRadius: 10, paddingTop: Platform.OS == 'ios' ? 60 : 0 }]}>
                 <TouchableOpacity style={[styles['flex_direction_row'], {alignItems:'center'}]} onPress={() => { goBack() }}>
                     <Image style={[styles['tint_color_white'], { height: 15, width: 20 }]} source={require('../assets/images/previous.png')}></Image>
-                    <Text style={[styles['margin_left_10'], styles['font_size_18_bold'], { color: dynamicStyles.secondaryColor }]}>{translate('myaccount')}</Text>
+                    <Text style={[styles['margin_left_10'], styles['font_size_18_bold'], { color: dynamicStyles?.secondaryColor }]}>{translate('myaccount')}</Text>
                 </TouchableOpacity>
             </View>
             <View style={[styles['width_100%'], styles['height_100%'], styles['flex_1']]}>
@@ -1292,7 +1292,7 @@ function MyAccountEmployee() {
 
                             {isEdit == true &&
                                 <View style={[styles['align_self_center'], styles['width_100%']]}>
-                                    <CustomButton title={translate('save')} onPress={saveButtonPress} buttonBg={Colors.themeRed} btnWidth={"90%"} titleTextColor={Colors.white} />
+                                    <CustomButton title={translate('save')} onPress={saveButtonPress} buttonBg={dynamicStyles?.primaryColor} btnWidth={"90%"} titleTextColor={Colors.white} />
                                 </View>
                             }
 

@@ -216,7 +216,7 @@ function LoginOTP({ route }) {
             var verifyOTPResponse = APIResponse.response;
             console.log('verifyOTPResponse is', verifyOTPResponse)
 
-            dispatch(setUser(verifyOTPResponse))
+            dispatch(setUser(verifyOTPResponse[0]))
             storeData(USER_ID, verifyOTPResponse[0].id);
             storeData(USER_NAME, verifyOTPResponse[0].roleName == 'Retailer' ? verifyOTPResponse[0].proprietorName : verifyOTPResponse[0].name);
             storeData(MOBILE_NUMBER, verifyOTPResponse[0].mobileNumber);

@@ -102,7 +102,7 @@ const Splash = (props) => {
     return (
         <View style={styleSheetStyles.full}>
         <StatusBar backgroundColor={'white'} barStyle='dark-content' />
-            {/* {getUserData[0]?.companyCode != undefined && getUserData[0]?.companyCode == "1100" ? (
+            {/* {getUserData?.companyCode != undefined && getUserData?.companyCode == "1100" ? (
                 <ImageBackground
                     source={require('../assets/images/bg_view_plain.png')}
                     resizeMode="stretch"
@@ -124,7 +124,7 @@ const Splash = (props) => {
                     style={styleSheetStyles.whiteBg}
                 >
                     <Image
-                        source={getUserData[0]?.companyLogoPath != undefined ? { uri: getUserData[0]?.companyLogoPath } : require('../assets/images/newAppIcon.png')}
+                        source={getUserData?.companyLogoPath != undefined ? { uri: getUserData?.companyLogoPath } : require('../assets/images/newAppIcon.png')}
                         style={[styles.margin_left_10, styles.align_self_center, { width: Dimensions.get('window').width / 2.25, height: 200 }]}
                         resizeMode="contain"
                     />

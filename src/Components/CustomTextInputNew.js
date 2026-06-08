@@ -14,7 +14,7 @@ import { createStyles } from '../assets/style/createStyles';
 var styles = BuildStyleOverwrite(Styles);
 
 function CustomTextInputNew({ props, labelName, IsRequired, defaultValue, value, placeholder, editable, contextMenuHidden, maxLength, onFocus, onChangeText, onEndEditing, keyboardType, textFiledWidth, leftSpace, autoCapitalize }) {
-    const getUserData = useSelector(selectUser);
+
     const companyStyle = useSelector(getCompanyStyles);
     const [dynamicStyles, setDynamicStyles] = useState(companyStyle.value);
     styles = useMemo(() => createStyles(), [global.selectedLanguageCode]);

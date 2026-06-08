@@ -36,7 +36,7 @@ import { getMastersSeedCalc, saveSavedSeedCalData } from '../Dashboard/SeedCalcu
 import EmployeeActivityAlertModal from '../Modals/EmployeeActivityAlertModal';
 import CustomSuccessLoader from '../Components/CustomSuccessLoader';
 import { setNetworkConnectionStatus } from '../redux/store/slices/NetworkSlice';
-import realm from '../realmOffline/realmConfig'
+import realm from '../realmOffline/realmConfig';
 
 function EmployeeDashboardSDK({ route }) {
 
@@ -647,6 +647,12 @@ function EmployeeDashboardSDK({ route }) {
 
   const callMasters = async () => {
     // var realm = new Realm({ path: 'User.realm' });
+   
+    if (!realm) {
+      console.log("Realm not initialized");
+      return;
+    }
+    scan
     try {
       // 1. sync call for seed calc
       const seedCalcRes = realm.objects('SeedCalSubmit');
@@ -729,24 +735,24 @@ function EmployeeDashboardSDK({ route }) {
     }
   }
 
-   useFocusEffect(
+  useFocusEffect(
     React.useCallback(() => {
       const fetchDataOnFocus = async () => {
-      handleFocus();
+        handleFocus();
         console.log("Calling dashboard API on fetch");
         const networkStatus = await getNetworkStatus()
         dispatch(setNetworkConnectionStatus(networkStatus))
-      if (networkStatus) {
-        console.log("Calling dashboard API on focus", networkStatus);
-        dashboardUserMenuApiCall(),
-          callMasters()
-      }
+        if (networkStatus) {
+          console.log("Calling dashboard API on focus", networkStatus);
+          dashboardUserMenuApiCall(),
+            callMasters()
+        }
 
-      return () => {
-        console.log('Screen is no longer focused!');
+        return () => {
+          console.log('Screen is no longer focused!');
+        };
       };
-    };
-    fetchDataOnFocus();
+      fetchDataOnFocus();
     }, [networkStatus])
   );
 

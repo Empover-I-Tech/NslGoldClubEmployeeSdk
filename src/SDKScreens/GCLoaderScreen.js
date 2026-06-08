@@ -69,7 +69,7 @@ const GCLoaderScreen = ({ route }) => {
                     if (APIResponse?.statusCode === HTTP_OK) {
                         var verifyOTPResponse = APIResponse?.response;
                         if (verifyOTPResponse != undefined && verifyOTPResponse != null && verifyOTPResponse.length > 0) {
-                            dispatch(setUser(verifyOTPResponse))
+                            dispatch(setUser(verifyOTPResponse[0]))
                             storeData(USER_ID, verifyOTPResponse[0].id);
                             storeData(USER_NAME, verifyOTPResponse[0].roleName == 'Retailer' ? verifyOTPResponse[0].proprietorName : verifyOTPResponse[0].name);
                             storeData(MOBILE_NUMBER, verifyOTPResponse[0].mobileNumber);

@@ -23,9 +23,10 @@ import { getCompanyStyles } from '../redux/store/slices/CompanyStyleSlice';
 import { updateCompanyStyles } from '../redux/store/slices/CompanyStyleSlice';
 import { translate } from '../Localisation/Localisation';
 import { createStyles } from '../assets/style/createStyles';
+import realm from '../realmOffline/realmConfig';
 
 var styles = BuildStyleOverwrite(Styles);
-var realm;
+// var realm;
 let scannedCoupons;
 var camDevice;
 function QRScanner({ route }) {
@@ -116,14 +117,14 @@ function QRScanner({ route }) {
 
     useEffect(() => {
         // alert(totalPoints)
-        realm = new Realm({ path: 'User.realm' })
+        // realm = new Realm({ path: 'User.realm' })
         scannedCoupons = realm.objects('scannedCoupons')
 
         console.log("SCANNED_OFFLINE", scannedCoupons);
     }, [qrActivate])
     useEffect(() => {
         // alert(totalPoints)
-        realm = new Realm({ path: 'User.realm' })
+        // realm = new Realm({ path: 'User.realm' })
         scannedCoupons = realm.objects('scannedCoupons')
 
         console.log("SCANNED_OFFLINE", scannedCoupons);

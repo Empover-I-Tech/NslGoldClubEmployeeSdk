@@ -23,6 +23,7 @@ import CustomCalanderSelection from "../Components/CustomCalanderSelection";
 import { translate } from "../Localisation/Localisation";
 import { createStyles } from "../assets/style/createStyles";
 import { getCompanyStyles } from "../redux/store/slices/CompanyStyleSlice";
+import CustomTextInput from "../Components/CustomTextInput";
 
 var styles = BuildStyleOverwrite(Styles);
 
@@ -104,6 +105,7 @@ function EmployeeRedemptionsHistory({ route }) {
     const companyStyle = useSelector(getCompanyStyles);
     const [dynamicStyles, setDynamicStyles] = useState(companyStyle.value);
     const flatListRef = useRef(null);
+    const [mobileNumber, setMobileNumber] = useState('')
 
     useEffect(() => {
 
@@ -384,6 +386,7 @@ function EmployeeRedemptionsHistory({ route }) {
             regionId: regionSelectedId,
             territoryId: territorySelectedId,
             headQuarterId: headquarterSelectedId,
+            mobileNumber : mobileNumber,
             // retailerId: retailerSelectedId,
             yearId: yearSelectedId,
             fromDate: fromDate ? moment(fromDate, "DD-MM-YYYY").format("YYYY-MM-DD") : "",
@@ -441,22 +444,22 @@ function EmployeeRedemptionsHistory({ route }) {
                 </View>
                 <View>
                     <View style={[styles['flex_direction_row']]}>
-                        <Text style={[styles['text_color_grey'], { width: '37%', lineHeight : 24 }]}>{translate('voucherName')}</Text><Text style={[styles['text_color_black'], { width: '47%' }]}>: {item.giftProductName}</Text>
+                        <Text style={[styles['text_color_grey'], { width: '37%', lineHeight: 24 }]}>{translate('voucherName')}</Text><Text style={[styles['text_color_black'], { width: '47%' }]}>: {item.giftProductName}</Text>
                     </View>
                     <View style={[styles['margin_top_5'], styles['flex_direction_row']]}>
-                        <Text style={[styles['text_color_grey'], { width: '37%', lineHeight : 24 }]}>{translate('totalItem')}</Text><Text style={[styles['text_color_black'], { width: '47%' }]}>: {item.totalQuantity}</Text>
+                        <Text style={[styles['text_color_grey'], { width: '37%', lineHeight: 24 }]}>{translate('totalItem')}</Text><Text style={[styles['text_color_black'], { width: '47%' }]}>: {item.totalQuantity}</Text>
                     </View>
                     <View style={[styles['margin_top_5'], styles['flex_direction_row']]}>
-                        <Text style={[styles['text_color_grey'], { width: '37%', lineHeight : 24 }]}>{translate('totalPoints')}</Text><Text style={[styles['text_color_black'], { width: '47%' }]}>: {item.redemptionAmount}</Text>
+                        <Text style={[styles['text_color_grey'], { width: '37%', lineHeight: 24 }]}>{translate('totalPoints')}</Text><Text style={[styles['text_color_black'], { width: '47%' }]}>: {item.redemptionAmount}</Text>
                     </View>
                     <View style={[styles['margin_top_5'], styles['flex_direction_row']]}>
-                        <Text style={[styles['text_color_grey'], { width: '37%', lineHeight : 24 }]}>{translate('transaction_id')}</Text><Text style={[styles['text_color_black'], { width: '47%' }]}>: {item.orderNo}</Text>
+                        <Text style={[styles['text_color_grey'], { width: '37%', lineHeight: 24 }]}>{translate('transaction_id')}</Text><Text style={[styles['text_color_black'], { width: '47%' }]}>: {item.orderNo}</Text>
                     </View>
                     <View style={[styles['margin_top_5'], styles['flex_direction_row']]}>
-                        <Text style={[styles['text_color_grey'], { width: '37%', lineHeight : 24 }]}>{translate('redeemedDate')}</Text><Text style={[styles['text_color_black'], { width: '47%' }]}>: {item.orderDate}</Text>
+                        <Text style={[styles['text_color_grey'], { width: '37%', lineHeight: 24 }]}>{translate('redeemedDate')}</Text><Text style={[styles['text_color_black'], { width: '47%' }]}>: {item.orderDate}</Text>
                     </View>
                     <View style={[styles['margin_top_5'], styles['flex_direction_row'], { paddingBottom: 5 }]}>
-                        <Text style={[styles['text_color_grey'], { width: '37%', lineHeight : 24 }]}>{translate('status')}</Text><Text style={[item.status ? styles['text_color_green'] : styles['text_color_red'], { width: '47%' }]}>: {item.status ? translate('success') : translate('pending')}</Text>
+                        <Text style={[styles['text_color_grey'], { width: '37%', lineHeight: 24 }]}>{translate('status')}</Text><Text style={[item.status ? styles['text_color_green'] : styles['text_color_red'], { width: '47%' }]}>: {item.status ? translate('success') : translate('pending')}</Text>
                     </View>
                 </View>
             </View>
@@ -852,7 +855,7 @@ function EmployeeRedemptionsHistory({ route }) {
         <View style={[styles['full_screen'], { backgroundColor: Colors.very_light_grey }]}>
             {Platform.OS === 'android' && <StatusBar backgroundColor={dynamicStyles.primaryColor} barStyle='dark-content' />}
             <View style={[{ backgroundColor: dynamicStyles.primaryColor, borderBottomEndRadius: 10, borderBottomStartRadius: 10, paddingTop: Platform.OS === 'ios' ? 60 : 0, paddingBottom: 25 }]}>
-                <TouchableOpacity style={[styles['flex_direction_row'], {alignItems:'center'}]} onPress={() => { goBack() }}>
+                <TouchableOpacity style={[styles['flex_direction_row'], { alignItems: 'center' }]} onPress={() => { goBack() }}>
                     <Image style={[styles['margin_left_20'], styles[''], styles['tint_color_white'], { height: 15, width: 20, top: Platform.OS == 'ios' ? 10 : 0 }]} source={require('../assets/images/previous.png')}></Image>
                     <Text style={[styles['margin_left_10'], styles[''], styles['text_color_white'], styles[''], styles['font_size_18_bold']]}>{translate('redemHistory')}</Text>
                 </TouchableOpacity>
@@ -955,6 +958,30 @@ function EmployeeRedemptionsHistory({ route }) {
                             }
                         }}
                     />
+
+                    <View style={[{ width: "95%" }]}>
+                        <CustomTextInput
+                            textFiledWidth={"98%"}
+                            leftSpace={-5}
+                            labelName={translate('retailer_mobilenumber')}
+                            IsRequired={false}
+                            maxLength={10}
+                            keyboardType="number-pad"
+                            placeholder={translate('enter') + " " + translate('retailer_mobilenumber')}
+                            value={mobileNumber}
+                            editable={true}
+                            onFocus={() => {
+                            }}
+                            onChangeText={(text) => {
+                                var enteredText = text.replace(/^[0-5][0-9]*$/gi, "");
+                                enteredText = enteredText.replace(/[`a-z!@#$%^&*()_|+\-=?;:'",.₹€£¥•’<>\{\}\[\]\\\/]/gi, "");
+                                setMobileNumber(enteredText)
+                            }}
+                            onEndEditing={event => {
+
+                            }}
+                        />
+                    </View>
 
                     {/* <CustomInputDropDown
                         width={[styles['width_95%'], styles['top_5'], styles['centerItems']]}

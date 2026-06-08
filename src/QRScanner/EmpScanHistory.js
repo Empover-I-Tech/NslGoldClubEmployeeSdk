@@ -20,6 +20,8 @@ import CustomCalanderSelection from "../Components/CustomCalanderSelection";
 import { translate } from "../Localisation/Localisation";
 import { createStyles } from "../assets/style/createStyles";
 import { getCompanyStyles } from "../redux/store/slices/CompanyStyleSlice";
+import CustomTextInputNew from "../Components/CustomTextInputNew";
+import CustomTextInput from "../Components/CustomTextInput";
 
 var styles = BuildStyleOverwrite(Styles);
 
@@ -72,6 +74,12 @@ function EmpScanHistory({ route }) {
     const [activeRetilerCount, setActiveRetilerCount] = useState('');
     const [signUpBonusPoints, setSignUpBonusPoints] = useState(0)
     const [key, setKey] = useState(1);
+
+    const [mobileNumber, setMobileNumber] = useState('')
+    const [headQuaterList, setHeadQuaterList] = useState([])
+    const [headQuaterName, setHeadQuaterName] = useState('')
+    const [headQuaterId, setHeadQuaterId] = useState(0)
+
     const [statesMasterOriginal, setStatesMasterOriginal] = useState([])
     const [stateSelectedName, setStateSelectedName] = useState('')
     const [stateSelectedId, setStateSelectedId] = useState(0)
@@ -113,6 +121,13 @@ function EmpScanHistory({ route }) {
         }
 
     }, [subDistrictSelectedId, subDistrictSelectedName, villageSelectedName, villageSelectedId])
+
+
+    useEffect(() => {
+        if (headQuaterList?.length == 1) {
+            onSelectedHeadQuaters(headQuaterList[0])
+        }
+    }, [headQuaterList])
 
 
     useEffect(() => {
@@ -219,6 +234,7 @@ function EmpScanHistory({ route }) {
 
                     var response = APIResponse.response
                     console.log("response", response)
+                    setHeadQuaterList(response?.headQuatersList)
                     setStatesMasterOriginal(response?.statesList);
                     setDistrictsMasterOriginal(response?.districtsList);
                     setSubDistrictsMasterOriginal(response?.subDistrictsList);
@@ -249,6 +265,8 @@ function EmpScanHistory({ route }) {
             const input = {
                 userId: header?.userId,
                 programName: 0,
+                headQuaterId : headQuaterId?.toString() || '',
+                mobileNumber : mobileNumber?.toString() || '',
                 stateId: stateSelectedId?.toString() || '',
                 districtId: districtSelectedId?.toString() || '',
                 subDistrictId: subDistrictSelectedId?.toString() || '',
@@ -466,6 +484,14 @@ function EmpScanHistory({ route }) {
         setdropDownData(dropDownData);
         setDropDownType(type);
         setSelectedDropDownItem(selectedItem);
+    }
+
+    const onSelectedHeadQuaters = async (itemdata) => {
+        if (itemdata != null) {
+            setHeadQuaterId(itemdata?.id)
+            setHeadQuaterName(itemdata?.name)
+            setShowDropDowns(false)
+        }
     }
 
     const onSelectedState = async (itemdata) => {
@@ -749,7 +775,7 @@ function EmpScanHistory({ route }) {
         <View style={[styles['full_screen'], { backgroundColor: Colors.very_light_grey }]}>
             {Platform.OS === 'android' && <StatusBar backgroundColor={dynamicStyles.primaryColor} barStyle='dark-content' />}
             <View style={[{ backgroundColor: dynamicStyles.primaryColor, borderBottomEndRadius: 10, borderBottomStartRadius: 10, paddingTop: Platform.OS === 'ios' ? 60 : 0 }]}>
-                <TouchableOpacity style={[styles['flex_direction_row'], {alignItems:'center'}]} onPress={() => { goBack() }}>
+                <TouchableOpacity style={[styles['flex_direction_row'], { alignItems: 'center' }]} onPress={() => { goBack() }}>
                     <Image style={[styles['margin_left_20'], styles[''], styles['tint_color_white'], { height: 15, width: 20, top: Platform.OS == 'ios' ? 10 : 0 }]} source={require('../assets/images/previous.png')}></Image>
                     <Text style={[styles['margin_left_10'], styles[''], styles['text_color_white'], styles[''], styles['font_size_18_bold']]}>{translate('scan_history')}</Text>
                 </TouchableOpacity>
@@ -768,6 +794,21 @@ function EmpScanHistory({ route }) {
             <ScrollView style={[{ marginTop: 5, marginBottom: numberOfPages > 1 ? 55 : 20, }]}>
                 <View style={[{ padding: 10, width: '95%', backgroundColor: 'white', marginTop: 10 }, styles['centerItems'], styles['border_radius_8']]}>
 
+                    <CustomInputDropDown
+                        width={[styles['width_95%'], styles['top_5'], styles['centerItems']]}
+                        defaultValue={headQuaterList?.length == 1 ? headQuaterList[0].name : headQuaterName != undefined ? headQuaterName : translate('selectHeadquarter')}
+                        labelName={translate('headquarters')}
+                        IsRequired={false}
+                        placeholder={translate('selectHeadquarter')}
+                        onEndEditing={async event => {
+                        }}
+                        onFocus={() => {
+                            {
+                                headQuaterList?.length == 1 ? undefined
+                                    : changeDropDownData(headQuaterList, strings.selectHeadquarter, headQuaterName)
+                            }
+                        }}
+                    />
 
                     <CustomInputDropDown
                         width={[styles['width_95%'], styles['top_5'], styles['centerItems']]}
@@ -785,6 +826,29 @@ function EmpScanHistory({ route }) {
                         }}
                     />
 
+                    <View style={[{width : "95%"}]}>
+                        <CustomTextInput
+                            textFiledWidth={"98%"}
+                            leftSpace={-5}
+                            labelName={translate('retailer_mobilenumber')}
+                            IsRequired={false}
+                            maxLength={10}
+                            keyboardType="number-pad"
+                            placeholder={translate('enter') + " " + translate('retailer_mobilenumber')}
+                            value={mobileNumber}
+                            editable={true}
+                            onFocus={() => {
+                            }}
+                            onChangeText={(text) => {
+                                var enteredText = text.replace(/^[0-5][0-9]*$/gi, "");
+                                enteredText = enteredText.replace(/[`a-z!@#$%^&*()_|+\-=?;:'",.₹€£¥•’<>\{\}\[\]\\\/]/gi, "");
+                                setMobileNumber(enteredText)
+                            }}
+                            onEndEditing={event => {
+
+                            }}
+                        />
+                    </View>
 
                     <CustomInputDropDown
                         width={[styles['width_95%'], styles['top_5'], styles['centerItems']]}
@@ -1039,6 +1103,7 @@ function EmpScanHistory({ route }) {
                     dropDownType={dropDownType}
                     listItems={dropDownData}
                     selectedItem={selectedDropDownItem}
+                    onSelectedHeadquarter={(item) => { onSelectedHeadQuaters(item) }}
                     onSelectedState={(item) => { onSelectedState(item) }}
                     onSelectedDistrict={(item) => { onSelectedDistrict(item) }}
                     onSelectedSubDistrict={(item) => { onSelectedSubDistrict(item) }}

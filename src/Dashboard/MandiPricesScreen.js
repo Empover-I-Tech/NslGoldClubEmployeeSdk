@@ -39,7 +39,7 @@ const MandiPricesScreen = () => {
     const [selectedFilter, setSelectedFilter] = useState(FILTERS[0]);
     const getUserData = useSelector(selectUser);
     console.log("getUserData===>", getUserData)
-    const userDatafrom = getUserData[0]
+    const userDatafrom = getUserData
     let navigation = useNavigation()
     const [loading, setLoading] = useState(false)
     let [graphData, setGraphData] = useState(null)

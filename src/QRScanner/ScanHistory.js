@@ -19,13 +19,19 @@ import { translate } from '../Localisation/Localisation';
 import CustomPaginationScanHistory from '../Components/CustomPaginationScanHistory';
 import CustomAlert from '../Components/CustomAlert';
 import { createStyles } from '../assets/style/createStyles';
+import realm from '../realmOffline/realmConfig';
 
 var styles = BuildStyleOverwrite(Styles);
 
 const records_per_page = 10;
 
 export const getDataOfScanHistory = async () => {
-    let realm = new Realm({ path: 'User.realm' });
+    // let realm = new Realm({ path: 'User.realm' });
+    if (!realm) {
+        console.log("Realm not initialized");
+        return;
+    }
+    scan
     const programsList = realm.objects('ScanHistoryProgramsList')
     let globalProgramName;
     let globalProgramID;
@@ -73,7 +79,12 @@ export const getDataOfScanHistory = async () => {
 }
 
 export const getProgramsList = async () => {
-    let realm = new Realm({ path: 'User.realm' });
+    // let realm = new Realm({ path: 'User.realm' });
+    if (!realm) {
+        console.log("Realm not initialized");
+        return;
+    }
+    scan
     var networkStatus = await getNetworkStatus()
     if (networkStatus) {
         var header = await GetApiHeaders();
@@ -99,9 +110,14 @@ export const getProgramsList = async () => {
     }
 }
 
-function ScanHistory({ route }) {
+async function ScanHistory({ route }) {
     styles = useMemo(() => createStyles(), [global.selectedLanguageCode]);
-    var realm = new Realm({ path: 'User.realm' });
+    // var realm = new Realm({ path: 'User.realm' });
+    if (!realm) {
+        console.log("Realm not initialized");
+        return;
+    }
+    scan
     const navigation = useNavigation();
     const totalPoints = route?.params?.userPointsEarned;
     const [loading, setLoading] = useState(false)
@@ -166,7 +182,12 @@ function ScanHistory({ route }) {
     );
 
     const getProgramsListLocal = async () => {
-        let realm = new Realm({ path: 'User.realm' });
+        // let realm = new Realm({ path: 'User.realm' });
+        if (!realm) {
+            console.log("Realm not initialized");
+            return;
+        }
+        scan
         var networkStatus = await getNetworkStatus()
         if (networkStatus) {
             var header = await GetApiHeaders();
@@ -789,8 +810,10 @@ function ScanHistory({ route }) {
                     <View style={[{ width: '100%', backgroundColor: Colors.white, borderRadius: 8, padding: 5 }]}>
                         {!showCropData &&
                             <View style={[{ width: '100%' }]}>
-                                <TouchableOpacity style={[{ alignSelf: 'flex-start', 
-                                alignItems: 'center', justifyContent: 'center', flexDirection: 'row', marginTop:10 }]} onPress={() => { checkPagesDisplying() }}>
+                                <TouchableOpacity style={[{
+                                    alignSelf: 'flex-start',
+                                    alignItems: 'center', justifyContent: 'center', flexDirection: 'row', marginTop: 10
+                                }]} onPress={() => { checkPagesDisplying() }}>
                                     <Image style={[{ alignSelf: 'center', height: 15, width: 20, transform: [{ scaleX: -1 }], tintColor: 'black' }]} source={require('../assets/images/arrowLineWhite.png')} />
                                     <Text style={[styles['font_size_16_semibold'], styles['margin_left_10'], { color: dynamicStyles.textColor }]}>{translate('back')}</Text>
                                 </TouchableOpacity>

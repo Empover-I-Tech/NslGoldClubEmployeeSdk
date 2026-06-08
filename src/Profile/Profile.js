@@ -33,11 +33,12 @@ import { getYieldCalcMasters, SaveYieldCalcValues } from '../Dashboard/YieldCalc
 import { saveAPIPlanningTool } from '../Dashboard/PlanningTool';
 import { mobileNumber } from '../redux/store/slices/mobileNumberSlice';
 import { createStyles } from '../assets/style/createStyles';
+import realm from '../realmOffline/realmConfig';
 // import { ScrollView } from "react-native";
 
 var styles = BuildStyleOverwrite(Styles);
 
-var realm;
+// var realm;
 let scannedCoupons;
 let dashboardData;
 
@@ -101,7 +102,12 @@ function Profile({ route }) {
   useEffect(() => {
     // Define an async function inside useEffect
     const fetchData = async () => {
-      realm = new Realm({ path: 'User.realm' })
+      // realm = new Realm({ path: 'User.realm' })
+      
+      if (!realm) {
+        console.log("Realm not initialized");
+        return;
+      }
       scannedCoupons = realm.objects('scannedCoupons')
       dashboardData = realm.objects('dashboardData')[0]
       setRoleType(await retrieveData(ROLENAME))
@@ -403,7 +409,12 @@ function Profile({ route }) {
 
 
   const handleSyncLogout = async () => {
-    var realm = new Realm({ path: 'User.realm' });
+    // var realm = new Realm({ path: 'User.realm' });
+   
+    if (!realm) {
+      console.log("Realm not initialized");
+      return;
+    }
     var networkStatus = await getNetworkStatus()
     if (networkStatus) {
       // if(updatedOfflineCount == 0) return SimpleToast.show(translate("no_data_to_upload"))
@@ -477,7 +488,12 @@ function Profile({ route }) {
   };
 
   const handleSyncDeleteLogout = async () => {
-    var realm = new Realm({ path: 'User.realm' });
+    // var realm = new Realm({ path: 'User.realm' });
+   
+    if (!realm) {
+      console.log("Realm not initialized");
+      return;
+    }
     const getMobileNumber = await retrieveData(MOBILE_NUMBER);
     var networkStatus = await getNetworkStatus()
     if (networkStatus) {

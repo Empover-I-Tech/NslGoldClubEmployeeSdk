@@ -22,11 +22,17 @@ import { translate } from '../Localisation/Localisation';
 import store from '../redux/store/store';
 import { getLangaugeDetails } from '../redux/store/slices/LanguageSlice';
 import { createStyles } from '../assets/style/createStyles';
+import realm from '../realmOffline/realmConfig';
 
 var styles = BuildStyleOverwrite(Styles);
 
 export const GetFAQDATA = async () => {
-  let realm = new Realm({ path: 'User.realm' });
+  // let realm = new Realm({ path: 'User.realm' });
+
+  if (!realm) {
+    console.log("Realm not initialized");
+    return;
+  }
   const state = store.getState();
   const lang = getLangaugeDetails(state);
   console.log(lang, "<============== lang options")
@@ -300,10 +306,10 @@ function FAQ() {
   const sectionListItem = (item, index) => {
     return (
       <View>
-        <CustomSectionButton title={item.typeName} onPress={() => selectSection(item, index)} 
-        buttonBg={"#F6F6F6"} btnWidth={"90%"} titleTextColor={dynamicStyles.textColor} 
-        sectionOpen={item.sectionOpen} isFromFAQ={true} isHtml={isHTML(item.typeName)} 
-        isBoldText={true} btnHeight={item.typeName.length <= 50 ? 80 : 95}/>
+        <CustomSectionButton title={item.typeName} onPress={() => selectSection(item, index)}
+          buttonBg={"#F6F6F6"} btnWidth={"90%"} titleTextColor={dynamicStyles.textColor}
+          sectionOpen={item.sectionOpen} isFromFAQ={true} isHtml={isHTML(item.typeName)}
+          isBoldText={true} btnHeight={item.typeName.length <= 50 ? 80 : 95} />
 
         {(item.sectionOpen == true) &&
           <>
@@ -337,8 +343,8 @@ function FAQ() {
             {isHTML(item.answers) &&
               <View style={[styles['width_95%'], styles['centerItems'], styles['top_10'], styles['bottom_10']]}>
                 {item.answers != "" &&
-                  <RenderHTML tagsStyles={{ p: { color: 'black' }, span: { color: 'black' }, div: { color: 'black' }, li: { color: 'black' } }} source={{ html: item.answers }} 
-                  enableCSSInlineProcessing = {true}/>
+                  <RenderHTML tagsStyles={{ p: { color: 'black' }, span: { color: 'black' }, div: { color: 'black' }, li: { color: 'black' } }} source={{ html: item.answers }}
+                    enableCSSInlineProcessing={true} />
                 }
               </View>
             }
@@ -405,7 +411,7 @@ function FAQ() {
       {Platform.OS === 'android' && <StatusBar backgroundColor={dynamicStyles.primaryColor} barStyle='dark-content' />}
 
       <View style={[{ backgroundColor: dynamicStyles.primaryColor }, { paddingStart: 20, paddingEnd: 20, paddingBottom: 20, borderBottomStartRadius: 10, borderBottomEndRadius: 10, paddingTop: Platform.OS == 'ios' ? 60 : 20 }]}>
-        <TouchableOpacity style={[styles['flex_direction_row'], {alignItems :'center'}]} onPress={() => { goBack() }}>
+        <TouchableOpacity style={[styles['flex_direction_row'], { alignItems: 'center' }]} onPress={() => { goBack() }}>
           <Image style={[{ tintColor: dynamicStyles.secondaryColor }, { height: 15, width: 20 }]} source={require('../assets/images/previous.png')}></Image>
           <Text style={[styles['margin_left_10'], { color: dynamicStyles.secondaryColor }, styles['font_size_18_bold']]}>{translate('faqs')}</Text>
         </TouchableOpacity>

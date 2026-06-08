@@ -175,7 +175,7 @@ function Promotions() {
         var getHeaders = await GetApiHeaders();
         var dataList = {
           seasonId: id,
-          companyCode:getUserData[0]?.companyCode ?? ""
+          companyCode:getUserData?.companyCode ?? ""
         }
         console.log('url is', getURL)
         console.log('getHeaders is', getHeaders)

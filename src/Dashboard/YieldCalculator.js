@@ -26,9 +26,15 @@ import { updateOfflineCount } from './synchCountUtils';
 import { createStyles } from '../assets/style/createStyles';
 import { BuildStyleOverwrite } from '../assets/style/BuildStyle';
 import { Styles } from '../assets/style/styles';
+import realm from '../realmOffline/realmConfig';
 
 export const getYieldCalcMasters = async () => {
-    let realm = new Realm({ path: 'User.realm' });
+    // let realm = new Realm({ path: 'User.realm' });
+   
+    if (!realm) {
+        console.log("Realm not initialized");
+        return;
+    }
     var networkStatus = await getNetworkStatus()
     if (networkStatus) {
         try {
@@ -69,7 +75,12 @@ export const getYieldCalcMasters = async () => {
 }
 
 export const SaveYieldCalcValues = async (jsonData, dispatch) => {
-    let realm = new Realm({ path: 'User.realm' });
+    // let realm = new Realm({ path: 'User.realm' });
+   
+    if (!realm) {
+        console.log("Realm not initialized");
+        return;
+    }
     const networkStatus = await getNetworkStatus()
     if (networkStatus) {
         try {
@@ -112,7 +123,12 @@ var styles = BuildStyleOverwrite(Styles);
 
 const YieldCalculator = ({ route }) => {
     styles = useMemo(() => createStyles(), [global.selectedLanguageCode]);
-    var realm = new Realm({ path: 'User.realm' });
+    // var realm = new Realm({ path: 'User.realm' });
+   
+    if (!realm) {
+        console.log("Realm not initialized");
+        return;
+    }
     const calcType = route?.params?.calcType;
     const viewShotRef = useRef();
     const dispatch = useDispatch();

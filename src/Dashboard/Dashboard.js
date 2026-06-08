@@ -30,9 +30,10 @@ import CustomBorderDocumetUpload from '../Components/CustomBorderDocumetUpload';
 import CustomGalleryPopup from '../Components/CustomGalleryPopup';
 import { changeLanguage, translate } from '../Localisation/Localisation';
 import { createStyles } from '../assets/style/createStyles';
+import realm from '../realmOffline/realmConfig';
 
 var styles = BuildStyleOverwrite(Styles);
-var realm;
+// var realm;
 let scannedCoupons;
 let dashboardData;
 
@@ -321,7 +322,7 @@ function Dashboard({ route }) {
   };
 
   const checkDataFromRealm = async () => {
-    realm = new Realm({ path: 'User.realm' });
+    // realm = new Realm({ path: 'User.realm' });
     const scannedCoupons = realm.objects('scannedCoupons');
     const dashboardData = realm.objects('dashboardData')[0];
     setTimeout(async () => {

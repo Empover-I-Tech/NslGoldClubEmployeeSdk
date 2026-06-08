@@ -76,7 +76,8 @@ const CustomBorderInputDropDown = (props) => {
                             styles['font_size_11_semibold'],
                             styles['zindex_9999'],
                             styles['bg_white'],
-                            styles['padding_5']
+                            styles['padding_5'], 
+                            {lineHeight : 24}
                         ]}>
                         {props.labelName}
                         {props.IsRequired && (

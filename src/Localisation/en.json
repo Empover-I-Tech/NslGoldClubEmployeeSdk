@@ -667,5 +667,6 @@
     "ActivitySummary" : "Activity Summary",
     "CropInsights" : "Crop Insights",
     "retailer_services" : "Retailer Services",
-    "more" : "More"
+    "more" : "More",
+    "retailer_mobilenumber" : "Retailer Mobile Numer"
 }

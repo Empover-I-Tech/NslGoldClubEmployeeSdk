@@ -25,8 +25,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import CustomAlert from '../Components/CustomAlert';
 import { downloadFileToLocal } from '../assets/Utils/Utils';
 import { createStyles } from '../assets/style/createStyles';
-import { getRealm } from '../realmOffline/realmConfig';
-var realm;
+import realm from '../realmOffline/realmConfig';
+// var realm;
 
 export const traverseAndReplaceUrlsGlobal = async (data) => {
   // Check if a value is a URL and not a YouTube URL
@@ -74,7 +74,12 @@ export const traverseAndReplaceUrlsGlobal = async (data) => {
 };
 
 export const getMasterForProgramDetails = async () => {
-  let realm = new Realm({ path: 'User.realm' });
+  // let realm = new Realm({ path: 'User.realm' });
+  
+  if (!realm) {
+    console.log("Realm not initialized");
+    return;
+  }
   var networkStatus = await getNetworkStatus()
   if (networkStatus) {
     try {
@@ -154,7 +159,12 @@ const ProgramDetails = ({ route }) => {
   }, [])
 
   let checkRealmData = async () => {
-    realm = new Realm({ path: 'User.realm' });
+    // realm = new Realm({ path: 'User.realm' });
+   
+    if (!realm) {
+      console.log("Realm not initialized");
+      return;
+    }
     const programDetailsData = realm.objects('programDetailsOff');
     if (programDetailsData.length !== 0) {
       let dataFromOff = JSON.parse(programDetailsData[0].programDetailsInfo)
@@ -299,7 +309,6 @@ const ProgramDetails = ({ route }) => {
     if (!response) return;
 
     try {
-      const realm = getRealm(); // ✅ safely get initialized instance
       const res = JSON.stringify(response);
 
       realm.write(() => {

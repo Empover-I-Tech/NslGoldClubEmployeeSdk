@@ -28,9 +28,10 @@ import WebView from 'react-native-webview';
 import CustomTextInput from '../Components/CustomTextInput';
 import RenderHTML from 'react-native-render-html'
 import { createStyles } from '../assets/style/createStyles';
-const { height, width } = Dimensions.get("window")
+import realm from '../realmOffline/realmConfig';
+
 var styles = BuildStyleOverwrite(Styles);
-var realm;
+// var realm;
 let scannedCoupons;
 var camDevice;
 function ProductScanner({ route }) {
@@ -211,10 +212,20 @@ function ProductScanner({ route }) {
 
 
     useEffect(() => {
-        realm = new Realm({ path: 'User.realm' })
-        scannedCoupons = realm.objects('scannedCoupons')
 
-        console.log("SCANNED_OFFLINE", scannedCoupons);
+        const callRealm = async () => {
+            // realm = new Realm({ path: 'User.realm' })
+            if (!realm) {
+                console.log("Realm not initialized");
+                return;
+            }
+            scannedCoupons = realm.objects('scannedCoupons')
+
+            console.log("SCANNED_OFFLINE", scannedCoupons);
+
+        }
+
+        callRealm()
     }, [qrActivate])
 
     const showAlertWithMessage = (title, header, heaertext, message, yesBtn, noBtn, yesText, noText) => {

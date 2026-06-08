@@ -22,11 +22,11 @@ import CustomAlert from '../Components/CustomAlert';
 import store from '../redux/store/store';
 import { updateOfflineCount } from './synchCountUtils';
 import { createStyles } from '../assets/style/createStyles';
-
+import realm from '../realmOffline/realmConfig';
 var styles = BuildStyleOverwrite(Styles);
 
 export const getExistedRetailersDataPlanningTOol = async (currentCompanyName, currentCompanyCode) => {
-    let realm = new Realm({ path: 'User.realm' });
+    // let realm = new Realm({ path: 'User.realm' });
     styles = useMemo(() => createStyles(), [global.selectedLanguageCode]);
     var networkStatus = await getNetworkStatus()
     if (networkStatus) {
@@ -72,7 +72,7 @@ export const getExistedRetailersDataPlanningTOol = async (currentCompanyName, cu
 }
 
 export const getHybridsListPlanningTool = async () => {
-    let realm = new Realm({ path: 'User.realm' });
+    // let realm = new Realm({ path: 'User.realm' });
     var networkStatus = await getNetworkStatus()
     if (networkStatus) {
         try {
@@ -107,7 +107,7 @@ export const getHybridsListPlanningTool = async () => {
 }
 
 export const getCropsListPlanningTool = async () => {
-    let realm = new Realm({ path: 'User.realm' });
+    // let realm = new Realm({ path: 'User.realm' });
     var networkStatus = await getNetworkStatus()
     if (networkStatus) {
         try {
@@ -143,7 +143,7 @@ export const getCropsListPlanningTool = async () => {
 }
 
 export const getCompaniesListPlanningTool = async () => {
-    let realm = new Realm({ path: 'User.realm' });
+    // let realm = new Realm({ path: 'User.realm' });
     // const getUserData = useSelector(selectUser);
     const state = store.getState();
     const getUserData = selectUser(state);
@@ -157,8 +157,8 @@ export const getCompaniesListPlanningTool = async () => {
                 if (APIResponse.statusCode == HTTP_OK) {
                     var masterResp = APIResponse.response
                     if (masterResp != undefined && masterResp != null) {
-                        let currentCompanyCode = getUserData[0]?.companyCode;
-                        // console.log(getUserData[0]?.companyCode,"<<<<<<<<<<<<<<<<<<<<<<<<<getUserData[0]?.companyCode")
+                        let currentCompanyCode = getUserData?.companyCode;
+                        // console.log(getUserData?.companyCode,"<<<<<<<<<<<<<<<<<<<<<<<<<getUserData?.companyCode")
                         let currentCompanyName = masterResp?.CompanyList?.find((item) => item.companyCode === currentCompanyCode).name
                         try {
                             const res = JSON.stringify(masterResp.CompanyList);
@@ -184,7 +184,7 @@ export const getCompaniesListPlanningTool = async () => {
 }
 
 export const saveAPIPlanningTool = async (ifOfflineDataExists = null, dispatch) => {
-    let realm = new Realm({ path: 'User.realm' });
+    // let realm = new Realm({ path: 'User.realm' });
     var networkStatus = await getNetworkStatus()
     if (networkStatus) {
         try {
@@ -235,7 +235,7 @@ export const saveAPIPlanningTool = async (ifOfflineDataExists = null, dispatch) 
 }
 
 const PlanningTool = ({ route }) => {
-    var realm = new Realm({ path: 'User.realm' });
+    // var realm = new Realm({ path: 'User.realm' });
     const dispatch = useDispatch()
     const initialData = realm.objects('RetailerEntries')[0]?.RetailerEntriesData;
     const finalData = realm.objects('finalRetailerEntries')[0]?.finalRetailerEntriesData;
@@ -286,7 +286,7 @@ const PlanningTool = ({ route }) => {
     const [cropMastersFilter, setCropMastersFilter] = useState([]);
     const [companyList, setCompanyList] = useState([]);
     const [selectedCompany, setSelectedCompany] = useState('')
-    const [selectedCompanyId, setSelectedCompanyId] = useState(getUserData[0]?.companyCode)
+    const [selectedCompanyId, setSelectedCompanyId] = useState(getUserData?.companyCode)
     const networkStatus = useSelector(state => state.networkStatus.value)
 
     const [btnVisible, setBtnVisible] = useState(true)
@@ -310,7 +310,7 @@ const PlanningTool = ({ route }) => {
                         var masterResp = APIResponse.response
                         if (masterResp != undefined && masterResp != null) {
                             setCompanyList(masterResp.CompanyList)
-                            let currentCompanyCode = getUserData[0]?.companyCode;
+                            let currentCompanyCode = getUserData?.companyCode;
                             let currentCompanyName = masterResp?.CompanyList?.find((item) => item.companyCode === currentCompanyCode).name
                             setSelectedCompany(currentCompanyName)
                             setSelectedCompanyId(currentCompanyCode);
@@ -488,7 +488,7 @@ const PlanningTool = ({ route }) => {
                         setRetailerEntries(dataOfRetailerEntriesOld);
                     }
                     else {
-                        let currentCompanyCode = getUserData[0]?.companyCode;
+                        let currentCompanyCode = getUserData?.companyCode;
                         let currentCompanyName = dataOfCompanyCodes?.find((item) => item.companyCode === currentCompanyCode).name
                         setSelectedCompany(currentCompanyName)
                         setSelectedCompanyId(currentCompanyCode);
@@ -521,7 +521,7 @@ const PlanningTool = ({ route }) => {
                     // );
 
                     // Keep current user’s company for selection defaults
-                    // let currentCompanyCode = getUserData[0]?.companyCode;
+                    // let currentCompanyCode = getUserData?.companyCode;
                     // let currentCompanyName =
                     //     dataOfCompanyCodes.find((item) => item.companyCode === currentCompanyCode)?.name || '';
                     // setSelectedCompany(currentCompanyName);

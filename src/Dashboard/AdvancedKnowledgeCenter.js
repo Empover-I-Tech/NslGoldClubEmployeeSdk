@@ -86,7 +86,7 @@ const AdvancedKnowledgeCenter = () => {
       startLoading(translate('please_wait_getting_data'));
 
       const headers = await GetApiHeaders();
-      headers.companyCode = getUserData[0]?.companyCode;
+      headers.companyCode = getUserData?.companyCode;
       const APIResponse = await GetRequest(
         configs.BASE_URL + configs.KNOWLEDGECENTREADVCANCED.getAdvancedKnowledgeCenterDataByCompany,
         headers

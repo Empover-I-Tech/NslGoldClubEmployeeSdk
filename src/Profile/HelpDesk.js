@@ -23,12 +23,19 @@ import { traverseAndReplaceUrlsGlobal } from '../Dashboard/ProgramDetails';
 import { getLangaugeDetails } from '../redux/store/slices/LanguageSlice';
 import { updateOfflineCount } from '../Dashboard/synchCountUtils';
 import { createStyles } from '../assets/style/createStyles';
+import realm from '../realmOffline/realmConfig';
 
 var styles = BuildStyleOverwrite(Styles);
 // var localSyncced = false;
 let isComplaintUploadInProgress = false;
 export const GetComplaintsApiCallGlobal = async (refreshBtn = false, fromSync = false) => {
-  let realm = new Realm({ path: 'User.realm' });
+  // let realm = new Realm({ path: 'User.realm' });
+
+  if (!realm) {
+    console.log("Realm not initialized");
+    return;
+  }
+
   // alert('reached hereee')
   var networkStatus = await getNetworkStatus()
   const state = store.getState();
@@ -38,10 +45,10 @@ export const GetComplaintsApiCallGlobal = async (refreshBtn = false, fromSync = 
     try {
       var getloginURL = configs.BASE_URL + configs.HELPCENTER.VIEW_RAISEDCOMPLAINTS;
       var getHeaders = await GetApiHeaders();
-      console.log(getUserData[0]?.companyCode, "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<getUserData[0]?.companyCode")
+      console.log(getUserData?.companyCode, "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<getUserData?.companyCode")
       var dataList = {
         "retailerId": await retrieveData(USER_ID),
-        'companyCode': getUserData[0]?.companyCode
+        'companyCode': getUserData?.companyCode
       }
       var APIResponse = await PostRequest(getloginURL, getHeaders, dataList);
       console.log('compltains response is:', JSON.stringify(APIResponse))
@@ -91,7 +98,11 @@ export const uploadAllComplaintsGlobal = async (complaintsArray, dispatch) => {
 
   isComplaintUploadInProgress = true;
 
-  let realm = new Realm({ path: 'User.realm' });
+  // let realm = new Realm({ path: 'User.realm' });
+  if (!realm) {
+    console.log("Realm not initialized");
+    return;
+  }
 
   const networkStatus = await getNetworkStatus();
   if (!networkStatus) {
@@ -175,7 +186,12 @@ export const uploadAllComplaintsGlobal = async (complaintsArray, dispatch) => {
 
 function HelpDesk({ route }) {
   styles = useMemo(() => createStyles(), [global.selectedLanguageCode]);
-  var realm = new Realm({ path: 'User.realm' });
+  // var realm = new Realm({ path: 'User.realm' });
+  
+  if (!realm) {
+    console.log("Realm not initialized");
+    return;
+  }
   const localDispatch = useDispatch();
   const { languageCode, languageName, languageId } = useSelector((state) => state.language);
   const [loading, setLoading] = useState(false)
@@ -308,7 +324,11 @@ function HelpDesk({ route }) {
 
     console.log(`🔁 Starting upload of ${complaintsArray.length} complaints...`);
 
-    const realm = new Realm({ path: 'User.realm' });
+    // const realm = new Realm({ path: 'User.realm' });
+    if (!realm) {
+      console.log("Realm not initialized");
+      return;
+    }
 
     const successfulIds = [];
     const getLoginURL = configs.BASE_URL + configs.HELPCENTER.RAISECOMPLAINTS;
@@ -662,7 +682,7 @@ function HelpDesk({ route }) {
 
         var dataList = {
           "retailerId": await retrieveData(USER_ID),
-          'companyCode': getUserData[0]?.companyCode
+          'companyCode': getUserData?.companyCode
         }
 
 
