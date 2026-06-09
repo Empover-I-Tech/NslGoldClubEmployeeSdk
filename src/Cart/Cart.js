@@ -22,10 +22,8 @@ import { createStyles } from '../assets/style/createStyles';
 
 var styles = BuildStyleOverwrite(Styles);
 
-function Cart({route}) {
-    styles = useMemo(() => createStyles(), [global.selectedLanguageCode]);
-  const dispatch = useDispatch();
-  const getUserData = useSelector(selectUser);
+function Cart({ route }) {
+  styles = useMemo(() => createStyles(), [global.selectedLanguageCode]);
   const companyStyle = useSelector(getCompanyStyles);
   const [dynamicStyles, setDynamicStyles] = useState(companyStyle.value);
   const [loading, setLoading] = useState(false)
@@ -89,7 +87,7 @@ function Cart({route}) {
 
   }
 
-  const checkSelectedCount=()=>{
+  const checkSelectedCount = () => {
     var getSelectedCount = 0
     const cartArray = [...cartData];
     for (let i = 0; i < cartArray.length; i++) {
@@ -151,46 +149,46 @@ function Cart({route}) {
   }
 
   const redeemCartBtnPress = () => {
-    if(selectAllTrueFalse == true){
+    if (selectAllTrueFalse == true) {
       var getTotalPointsValue = 0
       const cartArray = [...cartData];
       for (let i = 0; i < cartArray.length; i++) {
         getTotalPointsValue = getTotalPointsValue + cartArray[i].redeemPoints
       }
-      console.log('totalllll',getTotalPointsValue)    
+      console.log('totalllll', getTotalPointsValue)
       if (getTotalPointsValue > totalAvailablePoints) {
         showAlertWithMessage(translate('alert'), true, true, translate('noenoughpoints'), false, true, translate('ok'), translate('cancel'))
       }
-      else{
+      else {
         redeemApiCall()
       }
     }
-    else{
+    else {
 
       var getTotalPointsValue = 0
       const cartArray = [...cartData];
       for (let i = 0; i < cartArray.length; i++) {
         if (cartArray[i].redeemStatus == true) {
-        getTotalPointsValue = getTotalPointsValue + cartArray[i].redeemPoints
+          getTotalPointsValue = getTotalPointsValue + cartArray[i].redeemPoints
         }
       }
-      console.log('totalllll01',getTotalPointsValue)  
-      
+      console.log('totalllll01', getTotalPointsValue)
+
       const cartArray1 = [...cartData];
       for (let i = 0; i < cartArray1.length; i++) {
-      if (cartArray1[i].redeemStatus == true) {
-        if (getTotalPointsValue > totalAvailablePoints) {
-          showAlertWithMessage(translate('alert'), true, true, translate('noenoughpoints'), false, true, translate('ok'), translate('cancel'))
-          return
+        if (cartArray1[i].redeemStatus == true) {
+          if (getTotalPointsValue > totalAvailablePoints) {
+            showAlertWithMessage(translate('alert'), true, true, translate('noenoughpoints'), false, true, translate('ok'), translate('cancel'))
+            return
+          }
+          else {
+            redeemApiCall()
+            return
+          }
         }
-        else{
-         redeemApiCall()
-         return
-       }
       }
-      }
-    SimpleToast.show(translate('please_select_item'))
-  }
+      SimpleToast.show(translate('please_select_item'))
+    }
   }
 
   const redeemApiCall = async () => {
@@ -329,53 +327,53 @@ function Cart({route}) {
       SimpleToast.show(translate('no_internet_conneccted'))
     }
   }
-const checkCartListCount = async () => {
-  const networkStatus = await getNetworkStatus();
-  if (networkStatus) {
-    try {
-      setTimeout(() => {
-        setLoading(true)
-        setLoadingMessage(translate('please_wait_getting_data'))
-      }, 50);
-      var getCartUrl = configs.BASE_URL + configs.REDEEM.REDEEM_GET_CART;
-      var getHeaders = await GetApiHeaders();
-      var APIResponse = await GetRequest(getCartUrl, getHeaders);
-
-      if (APIResponse != undefined && APIResponse != null) {
+  const checkCartListCount = async () => {
+    const networkStatus = await getNetworkStatus();
+    if (networkStatus) {
+      try {
         setTimeout(() => {
-          setLoadingMessage()
-          setLoading(false)
-        }, 500);
-        if (APIResponse.statusCode == HTTP_OK) {
+          setLoading(true)
+          setLoadingMessage(translate('please_wait_getting_data'))
+        }, 50);
+        var getCartUrl = configs.BASE_URL + configs.REDEEM.REDEEM_GET_CART;
+        var getHeaders = await GetApiHeaders();
+        var APIResponse = await GetRequest(getCartUrl, getHeaders);
+
+        if (APIResponse != undefined && APIResponse != null) {
+          setTimeout(() => {
+            setLoadingMessage()
+            setLoading(false)
+          }, 500);
+          if (APIResponse.statusCode == HTTP_OK) {
+            setTimeout(() => {
+              setLoading(false)
+            }, 1000);
+            // console.log('what is reposee cart 123', APIResponse.response.cartList)
+            if (APIResponse.response.cartList.length == 0) {
+              navigation.goBack()
+            } else {
+              setCartData(APIResponse.response.cartList)
+            }
+          }
+          else {
+            SimpleToast.show(APIResponse.message)
+          }
+        } else {
           setTimeout(() => {
             setLoading(false)
+            setLoadingMessage()
           }, 1000);
-         // console.log('what is reposee cart 123', APIResponse.response.cartList)
-          if(APIResponse.response.cartList.length == 0){
-            navigation.goBack()
-          }else{
-          setCartData(APIResponse.response.cartList)
-          }
         }
-        else {
-          SimpleToast.show(APIResponse.message)
-        }
-      } else {
+      } catch (error) {
         setTimeout(() => {
           setLoading(false)
-          setLoadingMessage()
+          setSuccessLoadingMessage(error.message)
         }, 1000);
       }
-    } catch (error) {
-      setTimeout(() => {
-        setLoading(false)
-        setSuccessLoadingMessage(error.message)
-      }, 1000);
+    } else {
+      SimpleToast.show(translate('no_internet_conneccted'))
     }
-  } else {
-    SimpleToast.show(translate('no_internet_conneccted'))
   }
-}
   const getCartDetails = async () => {
     const networkStatus = await getNetworkStatus();
     if (networkStatus) {
@@ -437,8 +435,8 @@ const checkCartListCount = async () => {
     setDeSelectAllTrueFalse(false)
     const cartArray = [...cartData];
     for (let i = 0; i < cartArray.length; i++) {
-        cartArray[i].redeemStatus = true
-      }
+      cartArray[i].redeemStatus = true
+    }
     checkSelectedCount()
     setCartData(cartArray)
   }
@@ -448,73 +446,73 @@ const checkCartListCount = async () => {
     setSelectAllTrueFalse(false)
     const cartArray = [...cartData];
     for (let i = 0; i < cartArray.length; i++) {
-        cartArray[i].redeemStatus = false
-      }
-      checkSelectedCount()
-      setCartData(cartArray)
+      cartArray[i].redeemStatus = false
     }
+    checkSelectedCount()
+    setCartData(cartArray)
+  }
 
-    const showAlertWithMessage = (title, header, heaertext, message, yesBtn, noBtn, yesText, noText) => {
-      setAlertTitle(title);
-      setShowAlertHeader(header);
-      setShowAlertHeaderText(heaertext)
-      setAlertMessage(message);
-      setShowAlertYesButton(yesBtn);
-      setShowAlertNoButton(noBtn);
-      setShowAlertyesButtonText(yesText);
-      setShowAlertNoButtonText(noText);
-      setShowAlert(true)
-    }
+  const showAlertWithMessage = (title, header, heaertext, message, yesBtn, noBtn, yesText, noText) => {
+    setAlertTitle(title);
+    setShowAlertHeader(header);
+    setShowAlertHeaderText(heaertext)
+    setAlertMessage(message);
+    setShowAlertYesButton(yesBtn);
+    setShowAlertNoButton(noBtn);
+    setShowAlertyesButtonText(yesText);
+    setShowAlertNoButtonText(noText);
+    setShowAlert(true)
+  }
 
-    const handleCancelAlert = () => {
-      setShowAlert(false)
-    }
-  
-    const handleOkAlert = () => {
-      // if (showAlertyesButtonText == translate('continue')) {
-      setShowAlert(false)
-      // }
-    }
+  const handleCancelAlert = () => {
+    setShowAlert(false)
+  }
+
+  const handleOkAlert = () => {
+    // if (showAlertyesButtonText == translate('continue')) {
+    setShowAlert(false)
+    // }
+  }
 
   return (
     <View style={[styles['full_screen']]}>
       {Platform.OS === 'android' && <StatusBar style={[styles['bg_white']]} barStyle='dark-content' />}
-      <View style={[{backgroundColor: dynamicStyles.primaryColor},{ paddingStart: 20, paddingEnd: 20, paddingBottom: 20, borderBottomStartRadius: 10, borderBottomEndRadius: 10, paddingTop: Platform.OS == 'ios' ? 60 : 20 }]}>
+      <View style={[{ backgroundColor: dynamicStyles.primaryColor }, { paddingStart: 20, paddingEnd: 20, paddingBottom: 20, borderBottomStartRadius: 10, borderBottomEndRadius: 10, paddingTop: Platform.OS == 'ios' ? 60 : 20 }]}>
         <TouchableOpacity style={[styles['flex_direction_row']]} onPress={() => { goBack() }}>
-          <Image style={[styles[''], styles[''], {tintColor:dynamicStyles.secondaryColor}, { height: 15, width: 20, top: 4 }]} source={require('../assets/images/previous.png')}></Image>
-          <Text style={[styles['margin_left_10'], {color:dynamicStyles.secondaryColor},  styles['font_size_18_bold']]}>{translate('cart')}</Text>
+          <Image style={[styles[''], styles[''], { tintColor: dynamicStyles.secondaryColor }, { height: 15, width: 20, top: 4 }]} source={require('../assets/images/previous.png')}></Image>
+          <Text style={[styles['margin_left_10'], { color: dynamicStyles.secondaryColor }, styles['font_size_18_bold']]}>{translate('cart')}</Text>
         </TouchableOpacity>
       </View>
-                               {cartData.length > 0 &&
-                               <View style={[styles['flex_direction_row'], styles['left_10'],styles['width_95%']]}>
-                                <TouchableOpacity style={[styles['flex_direction_row'], { height: 45, width: '30%', padding: 5 ,marginTop: 5 }]} onPress={() => {
-                                    onSelectAllClick()
-                                }}>
-                                  <View style={[styles['flex_direction_row'],]}>
-                                    <Image style={[{ height: 15, width: 15, }]} source={selectAllTrueFalse == true ? require('../assets/images/selectRadio_1.png') : require('../assets/images/selectRadio.png')} />
-                                    <Text style={[styles['font_size_14_regular'], styles['text_color_black'], styles['margin_left_10'], styles['text_align_center']]}>{translate('selectALl')}</Text>
-                                </View>
-                                </TouchableOpacity>
-            
-                                {selectAllTrueFalse &&
-                                <View style={[styles['flex_direction_row'],styles['width_100%']]}>
-                                <TouchableOpacity style={[styles['flex_direction_row'],  { height: 45, width: '30%', padding: 5 ,marginTop: 5}]} onPress={() => {
-                                    onDeSelectAllClick()
-                                }}>
-                                    <View style={[styles['flex_direction_row']]}>
-                                    <Image style={[{ height: 15, width: 15, }]} source={deSelectAllTrueFalse == true ? require('../assets/images/selectRadio_1.png') : require('../assets/images/selectRadio.png')} />
-                                    <Text style={[styles['font_size_14_regular'], styles['text_color_black'], styles['margin_left_10'], styles['text_align_center']]}>{translate('deSelectAll')}</Text>
-                               </View>
-                                </TouchableOpacity>
+      {cartData.length > 0 &&
+        <View style={[styles['flex_direction_row'], styles['left_10'], styles['width_95%']]}>
+          <TouchableOpacity style={[styles['flex_direction_row'], { height: 45, width: '30%', padding: 5, marginTop: 5 }]} onPress={() => {
+            onSelectAllClick()
+          }}>
+            <View style={[styles['flex_direction_row'],]}>
+              <Image style={[{ height: 15, width: 15, }]} source={selectAllTrueFalse == true ? require('../assets/images/selectRadio_1.png') : require('../assets/images/selectRadio.png')} />
+              <Text style={[styles['font_size_14_regular'], styles['text_color_black'], styles['margin_left_10'], styles['text_align_center']]}>{translate('selectALl')}</Text>
+            </View>
+          </TouchableOpacity>
 
-                                <View style={[styles['flex_direction_row'],styles['justify_content_flex_end'], { height: 45, width: '40%', padding: 5 ,marginTop: 5}]}>
-                                <Text style={[styles['font_size_14_regular'], styles['text_color_black'], styles['margin_left_10'], styles['text_align_center']]}>{translate('selectedCount')}</Text>
-                                <Text style={[styles['font_size_14_regular'], styles['text_color_red'], styles['left_5'], styles['text_align_center']]}>{totalSelectedItems}</Text>
-                               </View>
-                               </View>
-                                }
-                               </View>
-                               }   
+          {selectAllTrueFalse &&
+            <View style={[styles['flex_direction_row'], styles['width_100%']]}>
+              <TouchableOpacity style={[styles['flex_direction_row'], { height: 45, width: '30%', padding: 5, marginTop: 5 }]} onPress={() => {
+                onDeSelectAllClick()
+              }}>
+                <View style={[styles['flex_direction_row']]}>
+                  <Image style={[{ height: 15, width: 15, }]} source={deSelectAllTrueFalse == true ? require('../assets/images/selectRadio_1.png') : require('../assets/images/selectRadio.png')} />
+                  <Text style={[styles['font_size_14_regular'], styles['text_color_black'], styles['margin_left_10'], styles['text_align_center']]}>{translate('deSelectAll')}</Text>
+                </View>
+              </TouchableOpacity>
+
+              <View style={[styles['flex_direction_row'], styles['justify_content_flex_end'], { height: 45, width: '40%', padding: 5, marginTop: 5 }]}>
+                <Text style={[styles['font_size_14_regular'], styles['text_color_black'], styles['margin_left_10'], styles['text_align_center']]}>{translate('selectedCount')}</Text>
+                <Text style={[styles['font_size_14_regular'], styles['text_color_red'], styles['left_5'], styles['text_align_center']]}>{totalSelectedItems}</Text>
+              </View>
+            </View>
+          }
+        </View>
+      }
       <ScrollView>
         {cartData.length > 0 ?
           (
@@ -530,7 +528,7 @@ const checkCartListCount = async () => {
           :
           (
             <View>
-              <Text style={[styles['text_color_black'], styles['centerItems'], styles['margin_top_250'],styles['font_size_18_semibold']]}>{translate('yourcartisempty')}</Text>
+              <Text style={[styles['text_color_black'], styles['centerItems'], styles['margin_top_250'], styles['font_size_18_semibold']]}>{translate('yourcartisempty')}</Text>
             </View>
           )
         }
@@ -543,24 +541,24 @@ const checkCartListCount = async () => {
                 </TouchableOpacity>
             </View> */}
 
-     {cartData.length > 0 &&
-      <View style={[styles['flex_direction_row'], styles['space_evenly'], styles['margin_top_30']]}>
-        <View style={[styles['width_40%']]}>
-          <TouchableOpacity style={[styles['width_100%'], styles['border_radius_8'], styles['centerItems'], styles['button_height_45'], styles['border_width_1'], styles['border_color_red']]} onPress={() => { deleteCartBtnPress() }} >
-            <Text style={[styles['font_size_14_semibold'], { color: Colors.red }]}>
-              {translate('delete')}
-            </Text>
-          </TouchableOpacity>
+      {cartData.length > 0 &&
+        <View style={[styles['flex_direction_row'], styles['space_evenly'], styles['margin_top_30']]}>
+          <View style={[styles['width_40%']]}>
+            <TouchableOpacity style={[styles['width_100%'], styles['border_radius_8'], styles['centerItems'], styles['button_height_45'], styles['border_width_1'], styles['border_color_red']]} onPress={() => { deleteCartBtnPress() }} >
+              <Text style={[styles['font_size_14_semibold'], { color: Colors.red }]}>
+                {translate('delete')}
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <View style={[styles['width_40%']]}>
+            <TouchableOpacity style={[styles['width_100%'], styles['border_radius_8'], styles['centerItems'], styles['button_height_45'], styles['bg_red']]} onPress={() => { redeemCartBtnPress() }}>
+              <Text style={[styles['font_size_14_semibold'], { color: Colors.white }]}>
+                {translate('redeem')}
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
-        <View style={[styles['width_40%']]}>
-          <TouchableOpacity style={[styles['width_100%'], styles['border_radius_8'], styles['centerItems'], styles['button_height_45'], styles['bg_red']]} onPress={() => { redeemCartBtnPress() }}>
-            <Text style={[styles['font_size_14_semibold'], { color: Colors.white }]}>
-              {translate('redeem')}
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-     }
+      }
       <View style={[styles['margin_top_30']]}></View>
       {/* </View> */}
       {/* </View> */}

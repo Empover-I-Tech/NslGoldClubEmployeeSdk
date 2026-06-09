@@ -25,7 +25,6 @@ var styles = BuildStyleOverwrite(Styles);
 
 function Redeem() {
   styles = useMemo(() => createStyles(), [global.selectedLanguageCode]);
-  const getUserData = useSelector(selectUser);
   const companyStyle = useSelector(getCompanyStyles);
   const [dynamicStyles, setDynamicStyles] = useState(companyStyle.value);
   const [loading, setLoading] = useState(false)
@@ -45,10 +44,7 @@ function Redeem() {
   const [showAlertNoButton, setShowAlertNoButton] = useState(false)
   const [showAlertyesButtonText, setShowAlertyesButtonText] = useState(false)
   const [showAlertNoButtonText, setShowAlertNoButtonText] = useState(false)
-
-
   const [showFilterSelectionModal, setShowFilterSelectionModal] = useState(false)
-
   const [searchText, setSearchText] = useState("");
   const navigation = useNavigation()
   const [allSelected, setAllSelected] = useState(true)

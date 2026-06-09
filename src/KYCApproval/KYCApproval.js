@@ -10,7 +10,7 @@ import { BuildStyleOverwrite } from '../assets/style/BuildStyle';
 import { Styles } from '../assets/style/styles';
 import { strings } from '../strings/strings';
 import { Colors } from '../assets/Utils/Color';
-import { ROLENAME, retrieveData } from '../assets/Utils/Utils';
+import { NAVIGATE_TO_CLASS, ROLENAME, retrieveData } from '../assets/Utils/Utils';
 import { useNavigation } from '@react-navigation/native';
 import CustomAlert from '../Components/CustomAlert';
 import CustomLoader from '../Components/CustomLoader';
@@ -34,8 +34,6 @@ var styles = BuildStyleOverwrite(Styles);
 
 function KYCApproval() {
     styles = useMemo(() => createStyles(), [global.selectedLanguageCode]);
-    const dispatch = useDispatch();
-    const getUserData = useSelector(selectUser);
     const companyStyle = useSelector(getCompanyStyles);
     const [dynamicStyles, setDynamicStyles] = useState(companyStyle.value);
     const [loading, setLoading] = useState(false)
@@ -45,7 +43,6 @@ function KYCApproval() {
     const [successLoadingMessage, setSuccessLoadingMessage] = useState('')
     const [errorLoadingMessage, setErrorLoadingMessage] = useState('')
     const [loaderImage, setLoaderImage] = useState(require('../assets/images/neutralloader.gif'))
-    const networkStatus = useSelector(state => state.networkStatus.value)
     const navigation = useNavigation()
 
     const [showAlert, setShowAlert] = useState(false)
@@ -107,13 +104,9 @@ function KYCApproval() {
     }, []);
 
 
-
     const goBack = async () => {
-        const roleTypeDetails = await retrieveData(ROLENAME)
-        if (roleTypeDetails) {
-            let navigateTo = (roleTypeDetails === 'Retailer' || roleTypeDetails === 'Distributor') ? 'RetailerDashboard': 'EmployeeDashboard'
-            navigation.navigate(navigateTo)
-        }
+        const dashboardScreen = await retrieveData(NAVIGATE_TO_CLASS);
+        navigation.navigate(dashboardScreen);
     };
 
 
@@ -298,10 +291,10 @@ function KYCApproval() {
         <View style={[styles['full_screen'], styles['bg_white']]}>
             {Platform.OS === 'android' && <StatusBar backgroundColor={dynamicStyles.primaryColor} barStyle='dark-content' />}
 
-            <View style={[{backgroundColor:dynamicStyles.primaryColor},{ paddingStart: 20, paddingEnd: 20, paddingBottom: 20, borderBottomStartRadius: 10, borderBottomEndRadius: 10, paddingTop: Platform.OS == 'ios' ? 60 : 20 }]}>
+            <View style={[{ backgroundColor: dynamicStyles.primaryColor }, { paddingStart: 20, paddingEnd: 20, paddingBottom: 20, borderBottomStartRadius: 10, borderBottomEndRadius: 10, paddingTop: Platform.OS == 'ios' ? 60 : 20 }]}>
                 <TouchableOpacity style={[styles['flex_direction_row']]} onPress={() => { goBack() }}>
-                    <Image style={[ {tintColor:dynamicStyles.secondaryColor}, { height: 15, width: 20, top: 5 }]} source={require('../assets/images/previous.png')}></Image>
-                    <Text style={[styles['margin_left_10'],{color:dynamicStyles.secondaryColor},styles['font_size_18_bold']]}>{translate('kycApprovalCap')}</Text>
+                    <Image style={[{ tintColor: dynamicStyles.secondaryColor }, { height: 15, width: 20, top: 5 }]} source={require('../assets/images/previous.png')}></Image>
+                    <Text style={[styles['margin_left_10'], { color: dynamicStyles.secondaryColor }, styles['font_size_18_bold']]}>{translate('kycApprovalCap')}</Text>
                 </TouchableOpacity>
             </View>
             <View style={[styles['flex_direction_row'], styles['width_90%'], styles['space_between'], styles['align_self_center'], styles['margin_top_10']]}>
@@ -359,7 +352,7 @@ function KYCApproval() {
                 }
                 {(!pendingKYC || pendingKYC?.length <= 0) && (selectedPage == 'REQUESTS') && (
                     <View style={[styles['full_screen'], styles['centerItems']]}>
-                        <Text style={[styles['text_color_black'], styles['centerItems'],styles['font_size_16_regular']]}>{translate('no_data_available')}</Text>
+                        <Text style={[styles['text_color_black'], styles['centerItems'], styles['font_size_16_regular']]}>{translate('no_data_available')}</Text>
                     </View>
                 )}
                 {KYCHistory &&
@@ -404,7 +397,7 @@ function KYCApproval() {
 
             {(!KYCHistory || KYCHistory?.length <= 0) && (selectedPage == 'HISTORY') && (
                 <View style={[styles['full_screen'], styles['centerItems']]}>
-                    <Text style={[styles['text_color_black'], styles['centerItems'],styles['font_size_16_regular']]}>{translate('no_data_available')}</Text>
+                    <Text style={[styles['text_color_black'], styles['centerItems'], styles['font_size_16_regular']]}>{translate('no_data_available')}</Text>
                 </View>
             )}
 

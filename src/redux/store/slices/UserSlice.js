@@ -1,10 +1,8 @@
-// userSlice.js
-
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
     id: '',
-    proprietorName:'',
+    proprietorName: '',
     firmName: '',
     roleName: '',
     deviceToken: '',
@@ -14,8 +12,7 @@ const initialState = {
     districtName: '',
     pincode: '',
     fcmToken: '',
-    userMenuControl: {
-    },
+    userMenuControl: {},
 };
 
 export const userSlice = createSlice({
@@ -23,13 +20,30 @@ export const userSlice = createSlice({
     initialState,
     reducers: {
         setUser: (state, action) => {
-            return action.payload;
+            const userData = Array.isArray(action.payload)
+                ? action.payload[0]
+                : action.payload;
+
+            return userData || initialState;
         },
+
+        clearUser: () => initialState,
     },
 });
 
-export const { setUser } = userSlice.actions;
+export const { setUser, clearUser } = userSlice.actions;
 
-export const selectUser = (state) => state.user;
+/**
+ * Compatibility selector:
+ * - Old persisted data: [{...}]
+ * - New data: {...}
+ */
+export const selectUser = (state) => {
+    const user = state.user;
+
+    return Array.isArray(user)
+        ? user[0]
+        : user;
+};
 
 export default userSlice.reducer;

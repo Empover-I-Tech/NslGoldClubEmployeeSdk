@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from
 import { View, Platform, StatusBar, Text, Image, AppState, Dimensions, Keyboard, TouchableOpacity, ScrollView, FlatList, ImageBackground, PermissionsAndroid, Modal, Linking, Alert, StyleSheet, ActivityIndicator } from 'react-native';
 import { strings } from '../strings/strings';
 import { Colors } from '../assets/Utils/Color';
-import { DEVICE_TOKEN, EDITDATA, MOBILE_NUMBER, POPUP_SHOWN_DATE, PROFILEIMAGE, ROLEID, TERMS_CONDITIONS, USERMENU, USER_ID, USER_NAME, checkIfGpsEnabled, compareVersions, getAppVersion, getBuildNumber, readFileToBase64, retrieveData, storeData, traverseAndReplaceUrls } from '../assets/Utils/Utils';
+import { DEVICE_TOKEN, EDITDATA, MOBILE_NUMBER, NAVIGATE_TO_CLASS, POPUP_SHOWN_DATE, PROFILEIMAGE, ROLEID, TERMS_CONDITIONS, USERMENU, USER_ID, USER_NAME, checkIfGpsEnabled, compareVersions, getAppVersion, getBuildNumber, readFileToBase64, retrieveData, storeData, traverseAndReplaceUrls } from '../assets/Utils/Utils';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import CustomAlert from '../Components/CustomAlert';
 import CustomLoader from '../Components/CustomLoader';
@@ -37,12 +37,13 @@ import { getMastersSeedCalc, saveSavedSeedCalData } from './SeedCalculator';
 import EmployeeActivityAlertModal from '../Modals/EmployeeActivityAlertModal';
 import CustomSuccessLoader from '../Components/CustomSuccessLoader';
 import realm from '../realmOffline/realmConfig';
+import { selectUser } from '../redux/store/slices/UserSlice';
 
 function EmployeeDashboard({ route }) {
 
   const networkStatus = useSelector(state => state.networkStatus.value)
   const [loaderImage, setLoaderImage] = useState(require('../assets/images/neutralloader.gif'))
-  const userDatafrom = route?.params?.userData != undefined ? route.params.userData : {};
+  const getUserData = useSelector(selectUser);
   const companyStyle = useSelector(getCompanyStyles);
   const [dynamicStyles, setDynamicStyles] = useState(companyStyle.value);
   const navigation = useNavigation()
@@ -123,12 +124,7 @@ function EmployeeDashboard({ route }) {
 
   const loading = loadingCount > 0;
 
-  useLayoutEffect(() => {
-    let setData = async () => {
-      setUserImage(await retrieveData(PROFILEIMAGE))
-    }
-    setData()
-  }, [])
+
 
 
   // Auto scroll logic
@@ -544,9 +540,9 @@ function EmployeeDashboard({ route }) {
       var APIResponse = await PostRequest(getCarouselDataURL, getHeaders,
         {
           "notificationType": strings.card,
-          "roleId": userDatafrom?.roleId,
-          "companyCode": userDatafrom?.companyCode,
-          "stateId": userDatafrom?.stateId,
+          "roleId": getUserData?.roleId,
+          "companyCode": getUserData?.companyCode,
+          "stateId": getUserData?.stateId,
           "filterValue": ""
         }
       );
@@ -575,13 +571,13 @@ function EmployeeDashboard({ route }) {
 
     }
 
-  }, [userDatafrom]);
+  }, [getUserData]);
 
   useEffect(() => {
     const dataEditMethod = async () => {
       var dataEdit = await retrieveData(EDITDATA)
       // setNetworkStatus(await getNetworkStatus())
-      console.log("SAINATH_LATEST", userDatafrom);
+      console.log("SAINATH_LATEST", getUserData);
       setShowDetailViewModal(dataEdit)
       if (dataEdit == true && networkStatus) {
 
@@ -745,10 +741,13 @@ function EmployeeDashboard({ route }) {
     React.useCallback(() => {
       handleFocus();
       if (networkStatus) {
-        dashboardUserMenuApiCall(),
-          callMasters()
+        dashboardUserMenuApiCall();
+        callMasters();
       }
-
+      let setData = async () => {
+        setUserImage(await retrieveData(PROFILEIMAGE))
+      }
+      setData()
       return () => {
         console.log('Screen is no longer focused!');
       };
@@ -866,13 +865,13 @@ function EmployeeDashboard({ route }) {
 
   const getUserDataDetails = async () => {
     setUserName(await retrieveData(USER_NAME))
-    setFirmName(userDatafrom?.firmName)
-    setState(userDatafrom?.stateName)
-    setStateID(userDatafrom?.stateId)
-    setDistrict(userDatafrom?.districtName)
-    setDistrictID(userDatafrom?.districtId)
-    setProprietorName(userDatafrom?.proprietorName)
-    console.log('gggggggg123', userDatafrom?.proprietorName)
+    setFirmName(getUserData?.firmName)
+    setState(getUserData?.stateName)
+    setStateID(getUserData?.stateId)
+    setDistrict(getUserData?.districtName)
+    setDistrictID(getUserData?.districtId)
+    setProprietorName(getUserData?.proprietorName)
+    console.log('gggggggg123', getUserData?.proprietorName)
   }
 
   const showAlertWithMessage = (title, header, heaertext, message, yesBtn, noBtn, yesText, noText) => {
@@ -1041,6 +1040,7 @@ function EmployeeDashboard({ route }) {
             storeData(EDITDATA, false)
             storeData(TERMS_CONDITIONS, false)
             storeData(POPUP_SHOWN_DATE, '')
+            storeData(NAVIGATE_TO_CLASS, '')
             navigation.reset({
               index: 0,
               routes: [{ name: 'LoginNew' }],

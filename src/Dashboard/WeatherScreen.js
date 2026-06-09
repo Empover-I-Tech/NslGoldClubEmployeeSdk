@@ -13,7 +13,8 @@ import { HTTP_OK, MAP_MY_INDIA_URL, configs } from '../helpers/URLConstants';
 import SimpleToast from 'react-native-simple-toast';
 import CustomCalanderSelection from "../Components/CustomCalanderSelection";
 import CustomLoader from '../Components/CustomLoader';
-import DateTimePickerModal from "react-native-modal-datetime-picker";
+// import DateTimePickerModal from "react-native-modal-datetime-picker";
+import DateTimePicker from '@react-native-community/datetimepicker';
 import axios from 'axios';
 import CustomInputDropDown from '../Components/CustomInputDropDown';
 import CustomListViewModal from '../Modals/CustomListViewModal';
@@ -457,7 +458,7 @@ const WeatherScreen = ({ route }) => {
         </TouchableOpacity>
       </View>
 
-      {
+      {/* {
         showDatePicker && (
           <DateTimePickerModal
             isVisible={true}
@@ -469,6 +470,27 @@ const WeatherScreen = ({ route }) => {
             onConfirm={(date) => { handleConfirm(date) }}
             onCancel={() => handleCancel()}
           // onTouchStart={new Date(selectedDate)}
+          />
+        )
+      } */}
+      {
+        showDatePicker && (
+          <DateTimePicker
+            value={selectedDate || new Date()}
+            mode="date"
+            display="default"
+            is24Hour={false}
+            onChange={(event, date) => {
+              handleCancel();
+              if (event.type === 'dismissed') {
+
+                return;
+              }
+
+              if (date) {
+                handleConfirm(date);
+              }
+            }}
           />
         )
       }

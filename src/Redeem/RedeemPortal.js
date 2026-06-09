@@ -4,15 +4,12 @@ import { Image, Platform, StatusBar, Text, TouchableOpacity, View } from 'react-
 import { BuildStyleOverwrite } from '../assets/style/BuildStyle';
 import { Styles } from '../assets/style/styles';
 import { Colors } from '../assets/Utils/Color';
-import { strings } from '../strings/strings';
 import { useNavigation } from '@react-navigation/native';
 import WebView from 'react-native-webview';
 import CustomLoader from '../Components/CustomLoader';
 import CustomSuccessLoader from '../Components/CustomSuccessLoader';
 import CustomErrorLoader from '../Components/CustomErrorLoader';
-import { selectUser } from '../redux/store/slices/UserSlice';
 import { getCompanyStyles } from '../redux/store/slices/CompanyStyleSlice';
-import { updateCompanyStyles } from '../redux/store/slices/CompanyStyleSlice';
 import { translate } from '../Localisation/Localisation';
 import { createStyles } from '../assets/style/createStyles';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -22,7 +19,6 @@ var styles = BuildStyleOverwrite(Styles);
 const RedeemPortal = ({ route }) => {
     styles = useMemo(() => createStyles(), [global.selectedLanguageCode]);
     const navigation = useNavigation();
-    const getUserData = useSelector(selectUser);
     const companyStyle = useSelector(getCompanyStyles);
     const [dynamicStyles, setDynamicStyles] = useState(companyStyle.value);
     const portalLink = route.params.item

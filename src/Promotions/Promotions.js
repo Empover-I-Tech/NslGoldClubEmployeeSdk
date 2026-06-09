@@ -11,7 +11,7 @@ import { BuildStyleOverwrite } from '../assets/style/BuildStyle';
 import { Styles } from '../assets/style/styles';
 import { strings } from '../strings/strings';
 import { Colors } from '../assets/Utils/Color';
-import { capitalizeFirstLetter, isNullOrEmpty ,ROLENAME,retrieveData} from '../assets/Utils/Utils';
+import { capitalizeFirstLetter, isNullOrEmpty ,ROLENAME,retrieveData, NAVIGATE_TO_CLASS} from '../assets/Utils/Utils';
 import { useNavigation } from '@react-navigation/native';
 import CustomAlert from '../Components/CustomAlert';
 import CustomLoader from '../Components/CustomLoader';
@@ -35,7 +35,6 @@ var styles = BuildStyleOverwrite(Styles);
 
 function Promotions() {
   styles = useMemo(() => createStyles(), [global.selectedLanguageCode]);
-  const dispatch = useDispatch();
   const getUserData = useSelector(selectUser);
   const companyStyle = useSelector(getCompanyStyles);
   const [dynamicStyles, setDynamicStyles] = useState(companyStyle.value);
@@ -60,10 +59,6 @@ function Promotions() {
   const [showAlertNoButton, setShowAlertNoButton] = useState(false)
   const [showAlertyesButtonText, setShowAlertyesButtonText] = useState(false)
   const [showAlertNoButtonText, setShowAlertNoButtonText] = useState(false)
-
-  const [searchText, setSearchText] = useState("");
-  const [faqSectionData, setFaqSectionData] = useState([]);
-  const [faqFilterSectionData, setFaqFilterSectionData] = useState([]);
   const [showWebView, setShowWebView] = useState(false);
   const [pdfURLIS, setPdfURLIS] = useState("");
   const [currentIndexImage, setCurrentIndexImage] = useState(0);
@@ -133,12 +128,9 @@ function Promotions() {
   }, []);
 
   const goBack = async () => {
-    const roleTypeDetails = await retrieveData(ROLENAME)
-    if (roleTypeDetails) {
-      let navigateTo = (roleTypeDetails === 'Retailer' || roleTypeDetails === 'Distributor') ? 'RetailerDashboard': 'EmployeeDashboard'
-      navigation.navigate(navigateTo)
-    }
-  };
+      const dashboardScreen = await retrieveData(NAVIGATE_TO_CLASS);
+      navigation.navigate(dashboardScreen);
+    };
 
   const handleCancelAlert = () => {
     setShowAlert(false)

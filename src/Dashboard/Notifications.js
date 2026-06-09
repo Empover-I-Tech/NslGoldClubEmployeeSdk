@@ -24,9 +24,8 @@ import SimpleToast from 'react-native-simple-toast';
 import CustomLoader from '../Components/CustomLoader';
 import CustomSuccessLoader from '../Components/CustomSuccessLoader';
 import CustomErrorLoader from '../Components/CustomErrorLoader';
-import { ROLENAME, retrieveData } from '../assets/Utils/Utils';
+import { NAVIGATE_TO_CLASS, ROLENAME, retrieveData } from '../assets/Utils/Utils';
 import { getCompanyStyles } from '../redux/store/slices/CompanyStyleSlice';
-import { selectUser } from '../redux/store/slices/UserSlice';
 import { translate } from '../Localisation/Localisation';
 import { createStyles } from '../assets/style/createStyles';
 import MediaModal from '../Modals/MediaModal';
@@ -35,8 +34,6 @@ var styles = BuildStyleOverwrite(Styles);
 
 function Notification() {
   styles = useMemo(() => createStyles(), [global.selectedLanguageCode]);
-  const dispatch = useDispatch();
-  const getUserData = useSelector(selectUser);
   const companyStyle = useSelector(getCompanyStyles);
   const [dynamicStyles, setDynamicStyles] = useState(companyStyle.value);
   const [loading, setLoading] = useState(false);
@@ -47,7 +44,6 @@ function Notification() {
   const [errorLoadingMessage, setErrorLoadingMessage] = useState('');
   const [loaderImage, setLoaderImage] = useState(require('../assets/images/neutralloader.gif'))
   const navigation = useNavigation();
-  const { width } = useWindowDimensions();
   const [mediaVisible, setMediaVisible] = useState(false);
   const [mediaLink, setMediaLink] = useState(null);
   const networkStatus = useSelector(state => state.networkStatus.value);
@@ -72,21 +68,20 @@ function Notification() {
     setRoleType(roleTypeDetails);
   };
 
-  const goBack = () => {
+  const goBack = async () => {
     if (navigation.canGoBack()) {
       navigation.goBack();
-    } else {
-      navigation.reset({
-        index: 0,
-        routes: [
-          {
-            name: roleType === 'Retailer' || roleType === 'Distributor'
-              ? 'RetailerDashboard'
-              : 'EmployeeDashboard'
-          }
-        ],
-      });
+      return;
     }
+    const dashboardScreen = await retrieveData(NAVIGATE_TO_CLASS);
+    navigation.reset({
+      index: 0,
+      routes: [
+        {
+          name: dashboardScreen,
+        },
+      ],
+    });
   };
 
   const GetNotificationDetailsApiCall = async () => {

@@ -20,7 +20,6 @@ const TIMEOUT_DURATION = 4000;
 
 const Splash = (props) => {
     const dispatch = useDispatch();
-    const networkStatus = useSelector((state) => state.networkStatus.value);
     const companyStyle = useSelector(getCompanyStyles);
     const [dynamicStyles, setDynamicStyles] = useState(companyStyle.value);
     const getUserData = useSelector(selectUser);

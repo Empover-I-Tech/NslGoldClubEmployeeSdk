@@ -5,7 +5,7 @@ import { strings } from "../strings/strings";
 import { USER_ID, isNullOrEmpty, retrieveData, ROLENAME, MOBILE_NUMBER } from '../assets/Utils/Utils';
 import SimpleToast from 'react-native-simple-toast';
 import CustomLoader from '../Components/CustomLoader';
-import CustomSuccessLoader from '../Components/CustomSuccessLoader';
+
 import { GetApiHeaders, GetApiHeaderswithLoginResponse, GetRequest, PostRequest, getNetworkStatus, uploadFormData } from '../NetworkUtils/NetworkUtils';
 import { FIREBASE_VERSION_COLLECTION_NAME, FIREBASE_VERSION_DOC_ID, HTTP_ACCEPTED, HTTP_CREATED, HTTP_OK, configs } from '../helpers/URLConstants';
 import { useNavigation } from '@react-navigation/native';
@@ -25,9 +25,7 @@ const DipstickSurvey = ({ route }) => {
   newStyles = useMemo(() => createStyles(), [global.selectedLanguageCode]);
   const getUserData = useSelector(selectUser);
   const getUpdatedUserData = useSelector(getUpdateRetailerInfoData);
-  const userDatafrom = getUserData
   const { languageCode,languageId } = useSelector((state) => state.language);
-  const calcType = route?.params?.calcType;
   const companyStyle = useSelector(getCompanyStyles);
   const [dynamicStyles, setDynamicStyles] = useState(companyStyle.value); //dynamicStyles.highLightedColor
   const [loading, setLoading] = useState(false)
@@ -39,28 +37,7 @@ const DipstickSurvey = ({ route }) => {
   let [saveMobileNumber, setMobileNumber] = useState('');
   let [dipstickData, setDipstickData] = useState('')
   let [selectedSurvey, setSelectedSurvey] = useState(null)
-  let [htmlContent, setHtmlContent] = useState(`
-  <div>
-    <h1>Form Example</h1>
-    <form>
-      <label for="name">Name:</label><br>
-      <input type="text" id="name" name="name"><br><br>
-
-      <label for="gender">Gender:</label><br>
-      <select id="gender" name="gender">
-        <option value="male">Male</option>
-        <option value="female">Female</option>
-        <option value="other">Other</option>
-      </select><br><br>
-
-      <label for="age">Age:</label><br>
-      <input type="number" id="age" name="age"><br><br>
-
-      <input type="submit" value="Submit">
-    </form>
-  </div>
-`)
-
+ 
   const navigation = useNavigation()
 
   function hexToRgbA(hex){
@@ -96,7 +73,7 @@ const DipstickSurvey = ({ route }) => {
         getHeaders.retailerId = getUserID;
         //  alert(JSON.stringify(getUpdatedUserData.value.stateId))
         var APIResponse = await PostRequest(getYeildCalcURL, getHeaders, {
-          "StateName": getUpdatedUserData?.value?.stateName ? getUpdatedUserData?.value?.stateName :  userDatafrom?.stateName,
+          "StateName": getUpdatedUserData?.value?.stateName ? getUpdatedUserData?.value?.stateName :  getUserData?.stateName,
           "companyCode": getUserData?.companyCode
         });
         // var APIResponse = await GetRequest(getYeildCalcURL, getHeaders);

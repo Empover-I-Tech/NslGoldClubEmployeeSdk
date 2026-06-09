@@ -6,7 +6,7 @@ import { Styles } from '../assets/style/styles';
 import { strings } from '../strings/strings';
 import CustomButton from '../Components/CustomButton';
 import { Colors } from '../assets/Utils/Color';
-import { DEVICE_TOKEN, EDITDATA, MOBILE_NUMBER, POPUP_SHOWN_DATE, PROFILEIMAGE, ROLEID, ROLENAME, SELECTEDCOMPANY, TERMS_CONDITIONS, USERMENU, USER_ID, USER_NAME, retrieveData, storeData } from '../assets/Utils/Utils';
+import { DEVICE_TOKEN, EDITDATA, MOBILE_NUMBER, NAVIGATE_TO_CLASS, POPUP_SHOWN_DATE, PROFILEIMAGE, ROLEID, ROLENAME, SELECTEDCOMPANY, TERMS_CONDITIONS, USERMENU, USER_ID, USER_NAME, retrieveData, storeData } from '../assets/Utils/Utils';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { FlatList } from 'react-native-gesture-handler';
 import CustomAlert from '../Components/CustomAlert';
@@ -103,7 +103,7 @@ function Profile({ route }) {
     // Define an async function inside useEffect
     const fetchData = async () => {
       // realm = new Realm({ path: 'User.realm' })
-      
+
       if (!realm) {
         console.log("Realm not initialized");
         return;
@@ -183,12 +183,8 @@ function Profile({ route }) {
   }, [])
 
   const goBack = async () => {
-    console.log('comig heeeee')
-    const roleTypeDetails = await retrieveData(ROLENAME)
-    if (roleTypeDetails) {
-      let navigateTo = (roleTypeDetails === 'Retailer' || roleTypeDetails === 'Distributor') ? 'RetailerDashboard' : 'EmployeeDashboard'
-      navigation.navigate(navigateTo)
-    }
+    const dashboardScreen = await retrieveData(NAVIGATE_TO_CLASS);
+    navigation.navigate(dashboardScreen);
   };
 
   const logoutButtonPress = async () => {
@@ -234,6 +230,7 @@ function Profile({ route }) {
       storeData(EDITDATA, false)
       storeData(TERMS_CONDITIONS, false);
       storeData(POPUP_SHOWN_DATE, '')
+      storeData(NAVIGATE_TO_CLASS, '')
       await AsyncStorage.removeItem('dontShowThisAgain')
       dispatch(updateCompanyStyles({}));
       dispatch(updateRetailerInfoData({}));
@@ -301,6 +298,7 @@ function Profile({ route }) {
               storeData(EDITDATA, false)
               storeData(TERMS_CONDITIONS, false);
               storeData(POPUP_SHOWN_DATE, '')
+              storeData(NAVIGATE_TO_CLASS,'')
               await AsyncStorage.removeItem('dontShowThisAgain')
               dispatch(updateCompanyStyles({}));
               dispatch(updateRetailerInfoData({}));
@@ -410,7 +408,7 @@ function Profile({ route }) {
 
   const handleSyncLogout = async () => {
     // var realm = new Realm({ path: 'User.realm' });
-   
+
     if (!realm) {
       console.log("Realm not initialized");
       return;
@@ -489,7 +487,7 @@ function Profile({ route }) {
 
   const handleSyncDeleteLogout = async () => {
     // var realm = new Realm({ path: 'User.realm' });
-   
+
     if (!realm) {
       console.log("Realm not initialized");
       return;

@@ -45,6 +45,7 @@ export const WHATSAPPCHECKED = 'WhatsappChecked'
 export const LOADER_GIF = "LOADER_GIF";
 export const SDK_AUTH_TOKEN = "SDK_AUTH_TOKEN";
 export const SDK_AUTH_ID = "SDK_AUTH_ID";
+export const NAVIGATE_TO_CLASS = "NAVIGATE_TO_CLASS";
 
 
 

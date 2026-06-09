@@ -4,7 +4,7 @@ import { BuildStyleOverwrite } from '../assets/style/BuildStyle';
 import { Styles } from '../assets/style/styles';
 import { strings } from '../strings/strings';
 import { Colors } from '../assets/Utils/Color';
-import { DEVICE_TOKEN, EDITDATA, MOBILE_NUMBER, POPUP_SHOWN_DATE, PROFILEIMAGE, ROLEID, ROLENAME, TERMS_CONDITIONS, USERMENU, USER_ID, USER_NAME, compareVersions, filterObjects, getAppVersion, getBuildNumber, readFileToBase64, requestMultiplePermissions, retrieveData, sortObjectsAlphabetically, storeData } from '../assets/Utils/Utils';
+import { DEVICE_TOKEN, EDITDATA, MOBILE_NUMBER, NAVIGATE_TO_CLASS, POPUP_SHOWN_DATE, PROFILEIMAGE, ROLEID, ROLENAME, TERMS_CONDITIONS, USERMENU, USER_ID, USER_NAME, compareVersions, filterObjects, getAppVersion, getBuildNumber, readFileToBase64, requestMultiplePermissions, retrieveData, sortObjectsAlphabetically, storeData } from '../assets/Utils/Utils';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import CustomAlert from '../Components/CustomAlert';
 import CustomLoader from '../Components/CustomLoader';
@@ -13,7 +13,7 @@ import CustomErrorLoader from '../Components/CustomErrorLoader';
 import { GetApiHeaders, GetRequest, PostRequest, getNetworkStatus, uploadFormData } from '../NetworkUtils/NetworkUtils';
 import { APP_ENV_PROD, FIREBASE_VERSION_COLLECTION_NAME, FIREBASE_VERSION_DOC_ID, HTTP_ACCEPTED, HTTP_CREATED, HTTP_OK, IOS_STORE_LINK, configs } from '../helpers/URLConstants';
 import SimpleToast from 'react-native-simple-toast';
-import { selectUser } from '../redux/store/slices/UserSlice';
+
 import { useSelector } from 'react-redux';
 import CustomCircularImageView from '../Components/CustomCircularImageView';
 import { PERMISSIONS, check, request } from 'react-native-permissions';
@@ -49,11 +49,6 @@ function Dashboard({ route }) {
   const [loaderImage, setLoaderImage] = useState(require('../assets/images/neutralloader.gif'))
   const userDatafrom = route?.params?.userData != undefined ? route.params.userData : {};
   const navigation = useNavigation()
-  const getUserData = useSelector(selectUser);
-  // const networkStaus = useSelector(getNetwork)
-  const [userData, setUserData] = useState('');
-  const [storeMobileNum, setStoreMobileNum] = useState('')
-  const [storeUserID, setStoreUserID] = useState('')
 
   const [showAlert, setShowAlert] = useState(false)
   const [alertTitle, setAlertTitle] = useState('');
@@ -1195,6 +1190,7 @@ function Dashboard({ route }) {
               storeData(EDITDATA, false)
               storeData(TERMS_CONDITIONS, false)
               storeData(POPUP_SHOWN_DATE, '')
+              storeData(NAVIGATE_TO_CLASS, '')
               navigation.reset({
                 index: 0,
                 routes: [{ name: 'LoginNew' }],
@@ -1623,10 +1619,7 @@ function Dashboard({ route }) {
           <View style={[styles['flex_direction_row'], styles['width_90%'], styles['margin_top_20'], styles['border_radius_6'], styles['centerItems'], styles['space_between'], styles['left_5']]}>
 
             <View style={[styles['flex_direction_row'], styles['width_48%'], styles['height_80'], styles['bg_white'], styles['border_radius_6'], styles['centerItems']]}>
-              {/* 
-    let navigateTo = (roleType === 'Retailer' || roleType === 'Distributor') ? 'RetailerDashboard': 'Dashboard'
-              
-              */}
+             
               <Image style={[styles['width_height_40']]} source={roleType == 'Retailer' || roleType == 'Distributor' ? require('../assets/images/rupeeIcon.png') : require('../assets/images/ic_retailer.png')}></Image>
               <View style={[styles['flex_direction_column'], { width: '65%' }]}>
                 <Text style={[styles['font_size_17_semibold'], styles['text_color_black'], styles['text_align_left'], styles['left_7'], styles['width_100%'], styles['top_5']]}>{roleType == 'Retailer' || roleType == 'Distributor' ? userPointsEarned : totalRetailers}</Text>

@@ -10,7 +10,7 @@ import { BuildStyleOverwrite } from '../assets/style/BuildStyle';
 import { Styles } from '../assets/style/styles';
 import { strings } from '../strings/strings';
 import { Colors } from '../assets/Utils/Color';
-import { getUniqueItems, isNullOrEmpty, isValidImageUrl, ROLENAME, retrieveData } from '../assets/Utils/Utils';
+import { getUniqueItems, isNullOrEmpty, isValidImageUrl, ROLENAME, retrieveData, NAVIGATE_TO_CLASS } from '../assets/Utils/Utils';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import CustomAlert from '../Components/CustomAlert';
 import CustomLoader from '../Components/CustomLoader';
@@ -46,7 +46,6 @@ export const getOfflineProductsData = async () => {
 
   var networkStatus = await getNetworkStatus()
   const state = store.getState();
-  const getUserData = selectUser(state);
   if (networkStatus) {
     try {
       var getURL = configs.BASE_URL + configs.PRODUCTS.PRODUCTS_MASTERSV1;
@@ -129,11 +128,7 @@ function Products({ route }) {
   const companyStyle = useSelector(getCompanyStyles);
   const [dynamicStyles, setDynamicStyles] = useState(companyStyle.value);
   const [loading, setLoading] = useState(false)
-  const [successLoading, setSuccessLoading] = useState(false)
-  const [errorLoading, setErrorLoading] = useState(false)
   const [loadingMessage, setLoadingMessage] = useState('')
-  const [successLoadingMessage, setSuccessLoadingMessage] = useState('')
-  const [errorLoadingMessage, setErrorLoadingMessage] = useState('')
   const [loaderImage, setLoaderImage] = useState(require('../assets/images/neutralloader.gif'))
   const networkStatus = useSelector(state => state.networkStatus.value)
   console.log(route?.params, 'kjsadbjkasbjkdbjkasdbjkjbask')
@@ -160,7 +155,6 @@ function Products({ route }) {
   const [loadingP, setLoadingP] = useState(false)
   const [productsData, setProductsData] = useState([]);
   const [filterProductsData, setFilterProductsData] = useState([]);
-  const [seasonMaster, setSeasonMaster] = useState([]);
   const [seasonName, setSeasonName] = useState(translate('select'))
   const [seasonId, setSeasonId] = useState(0)
   const [selectedIndex, setSelectedIndex] = useState('')
@@ -206,12 +200,13 @@ function Products({ route }) {
     }, [networkStatus])
   );
 
+
   const goBack = async () => {
-    const roleTypeDetails = await retrieveData(ROLENAME)
-    if (roleTypeDetails) {
-      let navigateTo = (roleTypeDetails === 'Retailer' || roleTypeDetails === 'Distributor') ? 'RetailerDashboard' : 'EmployeeDashboard'
-      navigation.navigate(navigateTo)
-    }
+    const dashboardScreen = await retrieveData(NAVIGATE_TO_CLASS);
+
+    navigation.navigate(
+      dashboardScreen
+    );
   };
 
   const viewCicked = async (item) => {
@@ -465,7 +460,6 @@ function Products({ route }) {
         catch (error) {
           setTimeout(() => {
             setLoading(false)
-            setSuccessLoadingMessage(error.message)
           }, 1000);
         }
       } else { }

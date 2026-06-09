@@ -7,7 +7,7 @@ import { configs, HTTP_OK, HTTP_SWITCHING_PROTOCOLS, setEnvironment } from '../h
 import { GetApiHeaders, getNetworkStatus, PostRequest } from '../NetworkUtils/NetworkUtils';
 import CustomLoader from '../Components/CustomLoader';
 import { setUser } from '../redux/store/slices/UserSlice';
-import { DEVICE_TOKEN, EDITDATA, LOGINONCE, MOBILE_NUMBER, PROFILEIMAGE, ROLEID, ROLENAME, SELECTEDCOMPANY, TERMS_CONDITIONS, USERMENU, USER_ID, USER_NAME, WHATSAPPCHECKED, downloadFileToLocal, getDeviceId, retrieveData, storeData, SDK_AUTH_ID, SDK_AUTH_TOKEN } from '../assets/Utils/Utils';
+import { DEVICE_TOKEN, EDITDATA, LOGINONCE, MOBILE_NUMBER, PROFILEIMAGE, ROLEID, ROLENAME, SELECTEDCOMPANY, TERMS_CONDITIONS, USERMENU, USER_ID, USER_NAME, WHATSAPPCHECKED, downloadFileToLocal, getDeviceId, retrieveData, storeData, SDK_AUTH_ID, SDK_AUTH_TOKEN, NAVIGATE_TO_CLASS } from '../assets/Utils/Utils';
 import { updateCompanyStyles } from '../redux/store/slices/CompanyStyleSlice';
 import SimpleToast from 'react-native-simple-toast';
 import { Colors } from '../assets/Utils/Color';
@@ -101,7 +101,17 @@ const GCLoaderScreen = ({ route }) => {
                                 }
                             }
                             let navigateTo = (verifyOTPResponse[0]?.roleName === 'Retailer' || verifyOTPResponse[0]?.roleName === 'Distributor') ? 'RetailerDashboard' : 'EmployeeDashboardSDK';
-                            navigation.navigate(navigateTo, { userData: {} })
+                            storeData(NAVIGATE_TO_CLASS, navigateTo)
+                            // navigation.navigate(navigateTo, { userData: {} })
+                            navigation.reset({
+                                index: 0,
+                                routes: [
+                                    {
+                                        name: navigateTo,
+                                        params: { userData: {} },
+                                    },
+                                ],
+                            });
 
                         } else {
                             setTimeout(() => {
@@ -164,13 +174,13 @@ const GCLoaderScreen = ({ route }) => {
 
 
 
-    return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text style={{ fontSize: 24, fontWeight: 'bold', color: 'black' }}>{route?.params?.navigateItem?.mobileNumber || "Hello World"}</Text>
-
-            {loading && <CustomLoader loading={loading} message={loadingMessage} loaderImage={loaderImage} />}
-        </View>
-    )
+    return loading ? (
+        <CustomLoader
+            loading={loading}
+            message={loadingMessage}
+            loaderImage={loaderImage}
+        />
+    ) : null;
 
 
 }

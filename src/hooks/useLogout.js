@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { GetApiHeaders, getNetworkStatus, PostRequest } from '../NetworkUtils/NetworkUtils';
 import { configs } from '../helpers/URLConstants';
-import { clearAsyncStorage, DEVICE_TOKEN, EDITDATA, MOBILE_NUMBER, POPUP_SHOWN_DATE, PROFILEIMAGE, storeData, TERMS_CONDITIONS, USER_ID, USER_NAME, USERMENU, WHATSAPPCHECKED } from '../assets/Utils/Utils';
+import { clearAsyncStorage, DEVICE_TOKEN, EDITDATA, MOBILE_NUMBER, NAVIGATE_TO_CLASS, POPUP_SHOWN_DATE, PROFILEIMAGE, storeData, TERMS_CONDITIONS, USER_ID, USER_NAME, USERMENU, WHATSAPPCHECKED } from '../assets/Utils/Utils';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { updateCompanyStyles } from '../redux/store/slices/CompanyStyleSlice';
 import { updateRetailerInfoData } from '../redux/store/slices/UpdatedReatilerInfoDataSlice';
@@ -17,7 +17,7 @@ const useLogout = () => {
     const [loadingCount, setLoadingCount] = useState(0);
     const [loadingMessage, setLoadingMessage] = useState('');
     // var realm = new Realm({ path: 'User.realm' });
-    
+
     if (!realm) {
         console.log("Realm not initialized");
         return;
@@ -61,6 +61,7 @@ const useLogout = () => {
                 await storeData(TERMS_CONDITIONS, false);
                 await storeData(WHATSAPPCHECKED, false);
                 await storeData(POPUP_SHOWN_DATE, '');
+                await storeData(NAVIGATE_TO_CLASS, '')
                 await AsyncStorage.removeItem('dontShowThisAgain');
 
                 dispatch(updateCompanyStyles({}));

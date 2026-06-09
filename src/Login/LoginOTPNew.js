@@ -6,7 +6,7 @@ import { strings } from '../strings/strings';
 import { Colors } from '../assets/Utils/Color';
 import CustomButton from '../Components/CustomButton';
 import { useNavigation } from '@react-navigation/native';
-import { DEVICE_TOKEN, EDITDATA, LOGINONCE, MOBILE_NUMBER, PROFILEIMAGE, ROLEID, ROLENAME, SELECTEDCOMPANY, TERMS_CONDITIONS, USERMENU, USER_ID, USER_NAME, WHATSAPPCHECKED, downloadFileToLocal, getDeviceId, retrieveData, storeData } from '../assets/Utils/Utils';
+import { DEVICE_TOKEN, EDITDATA, LOGINONCE, MOBILE_NUMBER, NAVIGATE_TO_CLASS, PROFILEIMAGE, ROLEID, ROLENAME, SELECTEDCOMPANY, TERMS_CONDITIONS, USERMENU, USER_ID, USER_NAME, WHATSAPPCHECKED, downloadFileToLocal, getDeviceId, retrieveData, storeData } from '../assets/Utils/Utils';
 import { APP_ENV_PROD, HTTP_OK, HTTP_SWITCHING_PROTOCOLS, SECOND_LOGIN, configs } from '../helpers/URLConstants';
 import { GetApiHeaders, PostRequest } from '../NetworkUtils/NetworkUtils';
 import { setUser } from '../redux/store/slices/UserSlice';
@@ -157,6 +157,9 @@ function LoginOTPNew({ route }) {
               storeData(ROLEID, verifyOTPResponse[0].roleId);
               storeData(ROLENAME, verifyOTPResponse[0].roleName)
               storeData(SELECTEDCOMPANY, verifyOTPResponse[0].companyLogoPath);
+
+              let navigateTo = (verifyOTPResponse[0]?.roleName === 'Retailer' || verifyOTPResponse[0]?.roleName === 'Distributor') ? 'RetailerDashboard' : 'EmployeeDashboard';
+              storeData(NAVIGATE_TO_CLASS, navigateTo)
 
               const tempSlectedObject = {};
               tempSlectedObject.primaryColor = (verifyOTPResponse[0]?.primaryColor != undefined && verifyOTPResponse[0]?.primaryColor != "") ? verifyOTPResponse[0]?.primaryColor : Colors.buttonColorPurple;
@@ -425,10 +428,6 @@ function LoginOTPNew({ route }) {
       </View>
     )
   }
-
-  const goBack = async () => {
-    navigation.goBack()
-  };
 
   let onCodeChanged = (code) => {
     setOTP(code)

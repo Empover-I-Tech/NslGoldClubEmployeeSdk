@@ -14,7 +14,7 @@ import { createStyles } from '../assets/style/createStyles';
 var styles = BuildStyleOverwrite(Styles);
 
 const CustomBorderDocumetUpload = forwardRef(({ labelName, defaultValue, value, placeholder, editable, contextMenuHidden, maxLength, onFocus, onChangeText, onEndEditing, keyboardType, textFiledWidth, leftSpace, autoCapitalize, IsRequired, imageData, onClickDocUp }, ref) => {
-    const getUserData = useSelector(selectUser);
+    
       styles = useMemo(() => createStyles(), [global.selectedLanguageCode]);
     const companyStyle = useSelector(getCompanyStyles);
     const [dynamicStyles, setDynamicStyles] = useState(companyStyle.value);

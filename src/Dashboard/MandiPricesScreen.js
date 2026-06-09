@@ -39,7 +39,6 @@ const MandiPricesScreen = () => {
     const [selectedFilter, setSelectedFilter] = useState(FILTERS[0]);
     const getUserData = useSelector(selectUser);
     console.log("getUserData===>", getUserData)
-    const userDatafrom = getUserData
     let navigation = useNavigation()
     const [loading, setLoading] = useState(false)
     let [graphData, setGraphData] = useState(null)
@@ -169,7 +168,7 @@ const MandiPricesScreen = () => {
             var getHeaders = await GetApiHeaders()
             var response = await GetRequest(stateUrl, getHeaders);
             if (response && response.statusCode == HTTP_OK) {
-                let states = getUpdatedUserData?.value?.stateName ? getUpdatedUserData?.value?.stateName : userDatafrom?.stateName
+                let states = getUpdatedUserData?.value?.stateName ? getUpdatedUserData?.value?.stateName : getUserData?.stateName
                 setStatesList(response?.response?.statesList || []);
                 let b = await response?.response?.statesList?.filter((data) => {
                     return data?.tagName?.toLowerCase() === (extractStateName(states)?.toLowerCase())
@@ -193,7 +192,7 @@ const MandiPricesScreen = () => {
             var response = await GetRequest(stateUrl, getHeaders);
             if (response && response.statusCode == HTTP_OK) {
                 setDistrictListOriginal(response?.response?.districtList || []);
-                let states = getUpdatedUserData?.value?.stateName ? getUpdatedUserData?.value?.stateName : userDatafrom?.stateName
+                let states = getUpdatedUserData?.value?.stateName ? getUpdatedUserData?.value?.stateName : getUserData?.stateName
                 console.log("states in district master===>", states)
                 if (states) {
                     let b = await response?.response?.districtList.filter((data) => {
@@ -204,7 +203,7 @@ const MandiPricesScreen = () => {
 
                 }
                 else {
-                    SimpleToast.show(translate('please')+" "+translate('select')+" "+translate('state'), SimpleToast.LONG)
+                    SimpleToast.show(translate('please') + " " + translate('select') + " " + translate('state'), SimpleToast.LONG)
                 }
 
             }

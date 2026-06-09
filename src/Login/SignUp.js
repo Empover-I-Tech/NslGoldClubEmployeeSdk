@@ -6,7 +6,7 @@ import { strings } from '../strings/strings';
 import CustomButton from '../Components/CustomButton';
 import RenderHTML from 'react-native-render-html'
 import { Colors } from '../assets/Utils/Color';
-import { DEVICE_TOKEN, LOGINONCE, MOBILE_NUMBER, PROFILEIMAGE, ROLEID, ROLENAME, SELECTEDCOMPANY, USERMENU, USER_ID, USER_NAME, checkIfGpsEnabled, downloadFileToLocal, filterObjects, retrieveData, sortObjectsAlphabetically, storeData } from '../assets/Utils/Utils';
+import { DEVICE_TOKEN, LOGINONCE, MOBILE_NUMBER, NAVIGATE_TO_CLASS, PROFILEIMAGE, ROLEID, ROLENAME, SELECTEDCOMPANY, USERMENU, USER_ID, USER_NAME, checkIfGpsEnabled, downloadFileToLocal, filterObjects, retrieveData, sortObjectsAlphabetically, storeData } from '../assets/Utils/Utils';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { ScrollView } from 'react-native-gesture-handler';
 import CustomBorderInputDropDown from '../Components/CustomBorderInputDropDown';
@@ -771,6 +771,7 @@ function SignUp({ route }) {
                 storeData(ROLEID, verifyOTPResponse[0].roleId);
                 storeData(ROLENAME, verifyOTPResponse[0].roleName)
                 storeData(SELECTEDCOMPANY, verifyOTPResponse[0].companyLogoPath)
+                storeData(NAVIGATE_TO_CLASS, (verifyOTPResponse[0]?.roleName === 'Retailer' || verifyOTPResponse[0]?.roleName === 'Distributor') ? 'RetailerDashboard' : 'EmployeeDashboard')
                 const tempSlectedObject = {};
                 tempSlectedObject.primaryColor = (verifyOTPResponse[0]?.primaryColor != undefined && verifyOTPResponse[0]?.primaryColor != "") ? verifyOTPResponse[0]?.primaryColor : Colors.buttonColorPurple;
                 tempSlectedObject.iconPrimaryColor = iconPrimaryColor

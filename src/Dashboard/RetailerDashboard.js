@@ -5,7 +5,7 @@ import { Styles } from '../assets/style/styles';
 import { strings } from '../strings/strings';
 import { Colors } from '../assets/Utils/Color';
 import { useDispatch, useSelector } from 'react-redux';
-import { DEVICE_TOKEN, EDITDATA, MOBILE_NUMBER, PROFILEIMAGE, ROLEID, ROLENAME, TERMS_CONDITIONS, USERMENU, USER_ID, USER_NAME, WHATSAPPCHECKED, clearAsyncStorage, filterObjects, getAppVersion, readFileToBase64, retrieveData, sortObjectsAlphabetically, storeData, downloadFileToLocal, getBuildNumber, compareVersions, findMatchedItem, getDeviceId, checkIfGpsEnabled, groupByProgramName, POPUP_SHOWN_DATE } from '../assets/Utils/Utils';
+import { DEVICE_TOKEN, EDITDATA, MOBILE_NUMBER, PROFILEIMAGE, ROLEID, ROLENAME, TERMS_CONDITIONS, USERMENU, USER_ID, USER_NAME, WHATSAPPCHECKED, clearAsyncStorage, filterObjects, getAppVersion, readFileToBase64, retrieveData, sortObjectsAlphabetically, storeData, downloadFileToLocal, getBuildNumber, compareVersions, findMatchedItem, getDeviceId, checkIfGpsEnabled, groupByProgramName, POPUP_SHOWN_DATE, NAVIGATE_TO_CLASS } from '../assets/Utils/Utils';
 import { useFocusEffect, useNavigation, useNavigationState } from '@react-navigation/native';
 import ReactNativePdf from 'react-native-pdf';
 import CustomAlert from '../Components/CustomAlert';
@@ -30,7 +30,7 @@ import firestore from '@react-native-firebase/firestore';
 import CustomBorderDocumetUpload from '../Components/CustomBorderDocumetUpload';
 import { EventRegister } from 'react-native-event-listeners';
 import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
-// import LinearGradient from 'react-native-linear-gradient';
+import LinearGradient from 'react-native-linear-gradient';
 import Geolocation from 'react-native-geolocation-service';
 import { setLocation } from '../redux/store/slices/locationSlice';
 import CustomGalleryPopup from '../Components/CustomGalleryPopup';
@@ -258,7 +258,6 @@ function RetailerDashboard({ route }) {
   const [loaderImage, setLoaderImage] = useState(require('../assets/images/neutralloader.gif'))
   const navigation = useNavigation()
   const getUserData = useSelector(selectUser);
-  const userDatafrom = getUserData
   const companyStyle = useSelector(getCompanyStyles);
   const [dynamicStyles, setDynamicStyles] = useState(companyStyle.value);
   const [badgeIcon, setBadgeIcon] = useState('')
@@ -442,10 +441,10 @@ function RetailerDashboard({ route }) {
         var APIResponse = await PostRequest(getCarouselDataURL, getHeaders,
           {
             "notificationType": strings.card,
-            "roleId": userDatafrom?.roleId,
-            "companyCode": userDatafrom?.companyCode,
-            "stateId": userDatafrom?.stateId,
-            // "territoryId":userDatafrom?.territoryId !== null ?userDatafrom?.territoryId  : 0,
+            "roleId": getUserData?.roleId,
+            "companyCode": getUserData?.companyCode,
+            "stateId": getUserData?.stateId,
+            // "territoryId":getUserData?.territoryId !== null ?getUserData?.territoryId  : 0,
             "filterValue": ""
           }
         );
@@ -477,7 +476,7 @@ function RetailerDashboard({ route }) {
         stopLoading();
       }
     }
-  }, [userDatafrom]);
+  }, [getUserData]);
 
   useEffect(() => {
     const listener = EventRegister.addEventListener('LogoutEvent', logOutUser);
@@ -1796,31 +1795,30 @@ function RetailerDashboard({ route }) {
                       </TouchableOpacity>
                     </View>
                   ) : (
-                    <View></View>
-                    // <LinearGradient
-                    //   colors={['rgba(255, 255, 255, 1)', 'rgba(242, 246, 249, 1)']}
-                    //   style={{
-                    //     width: '100%',
-                    //     borderRadius: 10,
-                    //     alignItems: 'center',
-                    //     borderColor: 'rgba(242, 246, 249, 1)',
-                    //     borderWidth: 1,
-                    //   }}
-                    // >
-                    //   <TouchableOpacity
-                    //     style={{ width: '50%', alignItems: 'center', padding: 15, borderRadius: 10 }}
-                    //     onPress={() => handleBuy()}
-                    //   >
-                    //     <Image
-                    //       style={{
-                    //         height: 40,
-                    //         width: 40,
-                    //         resizeMode: 'contain',
-                    //       }}
-                    //       source={require('../assets/images/buy.png')}
-                    //     />
-                    //   </TouchableOpacity>
-                    // </LinearGradient>
+                    <LinearGradient
+                      colors={['rgba(255, 255, 255, 1)', 'rgba(242, 246, 249, 1)']}
+                      style={{
+                        width: '100%',
+                        borderRadius: 10,
+                        alignItems: 'center',
+                        borderColor: 'rgba(242, 246, 249, 1)',
+                        borderWidth: 1,
+                      }}
+                    >
+                      <TouchableOpacity
+                        style={{ width: '50%', alignItems: 'center', padding: 15, borderRadius: 10 }}
+                        onPress={() => handleBuy()}
+                      >
+                        <Image
+                          style={{
+                            height: 40,
+                            width: 40,
+                            resizeMode: 'contain',
+                          }}
+                          source={require('../assets/images/buy.png')}
+                        />
+                      </TouchableOpacity>
+                    </LinearGradient>
                   )}
                   <Text allowFontScaling={false} style={[{ color: 'rgba(58, 68, 73, 1)', marginTop: 2.5 }, styles['font_size_10_bold']]}>
                     {translate('Buy')}
@@ -1866,31 +1864,30 @@ function RetailerDashboard({ route }) {
                       </TouchableOpacity>
                     </View>
                   ) : (
-                    <View></View>
-                    // <LinearGradient
-                    //   colors={['rgba(255, 255, 255, 1)', 'rgba(242, 246, 249, 1)']}
-                    //   style={{
-                    //     width: '100%',
-                    //     borderRadius: 10,
-                    //     alignItems: 'center',
-                    //     borderColor: 'rgba(242, 246, 249, 1)',
-                    //     borderWidth: 1,
-                    //   }}
-                    // >
-                    //   <TouchableOpacity
-                    //     style={{ width: '50%', alignItems: 'center', padding: 15, borderRadius: 10 }}
-                    //     onPress={() => handleVoucher()}
-                    //   >
-                    //     <Image
-                    //       style={{
-                    //         height: 40,
-                    //         width: 40,
-                    //         resizeMode: 'contain',
-                    //       }}
-                    //       source={require('../assets/images/voucher.png')}
-                    //     />
-                    //   </TouchableOpacity>
-                    // </LinearGradient>
+                    <LinearGradient
+                      colors={['rgba(255, 255, 255, 1)', 'rgba(242, 246, 249, 1)']}
+                      style={{
+                        width: '100%',
+                        borderRadius: 10,
+                        alignItems: 'center',
+                        borderColor: 'rgba(242, 246, 249, 1)',
+                        borderWidth: 1,
+                      }}
+                    >
+                      <TouchableOpacity
+                        style={{ width: '50%', alignItems: 'center', padding: 15, borderRadius: 10 }}
+                        onPress={() => handleVoucher()}
+                      >
+                        <Image
+                          style={{
+                            height: 40,
+                            width: 40,
+                            resizeMode: 'contain',
+                          }}
+                          source={require('../assets/images/voucher.png')}
+                        />
+                      </TouchableOpacity>
+                    </LinearGradient>
                   )}
                   <Text allowFontScaling={false} style={[{ color: 'rgba(58, 68, 73, 1)', marginTop: 2.5 }, styles['font_size_10_bold']]}>
                     {translate('Voucher')}
@@ -2276,7 +2273,7 @@ function RetailerDashboard({ route }) {
         stopLoading()
       }
     }
-  }, [userDatafrom?.roleId, userDatafrom?.companyCode, userDatafrom?.stateId])
+  }, [getUserData?.roleId, getUserData?.companyCode, getUserData?.stateId])
 
 
 
@@ -2869,6 +2866,7 @@ function RetailerDashboard({ route }) {
                 await storeData(TERMS_CONDITIONS, false)
                 await storeData(WHATSAPPCHECKED, false)
                 await storeData(POPUP_SHOWN_DATE, '')
+                await storeData(NAVIGATE_TO_CLASS, '')
                 await AsyncStorage.removeItem('dontShowThisAgain')
                 dispatch(updateCompanyStyles({}));
                 dispatch(updateRetailerInfoData({}));
@@ -3304,7 +3302,7 @@ function RetailerDashboard({ route }) {
     }
 
     else {
-      submitApiCall(userDatafrom)
+      submitApiCall(getUserData)
     }
   }
   const handlePancard = (input) => {

@@ -22,7 +22,6 @@ const CustomLoaderDefault = ({
   // Dynamic styles for language change
   styles = useMemo(() => createStyles(), [global.selectedLanguageCode]);
 
-  const getUserData = useSelector(selectUser);
   const companyStyle = useSelector(getCompanyStyles);
   const dynamicStyles = companyStyle.value;
 

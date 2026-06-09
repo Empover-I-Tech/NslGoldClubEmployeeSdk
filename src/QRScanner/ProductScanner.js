@@ -41,9 +41,6 @@ function ProductScanner({ route }) {
     const [showVideoModal, setShowVideoModal] = useState(false);
     const [imageLink, setImageLink] = useState('')
     const navigation = useNavigation();
-    const [scanning, setScanning] = useState(true);
-    const [scanStatus, setScanStatus] = useState('ready');
-    const dispatch = useDispatch()
     const [productDetails, setProductDetails] = useState(null);
     const totalPoints = route?.params?.userPointsEarned;
     const [loading, setLoading] = useState(false)
@@ -68,8 +65,6 @@ function ProductScanner({ route }) {
     const [showCustomActionSheet, setShowCustomActionSheet] = useState(false)
     const [scannedResponse, setScannedResponse] = useState(null)
     const [flashOn, setFlashOn] = useState(false)
-    const [scannedCoupnStatus, setScannedCouponStatus] = useState(false)
-    const getUserData = useSelector(selectUser);
     const companyStyle = useSelector(getCompanyStyles);
     const [dynamicStyles, setDynamicStyles] = useState(companyStyle.value);
     const [showAlert, setShowAlert] = useState(false)

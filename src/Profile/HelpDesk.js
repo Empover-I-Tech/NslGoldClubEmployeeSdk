@@ -10,7 +10,7 @@ import CustomSuccessLoader from '../Components/CustomSuccessLoader';
 import CustomErrorLoader from '../Components/CustomErrorLoader';
 import { GetApiHeaders, getNetworkStatus, PostRequest, uploadFormData } from '../NetworkUtils/NetworkUtils';
 import { HTTP_OK, configs } from '../helpers/URLConstants';
-import { USER_ID, isNullOrEmpty, retrieveData, ROLENAME, downloadFileToLocal, USER_NAME } from '../assets/Utils/Utils';
+import { USER_ID, isNullOrEmpty, retrieveData, ROLENAME, downloadFileToLocal, USER_NAME, NAVIGATE_TO_CLASS } from '../assets/Utils/Utils';
 import SimpleToast from 'react-native-simple-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from '../redux/store/slices/UserSlice';
@@ -187,7 +187,7 @@ export const uploadAllComplaintsGlobal = async (complaintsArray, dispatch) => {
 function HelpDesk({ route }) {
   styles = useMemo(() => createStyles(), [global.selectedLanguageCode]);
   // var realm = new Realm({ path: 'User.realm' });
-  
+
   if (!realm) {
     console.log("Realm not initialized");
     return;
@@ -456,11 +456,8 @@ function HelpDesk({ route }) {
 
 
   const goBack = async () => {
-    const roleTypeDetails = await retrieveData(ROLENAME)
-    if (roleTypeDetails) {
-      let navigateTo = (roleTypeDetails === 'Retailer' || roleTypeDetails === 'Distributor') ? 'RetailerDashboard' : 'EmployeeDashboard'
-      navigation.navigate(navigateTo)
-    }
+    const dashboardScreen = await retrieveData(NAVIGATE_TO_CLASS);
+    navigation.navigate(dashboardScreen);
   };
 
   const showAlertWithMessage = (title, header, heaertext, message, yesBtn, noBtn, yesText, noText) => {

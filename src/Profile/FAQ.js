@@ -14,7 +14,7 @@ import CustomSuccessLoader from '../Components/CustomSuccessLoader';
 import CustomErrorLoader from '../Components/CustomErrorLoader';
 import { HTTP_OK, configs } from '../helpers/URLConstants';
 import { GetApiHeaders, getNetworkStatus, GetRequest } from '../NetworkUtils/NetworkUtils';
-import { FAQDATA, isHTML, retrieveData, storeData, ROLENAME } from '../assets/Utils/Utils';
+import { FAQDATA, isHTML, retrieveData, storeData, ROLENAME, NAVIGATE_TO_CLASS } from '../assets/Utils/Utils';
 import RenderHTML from 'react-native-render-html';
 import { useSelector } from 'react-redux';
 import { getCompanyStyles } from '../redux/store/slices/CompanyStyleSlice';
@@ -121,14 +121,12 @@ function FAQ() {
     AppState.addEventListener('change', handleAppStateChange);
   }, []);
 
-
-
   const goBack = async () => {
-    const roleTypeDetails = await retrieveData(ROLENAME)
-    if (roleTypeDetails) {
-      let navigateTo = (roleTypeDetails === 'Retailer' || roleTypeDetails === 'Distributor') ? 'RetailerDashboard' : 'EmployeeDashboard'
-      navigation.navigate(navigateTo)
-    }
+    const dashboardScreen = await retrieveData(NAVIGATE_TO_CLASS);
+
+    navigation.navigate(
+      dashboardScreen
+    );
   };
 
 

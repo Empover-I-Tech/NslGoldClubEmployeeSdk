@@ -26,11 +26,10 @@ const CustomBorderInputDropDown = (props) => {
     const [styles, setStyles] = useState(newStyles);
     const [colorScheme, setColorScheme] = useState(Appearance.getColorScheme());
     const [isActive, setIsActive] = useState(false);
-     const getUserData = useSelector(selectUser);
-      const companyStyle = useSelector(getCompanyStyles);
-      const [dynamicStyles,setDynamicStyles] = useState(companyStyle.value);
+    const companyStyle = useSelector(getCompanyStyles);
+    const [dynamicStyles, setDynamicStyles] = useState(companyStyle.value);
 
-      console.log("props", JSON.stringify(props))
+    console.log("props", JSON.stringify(props))
 
     const handleAppStateChange = useCallback((nextAppState) => {
         if (nextAppState === 'active') {
@@ -76,8 +75,8 @@ const CustomBorderInputDropDown = (props) => {
                             styles['font_size_11_semibold'],
                             styles['zindex_9999'],
                             styles['bg_white'],
-                            styles['padding_5'], 
-                            {lineHeight : 24}
+                            styles['padding_5'],
+                            { lineHeight: 24 }
                         ]}>
                         {props.labelName}
                         {props.IsRequired && (
@@ -96,7 +95,7 @@ const CustomBorderInputDropDown = (props) => {
                             styles['border_width_1'],
                             styles['border_radius_6'],
                             styles['border_color_light_grey'],
-                            props?.disabled && {backgroundColor:'rgba(0, 0, 0, 0.05)'},
+                            props?.disabled && { backgroundColor: 'rgba(0, 0, 0, 0.05)' },
                         ]}
                         onPress={() => {
                             props.onFocus();
@@ -105,8 +104,8 @@ const CustomBorderInputDropDown = (props) => {
                             style={[
                                 styles['font_size_12_regular'],
                                 // styles['text_color_black'],
-                                { color : dynamicStyles?.textColor ?? Colors.black },
-                                props?.disabled && {backgroundColor:'rgba(0, 0, 0, 0.0)'},
+                                { color: dynamicStyles?.textColor ?? Colors.black },
+                                props?.disabled && { backgroundColor: 'rgba(0, 0, 0, 0.0)' },
                                 styles['padding_left_10'],
                                 Platform.OS === 'ios' && styles['top_3'],
                                 styles['width_92%'],
@@ -145,7 +144,7 @@ const CustomBorderInputDropDown = (props) => {
                         styles['absolute_position'],
                         styles['margin_top_22']
                     ]}>
-                   {!props?.disabled &&  <Image
+                    {!props?.disabled && <Image
                         style={{
                             width: 14,
                             height: Platform.OS === 'android' ? 8 : 7

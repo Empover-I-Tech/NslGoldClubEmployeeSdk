@@ -96,7 +96,6 @@ function KYC({ route }) {
   const [originalGstNumber, setOriginalGstNumber] = useState("");
   const [originalAlternateMobileNumber, setOriginalAlternateMobileNumber] = useState("");
   const [showImages, setShowImages] = useState(false)
-  const getUserData = useSelector(selectUser);
   const companyStyle = useSelector(getCompanyStyles);
   const [dynamicStyles, setDynamicStyles] = useState(companyStyle.value);
 

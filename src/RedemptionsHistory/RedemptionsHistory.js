@@ -15,7 +15,7 @@ import CustomLoader from '../Components/CustomLoader';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CustomPaginationFunctional from '../Components/CustomPaginationFunctional';
 import CustomListViewModal from '../Modals/CustomListViewModal';
-import { retrieveData, ROLENAME } from '../assets/Utils/Utils';
+import { NAVIGATE_TO_CLASS, retrieveData, ROLENAME } from '../assets/Utils/Utils';
 import { getCompanyStyles } from '../redux/store/slices/CompanyStyleSlice';
 import { translate } from '../Localisation/Localisation';
 import { createStyles } from '../assets/style/createStyles';
@@ -182,11 +182,8 @@ function RedemptionsHistory() {
     }
 
     const goBack = async () => {
-        const roleTypeDetails = await retrieveData(ROLENAME)
-        if (roleTypeDetails) {
-            let navigateTo = (roleTypeDetails === 'Retailer' || roleTypeDetails === 'Distributor') ? 'RetailerDashboard' : 'EmployeeDashboard'
-            navigation.navigate(navigateTo)
-        }
+        const dashboardScreen = await retrieveData(NAVIGATE_TO_CLASS);
+        navigation.navigate(dashboardScreen);
     };
 
     const handleConfirm = (date) => {
@@ -257,7 +254,7 @@ function RedemptionsHistory() {
                     style={{
                         width: '40%',
                         color: labelColor,
-                        lineHeight : 24
+                        lineHeight: 24
                     }}
                 >
                     {label}
@@ -281,7 +278,7 @@ function RedemptionsHistory() {
                         {
                             width: '55%',
                             color: '#000',
-                            lineHeight : 24
+                            lineHeight: 24
                         },
                         valueStyle,
                     ]}
