@@ -110,7 +110,7 @@ export const getProgramsList = async () => {
     }
 }
 
-async function ScanHistory({ route }) {
+function ScanHistory({ route }) {
     styles = useMemo(() => createStyles(), [global.selectedLanguageCode]);
     // var realm = new Realm({ path: 'User.realm' });
     if (!realm) {
