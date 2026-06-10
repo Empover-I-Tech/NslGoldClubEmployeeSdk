@@ -43,15 +43,27 @@ const GCLoaderScreen = ({ route }) => {
     const loading = loadingCount > 0;
 
     useEffect(() => {
-        console.log("GCLoaderScreen useEffect triggered with route params:", route?.params);
-        if (route?.params !== undefined) {
-            changeLanguage(languageCode || 'en')
-            setEnvironment(buildEnvironment || 'PROD');
-            storeAuthData();
-            verifyOTPApiCall();
-        }
+        initializeSDK();
+    }, [route?.params]);
 
-    }, [route?.params])
+    const initializeSDK = async () => {
+        try {
+            if (!route?.params) return;
+
+            console.log('Initializing SDK...');
+
+            await changeLanguage(languageCode || 'en');
+
+            setEnvironment(buildEnvironment || 'PROD');
+
+            await storeAuthData();
+
+            await verifyOTPApiCall();
+
+        } catch (error) {
+            console.log('initializeSDK error:', error);
+        }
+    };
 
     const verifyOTPApiCall = async () => {
         const networkStatus = await getNetworkStatus();
