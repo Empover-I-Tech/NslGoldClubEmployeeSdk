@@ -43,7 +43,7 @@ const fs = require('fs');
 
 export const GetMastersComplaint = async () => {
   // let realm = new Realm({ path: 'User.realm' });
-  
+
   if (!realm) {
     console.log("Realm not initialized");
     return;
@@ -91,7 +91,7 @@ export const GetMastersComplaint = async () => {
 function Complaint() {
   styles = useMemo(() => createStyles(), [global.selectedLanguageCode]);
   // var realm = new Realm({ path: 'User.realm' });
- 
+
   if (!realm) {
     console.log("Realm not initialized");
     return;
@@ -238,7 +238,7 @@ function Complaint() {
   }, []);
 
   const goBack = async () => {
-    navigation.navigate('HelpDesk')
+    navigation.goBack()
   };
 
   const changeDropDownData = (dropDownData, type, selectedItem) => {
@@ -753,10 +753,10 @@ function Complaint() {
     <SafeAreaView style={{ flex: 1, backgroundColor: dynamicStyles.primaryColor }} edges={['top']}>
       <View style={[{ position: "relative", flex: 1, backgroundColor: 'white' }]}>
         {/* {Platform.OS === 'android' && <StatusBar backgroundColor={dynamicStyles.primaryColor} barStyle='dark-content' />} */}
-        <View style={[{ backgroundColor: dynamicStyles.primaryColor }, {  borderBottomStartRadius: 10, borderBottomEndRadius: 10 }]}>
-          <TouchableOpacity style={[styles['flex_direction_row']]} onPress={() => navigation.goBack()}>
-            <Image style={[{ tintColor: dynamicStyles.secondaryColor }, { height: 15, width: 20, top: 5 }]} source={require('../assets/images/previous.png')}></Image>
-            <Text style={[styles['margin_left_10'], { color: dynamicStyles.secondaryColor }, styles['font_size_18_bold'], Platform.OS === 'ios' && { minHeight: 25 }]}>{translate('complaint')}</Text>
+        <View style={[{ backgroundColor: dynamicStyles.primaryColor }, { borderBottomStartRadius: 10, borderBottomEndRadius: 10 }]}>
+          <TouchableOpacity style={[styles['flex_direction_row'], { alignItems: 'center' }]} onPress={() => { goBack() }}>
+            <Image style={[styles['margin_left_20'], styles['tint_color_white'], { height: 15, width: 20, top: Platform.OS == 'ios' ? 10 : 0 }]} source={require('../assets/images/previous.png')}></Image>
+            <Text style={[styles['margin_left_10'],  styles['text_color_white'], styles['font_size_18_bold']]}>{translate('complaint')}</Text>
           </TouchableOpacity>
         </View>
         {/* <View style={[styles['height_100%'], styles['width_100%']]}> */}
