@@ -1,10 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
-import { Alert } from 'react-native';
+import { useEffect, useState } from 'react';
 import { getNetworkStatus } from '../NetworkUtils/NetworkUtils';
+import NoInternetOverlay from '../Components/NoInternetOverlay';
 
 const SDKNetworkHandler = () => {
   const [isConnected, setIsConnected] = useState(true);
-  const alertShown = useRef(false);
 
   useEffect(() => {
     const checkNetwork = async () => {
@@ -19,31 +18,9 @@ const SDKNetworkHandler = () => {
     return () => clearInterval(interval);
   }, []);
 
-  useEffect(() => {
-    if (isConnected === false && !alertShown.current) {
-      alertShown.current = true;
-
-      Alert.alert(
-        'No Internet',
-        'Please check your internet connection.',
-        [
-          {
-            text: 'OK',
-            onPress: () => {
-              alertShown.current = false;
-            },
-          },
-        ],
-        { cancelable: false },
-      );
-    }
-
-    if (isConnected === true) {
-      alertShown.current = false;
-    }
-  }, [isConnected]);
-
-  return null;
+  return (
+    <NoInternetOverlay visible={!isConnected} />
+  );
 };
 
 export default SDKNetworkHandler;
