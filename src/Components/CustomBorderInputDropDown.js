@@ -62,7 +62,7 @@ const CustomBorderInputDropDown = (props) => {
             style={[
                 styles['centerItems'],
                 props.width !== undefined ? props.width : styles['width_93%'],
-                { left: -3 }
+                { left: -3, minHeight:50 }
             ]}>
             <View style={[styles['margin_bottom_5']]}>
                 {props.labelName !== undefined && (
@@ -75,8 +75,8 @@ const CustomBorderInputDropDown = (props) => {
                             styles['font_size_11_semibold'],
                             styles['zindex_9999'],
                             styles['bg_white'],
-                            styles['padding_5'],
-                            { lineHeight: 24 }
+                            // styles['padding_5'],
+                            { lineHeight: 24, padding:4 }
                         ]}>
                         {props.labelName}
                         {props.IsRequired && (

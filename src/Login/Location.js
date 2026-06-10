@@ -50,8 +50,7 @@ const Location = ({ route }) => {
     const [screen, setScreen] = useState(route?.params?.screen);
     const [pinDance, setPinDance] = useState(false);
     const [loading, setLoading] = useState(false);
-    // const cameraRef = useRef(null);
-    const cameraRef = React.createRef();
+    const cameraRef = useRef(null);
     const { width, height } = Dimensions.get('window');
     const companyStyle = useSelector(getCompanyStyles);
     const navigation = useNavigation();
@@ -63,7 +62,6 @@ const Location = ({ route }) => {
     const [zoomLevel, setZoomLevel] = useState(route?.params?.zoom || 0)
     console.log("route?.params?.zoom", JSON.stringify(route))
     console.log("route?.params?.loaderPath", JSON.stringify(route?.params?.loaderPath))
-    let [loaderFile, setLoaderFile] = useState('')
     const centerMap = (lat, lng, zoomIn) => {
         if (!cameraRef?.current || !lat || !lng || isUserInteracting) return;
 
@@ -233,13 +231,13 @@ const Location = ({ route }) => {
                     paddingTop: Platform.OS === 'ios' ? 60 : 20,
                 }}
             >
-                <TouchableOpacity style={styles['flex_direction_row']} onPress={goSignup}>
+                <TouchableOpacity style={[styles['flex_direction_row'], { alignItems: 'center' }]} onPress={goSignup}>
                     <Image
                         style={{
                             tintColor: screen === 'SignUp' ? secondaryColor : dynamicStyles?.secondaryColor,
                             height: 15,
                             width: 20,
-                            top: 5,
+                            // top: 5,
                         }}
                         source={require('../assets/images/previous.png')}
                     />
@@ -276,9 +274,15 @@ const Location = ({ route }) => {
                             ref={cameraRef}
                             zoomLevel={route?.params?.zoom || 12}
                             animationDuration={1000}
-                        // centerCoordinate={[route?.params?.longitude,route?.params?.latitude]}
+                        // centerCoordinate={[route?.params?.longitude, route?.params?.latitude]}
                         />
-                        <MapplsGL.UserLocation visible={true} showsUserHeadingIndicator={true} />
+                        {!route?.params?.coordinates && (
+                            <MapplsGL.UserLocation
+                                visible={true}
+                                showsUserHeadingIndicator={true}
+                            />
+                        )}
+                        {/* <MapplsGL.UserLocation visible={true} showsUserHeadingIndicator={true} /> */}
                     </MapplsGL.MapView>
                 )}
             </View>

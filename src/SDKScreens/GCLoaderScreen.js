@@ -1,13 +1,13 @@
-import { use, useEffect, useState } from 'react';
-import { View, Text, Alert } from 'react-native'
+import {  useEffect, useState } from 'react';
+import { Alert } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux';
 import { changeLanguage, translate } from '../Localisation/Localisation';
 import { useNavigation } from '@react-navigation/native';
-import { configs, HTTP_OK, HTTP_SWITCHING_PROTOCOLS, setEnvironment } from '../helpers/URLConstants';
+import { configs, HTTP_OK, setEnvironment } from '../helpers/URLConstants';
 import { GetApiHeaders, getNetworkStatus, PostRequest } from '../NetworkUtils/NetworkUtils';
 import CustomLoader from '../Components/CustomLoader';
 import { setUser } from '../redux/store/slices/UserSlice';
-import { DEVICE_TOKEN, EDITDATA, LOGINONCE, MOBILE_NUMBER, PROFILEIMAGE, ROLEID, ROLENAME, SELECTEDCOMPANY, TERMS_CONDITIONS, USERMENU, USER_ID, USER_NAME, WHATSAPPCHECKED, downloadFileToLocal, getDeviceId, retrieveData, storeData, SDK_AUTH_ID, SDK_AUTH_TOKEN, NAVIGATE_TO_CLASS } from '../assets/Utils/Utils';
+import { DEVICE_TOKEN, LOGINONCE, MOBILE_NUMBER, PROFILEIMAGE, ROLEID, ROLENAME, SELECTEDCOMPANY, USERMENU, USER_ID, USER_NAME, downloadFileToLocal, storeData, SDK_AUTH_ID, SDK_AUTH_TOKEN, NAVIGATE_TO_CLASS, FCM_TOKEN } from '../assets/Utils/Utils';
 import { updateCompanyStyles } from '../redux/store/slices/CompanyStyleSlice';
 import SimpleToast from 'react-native-simple-toast';
 import { Colors } from '../assets/Utils/Color';
@@ -25,7 +25,7 @@ const GCLoaderScreen = ({ route }) => {
     const navigation = useNavigation()
     const [loadingCount, setLoadingCount] = useState(0);
     const [loadingMessage, setLoadingMessage] = useState('');
-    let [roleNameNav, setRoleNameNav] = useState('')
+
     const startLoading = (msg = '') => {
         setLoadingMessage(msg);
         setLoadingCount(prev => prev + 1);
@@ -62,7 +62,6 @@ const GCLoaderScreen = ({ route }) => {
                 var dataList = {
                     "mobileNumber": mobileNumber,
                 }
-
                 var APIResponse = await PostRequest(getloginURL, getHeaders, dataList);
                 if (APIResponse != undefined && APIResponse != null) {
 
@@ -102,37 +101,14 @@ const GCLoaderScreen = ({ route }) => {
                             }
                             let navigateTo = (verifyOTPResponse[0]?.roleName === 'Retailer' || verifyOTPResponse[0]?.roleName === 'Distributor') ? 'RetailerDashboard' : 'EmployeeDashboardSDK';
                             storeData(NAVIGATE_TO_CLASS, navigateTo)
-                            // navigation.navigate(navigateTo, { userData: {} })
-                            navigation.reset({
-                                index: 0,
-                                routes: [
-                                    {
-                                        name: navigateTo,
-                                        params: { userData: {} },
-                                    },
-                                ],
-                            });
+                            navigation.replace(navigateTo, { userData: {} })
+
 
                         } else {
                             setTimeout(() => {
                                 SimpleToast.show(translate('something_went_wrong'));
                             }, 500);
                         }
-                    }
-                    else if (APIResponse?.statusCode == HTTP_SWITCHING_PROTOCOLS) {
-                        setTimeout(() => {
-                            navigation.reset({
-                                index: 0,
-                                routes: [{
-                                    name: 'CompanySelection',
-                                    params: {
-                                        loginMobileNumber: mobileNumber
-                                    }
-                                }]
-                            })
-                        }, 1500);
-
-
                     }
                     else {
                         Alert.alert(
@@ -147,11 +123,10 @@ const GCLoaderScreen = ({ route }) => {
                             { cancelable: false }
                         );
                     }
-
                 }
             }
             catch (error) {
-
+                console.log(error)
             }
             finally {
                 stopLoading();
@@ -166,13 +141,12 @@ const GCLoaderScreen = ({ route }) => {
         try {
             await storeData(SDK_AUTH_TOKEN, authToken || '');
             await storeData(SDK_AUTH_ID, authId || '');
+            await storeData(FCM_TOKEN, fcmToken || '')
             console.log("Auth data stored successfully:", { authId, authToken });
         } catch (error) {
             console.error("Error storing auth data:", error);
         }
     }
-
-
 
     return loading ? (
         <CustomLoader

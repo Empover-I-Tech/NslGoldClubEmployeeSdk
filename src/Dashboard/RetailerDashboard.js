@@ -1795,7 +1795,7 @@ function RetailerDashboard({ route }) {
                       </TouchableOpacity>
                     </View>
                   ) : (
-                    <View></View>
+                    <></>
                     // <LinearGradient
                     //   colors={['rgba(255, 255, 255, 1)', 'rgba(242, 246, 249, 1)']}
                     //   style={{
@@ -1865,7 +1865,7 @@ function RetailerDashboard({ route }) {
                       </TouchableOpacity>
                     </View>
                   ) : (
-                    <View></View>
+                    <></>
                     // <LinearGradient
                     //   colors={['rgba(255, 255, 255, 1)', 'rgba(242, 246, 249, 1)']}
                     //   style={{

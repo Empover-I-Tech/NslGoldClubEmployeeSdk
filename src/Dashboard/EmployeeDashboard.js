@@ -1798,7 +1798,7 @@ function EmployeeDashboard({ route }) {
                             fontFamily: FontForWeight('SemiBold')
                           }}
                         >
-                          {translate('no_data_available')}
+                          {translate('no_data_available_en')}
                         </Text>
                       </View>
                     }
@@ -1828,7 +1828,7 @@ function EmployeeDashboard({ route }) {
                             fontFamily: FontForWeight('SemiBold')
                           }}
                         >
-                          {translate('no_data_available')}
+                          {translate('no_data_available_en')}
                         </Text>
                       </View>
                     }

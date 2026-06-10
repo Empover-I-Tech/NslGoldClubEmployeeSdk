@@ -13,7 +13,6 @@ import { HTTP_OK, MAP_MY_INDIA_URL, configs } from '../helpers/URLConstants';
 import SimpleToast from 'react-native-simple-toast';
 import CustomCalanderSelection from "../Components/CustomCalanderSelection";
 import CustomLoader from '../Components/CustomLoader';
-// import DateTimePickerModal from "react-native-modal-datetime-picker";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import axios from 'axios';
 import CustomInputDropDown from '../Components/CustomInputDropDown';

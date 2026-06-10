@@ -8,10 +8,8 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import messaging from '@react-native-firebase/messaging';
 import { EventRegister } from 'react-native-event-listeners';
-import { MAP_MY_INDIA_KEY } from '../helpers/URLConstants';
 import { selectUser } from '../redux/store/slices/UserSlice';
 import { translate } from '../Localisation/Localisation';
-import { useSelector } from 'react-redux';
 import DeviceInfo from 'react-native-device-info';
 
 const REQUEST_TIMEOUT = 60000;

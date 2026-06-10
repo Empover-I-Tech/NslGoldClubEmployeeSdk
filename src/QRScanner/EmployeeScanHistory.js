@@ -14,7 +14,7 @@ import CustomSuccessLoader from "../Components/CustomSuccessLoader";
 import CustomErrorLoader from "../Components/CustomErrorLoader";
 import { HTTP_OK, configs } from "../helpers/URLConstants";
 import CustomListViewModal from "../Modals/CustomListViewModal";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
+import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from "moment";
 import { useSelector } from "react-redux";
 import CustomSearchListViewModal from "../Modals/CustomSearchListViewModal";
@@ -1377,7 +1377,7 @@ function EmployeeScanHistory({ route }) {
                 />
             }
 
-            {
+            {/* {
                 showDatePicker && (
                     <DateTimePickerModal
                         isVisible={true}
@@ -1388,16 +1388,27 @@ function EmployeeScanHistory({ route }) {
                         onConfirm={(date) => { handleConfirm(date) }}
                         onCancel={() => handleCancel()}
                     />
-                    // <CustomCalendarModal
-                    //     labelName={translate('selectDate')}
-                    //     visible={true}
-                    //     mode="date"
-                    //     date={new Date(selectedDate)}
-                    //     onConfirm={(date) => { handleConfirm(date) }}
-                    //     onCancel={() => handleCancel()}
-                    //     minimumDate={new Date(minimumDate)}
-                    //     maximumDate={new Date(maximumDate)}
-                    // />
+                    
+                )
+            } */}
+
+            {
+                showDatePicker && (
+                    <DateTimePicker
+                        value={selectedDate || new Date()}
+                        mode="date"
+                        display="default"
+                        is24Hour={false}
+                        onChange={(event, date) => {
+                            handleCancel();
+                            if (event.type === 'dismissed') {
+                                return;
+                            }
+                            if (date) {
+                                handleConfirm(date);
+                            }
+                        }}
+                    />
                 )
             }
             {showCouponDetails && showCouponData()}

@@ -59,7 +59,6 @@
     "react-native-image-resizer": ">=1.4.5",
     "react-native-keyboard-aware-scroll-view": ">=0.9.5",
     "react-native-localize": ">=2.2.4",
-    "react-native-modal-datetime-picker": ">=7.6.1",
     "react-native-orientation-locker": ">=1.7.0",
     "react-native-otp-textinput": ">=1.1.6",
     "react-native-pdf": ">=7.0.3",

@@ -663,10 +663,11 @@
     "no_gps": "Unable to get the GPS location. Please try again after some time.",
     "sub_district": "Sub District",
     "total_amount_inr": "Total Amount (INR)",
-    "filterByDate" : "Filter by Date",
-    "ActivitySummary" : "Activity Summary",
-    "CropInsights" : "Crop Insights",
-    "retailer_services" : "Retailer Services",
-    "more" : "More",
-    "retailer_mobilenumber" : "Retailer Mobile Numer"
+    "filterByDate": "Filter by Date",
+    "ActivitySummary": "Activity Summary",
+    "CropInsights": "Crop Insights",
+    "retailer_services": "Retailer Services",
+    "more": "More",
+    "retailer_mobilenumber": "Retailer Mobile Numer",
+    "no_data_available_en": "No Data Available"
 }

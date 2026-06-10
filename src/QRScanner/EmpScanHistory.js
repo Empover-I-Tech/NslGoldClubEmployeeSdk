@@ -12,7 +12,7 @@ import SimpleToast from "react-native-simple-toast";
 import CustomLoader from "../Components/CustomLoader";
 import { HTTP_OK, configs } from "../helpers/URLConstants";
 import CustomListViewModal from "../Modals/CustomListViewModal";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
+import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from "moment";
 import { useSelector } from "react-redux";
 import { filterArrayOfObjects2, filterObjects } from "../assets/Utils/Utils";
@@ -265,8 +265,8 @@ function EmpScanHistory({ route }) {
             const input = {
                 userId: header?.userId,
                 programName: 0,
-                headQuaterId : headQuaterId?.toString() || '',
-                mobileNumber : mobileNumber?.toString() || '',
+                headQuaterId: headQuaterId?.toString() || '',
+                mobileNumber: mobileNumber?.toString() || '',
                 stateId: stateSelectedId?.toString() || '',
                 districtId: districtSelectedId?.toString() || '',
                 subDistrictId: subDistrictSelectedId?.toString() || '',
@@ -826,7 +826,7 @@ function EmpScanHistory({ route }) {
                         }}
                     />
 
-                    <View style={[{width : "95%"}]}>
+                    <View style={[{ width: "95%" }]}>
                         <CustomTextInput
                             textFiledWidth={"98%"}
                             leftSpace={-5}
@@ -1113,7 +1113,7 @@ function EmpScanHistory({ route }) {
                 />
             }
 
-            {
+            {/* {
                 showDatePicker && (
                     <DateTimePickerModal
                         isVisible={true}
@@ -1125,6 +1125,26 @@ function EmpScanHistory({ route }) {
                         onCancel={() => handleCancel()}
                     />
 
+                )
+            } */}
+
+            {
+                showDatePicker && (
+                    <DateTimePicker
+                        value={selectedDate || new Date()}
+                        mode="date"
+                        display="default"
+                        is24Hour={false}
+                        onChange={(event, date) => {
+                            handleCancel();
+                            if (event.type === 'dismissed') {
+                                return;
+                            }
+                            if (date) {
+                                handleConfirm(date);
+                            }
+                        }}
+                    />
                 )
             }
             {showCouponDetails && showCouponData()}

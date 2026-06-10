@@ -14,7 +14,7 @@ import CustomSuccessLoader from "../Components/CustomSuccessLoader";
 import CustomErrorLoader from "../Components/CustomErrorLoader";
 import { HTTP_OK, configs } from "../helpers/URLConstants";
 import CustomListViewModal from "../Modals/CustomListViewModal";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
+import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from "moment";
 import { useSelector } from "react-redux";
 import CustomSearchListViewModal from "../Modals/CustomSearchListViewModal";
@@ -386,7 +386,7 @@ function EmployeeRedemptionsHistory({ route }) {
             regionId: regionSelectedId,
             territoryId: territorySelectedId,
             headQuarterId: headquarterSelectedId,
-            mobileNumber : mobileNumber,
+            mobileNumber: mobileNumber,
             // retailerId: retailerSelectedId,
             yearId: yearSelectedId,
             fromDate: fromDate ? moment(fromDate, "DD-MM-YYYY").format("YYYY-MM-DD") : "",
@@ -1107,7 +1107,7 @@ function EmployeeRedemptionsHistory({ route }) {
                     territoryId={territorySelectedId}
                 />
             }
-
+            {/* 
             {
                 showDatePicker && (
                     <DateTimePickerModal
@@ -1120,6 +1120,25 @@ function EmployeeRedemptionsHistory({ route }) {
                         onCancel={() => handleCancel()}
                     />
 
+                )
+            } */}
+            {
+                showDatePicker && (
+                    <DateTimePicker
+                        value={selectedDate || new Date()}
+                        mode="date"
+                        display="default"
+                        is24Hour={false}
+                        onChange={(event, date) => {
+                            handleCancel();
+                            if (event.type === 'dismissed') {
+                                return;
+                            }
+                            if (date) {
+                                handleConfirm(date);
+                            }
+                        }}
+                    />
                 )
             }
             {showFilterModal && showFilters()}

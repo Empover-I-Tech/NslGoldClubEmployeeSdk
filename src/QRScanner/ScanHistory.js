@@ -117,7 +117,6 @@ function ScanHistory({ route }) {
         console.log("Realm not initialized");
         return;
     }
-    scan
     const navigation = useNavigation();
     const totalPoints = route?.params?.userPointsEarned;
     const [loading, setLoading] = useState(false)
@@ -170,6 +169,7 @@ function ScanHistory({ route }) {
     const [showAlertNoButton, setShowAlertNoButton] = useState(false)
     const [showAlertyesButtonText, setShowAlertyesButtonText] = useState(false)
     const [showAlertNoButtonText, setShowAlertNoButtonText] = useState(false)
+    const [totalEarnedPoints, setTotalEarnedPoints] = useState("0")
 
 
     useFocusEffect(
@@ -187,7 +187,6 @@ function ScanHistory({ route }) {
             console.log("Realm not initialized");
             return;
         }
-        scan
         var networkStatus = await getNetworkStatus()
         if (networkStatus) {
             var header = await GetApiHeaders();
@@ -223,13 +222,14 @@ function ScanHistory({ route }) {
     const handleFocus = () => {
         console.log('Screen is focused!');
         const programsList = realm.objects('ScanHistoryProgramsList')
+        console.log("programsList===", JSON.stringify(programsList))
         checkRealData()
         if (networkStatus) {
-            // getSeasonMaster();
             submitButtonPress(seasonName, 'useLocalId')
             if (programsList.length === 0) {
                 getProgramsListLocal()
             }
+
         }
     };
 
@@ -315,13 +315,12 @@ function ScanHistory({ route }) {
     };
 
     const submitButtonPress = async (seasonNameIS, sendProgramID = null) => {
+        setLoading(true);
+        setLoadingMessage(translate('please_wait_getting_data'))
         console.log('what is coming SCAN_HISTORY:', seasonNameIS)
         const programsList = realm.objects('ScanHistoryProgramsList')
         let localProgramName;
         let localProgramID;
-
-        let localCompanyName;
-        let localCompanyID;
 
         if (programsList.length !== 0) {
             let data = programsList[0];
@@ -351,54 +350,47 @@ function ScanHistory({ route }) {
         var url = configs.BASE_URL + configs.QRSCAN.SCAN_HISTORY_V3;
 
         console.log("URL =>", url, " Headers =>", header, " Input =>", input);
-        var apiResponse = await PostRequest(url, header, input);
-        if (apiResponse?.response?.cropList.length > 0) {
-            setCropHistoryData(apiResponse?.response?.cropList)
-            console.log("online sainath reddy scan history data", JSON.stringify(apiResponse));
-            setShowScanData(false)
-            setShowProductData(false)
-            setShowCropData(true)
-            setNumberOfRecords(apiResponse?.response?.count)
-            const total_pages = Math.ceil(apiResponse?.response?.count / records_per_page);
-            const pagesAr = generateIntegerArray(total_pages)
-            setBonusPoints(apiResponse?.response?.bonusPoints)
-            setSignUpBonusPoints(apiResponse?.response?.signUpBonusPoints)
-            setPagesArray(pagesAr)
-            setNumberOfPages(total_pages)
-            console.log(pagesAr);
-            try {
-                // realm.write(() => {
-                //     realm.delete(realm.objects('ScanHistoryResponse'));
-                //     realm.create('ScanHistoryResponse', {
-                //         _id: new Date(),
-                //         data: JSON.stringify(apiResponse),
-                //         timestamp: new Date(),
-                //     });
-                //     console.log('added successfully into realm scan history')
-                // });
-            } catch (err) {
-                console.log(err)
+        try {
+            var apiResponse = await PostRequest(url, header, input);
+            if (apiResponse?.response?.cropList.length > 0) {
+                setCropHistoryData(apiResponse?.response?.cropList)
+                console.log("online sainath reddy scan history data", JSON.stringify(apiResponse));
+                setShowScanData(false)
+                setShowProductData(false)
+                setShowCropData(true)
+                setNumberOfRecords(apiResponse?.response?.count)
+                const total_pages = Math.ceil(apiResponse?.response?.count / records_per_page);
+                const pagesAr = generateIntegerArray(total_pages)
+                setBonusPoints(apiResponse?.response?.bonusPoints)
+                setSignUpBonusPoints(apiResponse?.response?.signUpBonusPoints)
+                setPagesArray(pagesAr)
+                setNumberOfPages(total_pages)
+                console.log(pagesAr);
+            }
+            if (apiResponse?.response?.cropList?.length === 0) {
+                setCropHistoryData(apiResponse?.response?.cropList)
+                console.log("online sainath reddy scan history data", JSON.stringify(apiResponse));
+                setShowScanData(false)
+                setShowProductData(false)
+                setShowCropData(true)
+                setNumberOfRecords(apiResponse?.response?.count)
+                const total_pages = Math.ceil(apiResponse?.response?.count / records_per_page);
+                const pagesAr = generateIntegerArray(total_pages)
+                setBonusPoints(apiResponse?.response?.bonusPoints)
+                setSignUpBonusPoints(apiResponse?.response?.signUpBonusPoints)
+                setPagesArray(pagesAr)
+                setNumberOfPages(total_pages)
+                console.log(pagesAr);
             }
         }
-        if (apiResponse?.response?.cropList?.length === 0) {
-            setCropHistoryData(apiResponse?.response?.cropList)
-            console.log("online sainath reddy scan history data", JSON.stringify(apiResponse));
-            setShowScanData(false)
-            setShowProductData(false)
-            setShowCropData(true)
-            setNumberOfRecords(apiResponse?.response?.count)
-            const total_pages = Math.ceil(apiResponse?.response?.count / records_per_page);
-            const pagesAr = generateIntegerArray(total_pages)
-            setBonusPoints(apiResponse?.response?.bonusPoints)
-            setSignUpBonusPoints(apiResponse?.response?.signUpBonusPoints)
-            setPagesArray(pagesAr)
-            setNumberOfPages(total_pages)
-            console.log(pagesAr);
+        catch (error) {
+            console.log(error);
         }
-        setTimeout(() => {
+        finally {
             setLoading(false)
             setLoadingMessage("")
-        }, 500);
+        }
+
     }
 
     function generateIntegerArray(n) {
@@ -626,6 +618,18 @@ function ScanHistory({ route }) {
         )
     }
 
+    useEffect(() => {
+        console.log("cropHistoryData =", cropHistoryData);
+
+        const totalEarnedPoints = cropHistoryData?.reduce(
+            (sum, crop) => sum + Number(crop?.pointsEarned || 0),
+            0
+        ) || 0;
+        setTotalEarnedPoints(totalEarnedPoints)
+        console.log("totalEarnedPoints =", totalEarnedPoints);
+
+    }, [cropHistoryData]);
+
 
     const showCouponData = () => {
         const momentDate = moment(itemClicked?.transactionDate, "YYYY-MM-DD HH:mm:ss.SSS");
@@ -825,7 +829,7 @@ function ScanHistory({ route }) {
 
                         <View style={[{ borderRadius: 8, borderWidth: 0.5, borderColor: '#B4B4B4', overflow: 'hidden' }]}>
                             {showCropData &&
-                                <View style={[{ minHeight: 60, width: '100%', backgroundColor: '#E5E5E5', flexDirection: 'row', flexGrow: 1, justifyContent: 'space-between' }]}>
+                                <View style={[{ height: 70, width: '100%', backgroundColor: '#E5E5E5', flexDirection: 'row', flexGrow: 1, justifyContent: 'space-between' }]}>
                                     <View style={[styles['centerItems'], { width: '10%', borderRightWidth: 0.5, height: '100%', borderColor: '#B4B4B4' }]}>
                                         <Text style={[{ color: dynamicStyles.textColor }, styles['text_align_center'], styles['font_size_13_semibold']]}>{translate('sno')}</Text>
                                     </View>
@@ -904,6 +908,8 @@ function ScanHistory({ route }) {
                                     data={cropHistoryData != undefined ? cropHistoryData : []}
                                     renderItem={({ item, index }) => renderCropHistoryItem(item, index)}
                                     keyExtractor={(item, index) => index.toString()}
+                                    scrollEnabled={false}
+
                                 />
                             ) :
                                 showProductData ? (
@@ -911,6 +917,7 @@ function ScanHistory({ route }) {
                                         data={productsHistoryData != undefined ? productsHistoryData : []}
                                         renderItem={({ item, index }) => renderProductsItems(item, index)}
                                         keyExtractor={(item, index) => index.toString()}
+                                        scrollEnabled={false}
                                     />
                                 ) :
                                     showScanData ? (
@@ -918,6 +925,7 @@ function ScanHistory({ route }) {
                                             data={scanHistoryData != undefined ? scanHistoryData : []}
                                             renderItem={({ item, index }) => renderScanHistory(item, index)}
                                             keyExtractor={(item, index) => index.toString()}
+                                            scrollEnabled={false}
                                         />
                                     )
                                         : (
@@ -931,7 +939,7 @@ function ScanHistory({ route }) {
                     </View>
 
                     {showCropData && (cropHistoryData != undefined && cropHistoryData.length > 0) &&
-                        <View style={[{ width: '100%', backgroundColor: Colors.white, borderRadius: 8, padding: 5, marginTop: 10 }]}>
+                        <View style={[{ width: '100%', backgroundColor: Colors.white, borderRadius: 8, padding: 5, marginTop: 8, marginBottom: 10 }]}>
 
                             <View style={[{
                                 height: 50, width: '100%', flexDirection: 'row', flexGrow: 1, justifyContent: 'space-between',
@@ -954,7 +962,16 @@ function ScanHistory({ route }) {
 
                             <View style={[{ height: 50, width: '100%', flexDirection: 'row', flexGrow: 1, justifyContent: 'space-between', borderTopWidth: 0.5, borderColor: '#B4B4B4' }]}>
                                 <View style={[{ width: '100%', height: '100%', borderColor: '#B4B4B4', justifyContent: 'center' }]}>
-                                    <Text style={[{ color: dynamicStyles.textColor, paddingStart: 10 }, styles['font_size_13_semibold']]}>{cropHistoryData != undefined ? cropHistoryData.reduce((acc, crop) => acc + crop.pointsEarned, 0) : 0}</Text>
+                                    <Text
+                                        style={{
+                                            color: "#000",
+                                            fontSize: 16,
+                                            fontWeight: "bold",
+                                            paddingStart: 10,
+                                        }}
+                                    >
+                                        {String(totalEarnedPoints)}
+                                    </Text>
                                 </View>
                                 {/* <View style={[styles['centerItems'], { width: '25%', borderRightWidth: 0.5, height: '100%', borderColor: '#B4B4B4' }]}>
                                         <Text style={[{ color: dynamicStyles.textColor }, styles['text_align_center'], styles['font_size_13_semibold']]}>{bonusPoints}</Text>

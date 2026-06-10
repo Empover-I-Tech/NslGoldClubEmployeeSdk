@@ -5,7 +5,7 @@ import { BuildStyleOverwrite } from '../assets/style/BuildStyle';
 import { Styles } from '../assets/style/styles';
 import { Colors } from '../assets/Utils/Color';
 import { useNavigation } from '@react-navigation/native';
-import DateTimePickerModal from "react-native-modal-datetime-picker";
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { GetApiHeaders, PostRequest, getNetworkStatus } from '../NetworkUtils/NetworkUtils';
 import { HTTP_OK, configs } from '../helpers/URLConstants';
 import SimpleToast from 'react-native-simple-toast';
@@ -15,7 +15,7 @@ import CustomLoader from '../Components/CustomLoader';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CustomPaginationFunctional from '../Components/CustomPaginationFunctional';
 import CustomListViewModal from '../Modals/CustomListViewModal';
-import { NAVIGATE_TO_CLASS, retrieveData, ROLENAME } from '../assets/Utils/Utils';
+import { NAVIGATE_TO_CLASS, retrieveData } from '../assets/Utils/Utils';
 import { getCompanyStyles } from '../redux/store/slices/CompanyStyleSlice';
 import { translate } from '../Localisation/Localisation';
 import { createStyles } from '../assets/style/createStyles';
@@ -481,7 +481,7 @@ function RedemptionsHistory() {
 
 
                 </View>
-                {showDatePicker &&
+                {/* {showDatePicker &&
                     (
                         <DateTimePickerModal
                             isVisible={true}
@@ -494,7 +494,32 @@ function RedemptionsHistory() {
                             onCancel={() => { handleCancel() }}
                         />
                     )
+                } */}
+
+                {
+                    showDatePicker && (
+                        <DateTimePicker
+                            value={selectedDate}
+                            mode="date"
+                            display="default"
+                            minimumDate={minimumDate}
+                            maximumDate={maximumDate}
+                            is24Hour={false}
+                            onChange={(event, date) => {
+                                handleCancel();
+
+                                if (event.type === 'dismissed') {
+                                    return;
+                                }
+
+                                if (date) {
+                                    handleConfirm(date);
+                                }
+                            }}
+                        />
+                    )
                 }
+
                 {
                     showDropDowns &&
                     <CustomListViewModal

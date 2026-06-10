@@ -19,7 +19,7 @@ import { HTTP_OK, configs } from '../helpers/URLConstants';
 import CustomInputDropDown from '../Components/CustomInputDropDown';
 import CustomListViewModal from '../Modals/CustomListViewModal';
 import CustomCalanderSelection from '../Components/CustomCalanderSelection';
-import DateTimePickerModal from "react-native-modal-datetime-picker";
+import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
 import SimpleToast from 'react-native-simple-toast';
 import DeviceInfo from 'react-native-device-info';
@@ -312,8 +312,6 @@ function MyAccountEmployee() {
                     setSuccessLoadingMessage(error.message)
                 }, 1000);
             }
-        } else {
-            // SimpleToast.show(translate('no_internet_conneccted'))
         }
         if (networkStatus) {
             employeeProfileDetails();
@@ -424,10 +422,12 @@ function MyAccountEmployee() {
                         setLoading(false)
                     }, 500);
                     if (APIResponse.statusCode == HTTP_OK) {
+                        employeeProfileDetails()
                         setTimeout(() => {
                             setLoading(false)
                             setSuccessLoading(true)
                             setSuccessLoadingMessage(translate('profileUpdatedSuccessfully'))
+
                         }, 1000);
 
                         setTimeout(async () => {
@@ -639,7 +639,7 @@ function MyAccountEmployee() {
             {Platform.OS === 'android' && <StatusBar backgroundColor={dynamicStyles?.primaryColor} barStyle='dark-content' />}
 
             <View style={[{ backgroundColor: dynamicStyles?.primaryColor, padding: 20, borderBottomStartRadius: 10, borderBottomEndRadius: 10, paddingTop: Platform.OS == 'ios' ? 60 : 0 }]}>
-                <TouchableOpacity style={[styles['flex_direction_row'], {alignItems:'center'}]} onPress={() => { goBack() }}>
+                <TouchableOpacity style={[styles['flex_direction_row'], { alignItems: 'center' }]} onPress={() => { goBack() }}>
                     <Image style={[styles['tint_color_white'], { height: 15, width: 20 }]} source={require('../assets/images/previous.png')}></Image>
                     <Text style={[styles['margin_left_10'], styles['font_size_18_bold'], { color: dynamicStyles?.secondaryColor }]}>{translate('myaccount')}</Text>
                 </TouchableOpacity>
@@ -666,8 +666,11 @@ function MyAccountEmployee() {
                                 <CustomCircularImageView
                                     source={userProfileImg != undefined ? (userProfileImg.toString().includes("https:") || userProfileImg.toString().includes("http:")) ? { uri: userProfileImg } : userProfileImg != "" ? { uri: imageDataProfile.uri } : require('../assets/images/profileIcon.png') : require('../assets/images/profileIcon.png')}
                                     size={95} />
-                                <TouchableOpacity onPress={() => { profileImageButtonPress() }}>
-                                    <Image style={[styles['margin_top_minus_30'], styles['align_self_flex_end'], styles['width_height_30']]} source={require('../assets/images/profileCamera.png')}></Image>
+                                {/* <TouchableOpacity onPress={() => { profileImageButtonPress() }}>
+                                    <Image style={[styles['margin_top_minus_30'], styles['align_self_flex_end'], styles['width_height_30'], { tintColor: dynamicStyles.secondaryColor }]} resizeMode='contain' source={require('../assets/images/camera_new.png')}></Image>
+                                </TouchableOpacity> */}
+                                <TouchableOpacity style={[styles['margin_top_minus_30'], styles['align_self_flex_end'], styles['flex_direction_row'], styles['width_height_30'], styles['alignItems_center'], styles['justify_content_center'], styles['margin_right_25'], { backgroundColor: dynamicStyles.primaryColor, borderRadius: 22 }]} onPress={() => { profileImageButtonPress() }}>
+                                    <Image style={[styles['width_height_15'], { tintColor: dynamicStyles.secondaryColor }]} resizeMode='contain' source={require('../assets/images/camera_new.png')}></Image>
                                 </TouchableOpacity>
                             </View>
 
@@ -677,9 +680,14 @@ function MyAccountEmployee() {
                                 {/* </TouchableOpacity> */}
 
                                 {isEdit != true &&
+                                    // <View style={[styles['absolute_position'], styles['align_self_flex_end'], styles['right_15'], styles['']]}>
+                                    //     <TouchableOpacity onPress={() => { editButtonPress() }}>
+                                    //         <Image style={[styles['width_height_30'], styles['align_self_flex_end'], styles['right_15']]} source={require('../assets/images/editGreen.png')}></Image>
+                                    //     </TouchableOpacity>
+                                    // </View>
                                     <View style={[styles['absolute_position'], styles['align_self_flex_end'], styles['right_15'], styles['']]}>
-                                        <TouchableOpacity onPress={() => { editButtonPress() }}>
-                                            <Image style={[styles['width_height_30'], styles['align_self_flex_end'], styles['right_15']]} source={require('../assets/images/editGreen.png')}></Image>
+                                        <TouchableOpacity style={[styles['flex_direction_row'], styles['width_height_25'], styles['alignItems_center'], styles['justify_content_center'], styles['margin_right_20'], { backgroundColor: dynamicStyles.primaryColor, borderRadius: 22 }]} onPress={() => { editButtonPress() }}>
+                                            <Image style={[styles['width_height_15'], { tintColor: dynamicStyles.secondaryColor }]} resizeMode='' source={require('../assets/images/edit_new.png')}></Image>
                                         </TouchableOpacity>
                                     </View>
                                 }
@@ -690,10 +698,13 @@ function MyAccountEmployee() {
                                 <View style={[{ height: 40, width: '90%' }, styles['align_self_center']]}>
                                     <TouchableOpacity style={[styles['height_100%'], styles['width_100%'], styles['border_radius_8'], styles['justify_content_center'], styles['align_self_center']]} onPress={generalButtonPress}>
                                         <Text style={[styles['width_85%'], styles['text_align_left'], styles['font_size_16_semibold'], styles['text_color_black']]}>{translate('basic_information')}</Text>
-                                        <View style={[styles['right_10'], styles['align_items_flex_end'], styles['absolute_position'], styles['']]}>
+                                        {/* <View style={[styles['right_10'], styles['align_items_flex_end'], styles['absolute_position'], styles['']]}>
                                             <Image
                                                 style={[{ width: 16, height: (Platform.OS == 'android') ? 16 : (Platform.OS == 'android') ? 7 : 15 }]}
                                                 source={sectionGeneralOpen ? require('../assets/images/sectionUpArrow.png') : require('../assets/images/sectionDownArrow.png')} />
+                                        </View> */}
+                                        <View style={[styles['width_height_20'], styles['right_10'], styles['alignItems_center'], styles['absolute_position'], styles['justify_content_center'], { backgroundColor: dynamicStyles.primaryColor, borderRadius: 5 }]} onPress={() => { generalButtonPress() }}>
+                                            <Image style={[styles['width_height_10'], { tintColor: dynamicStyles.secondaryColor }]} resizeMode='contain' source={sectionGeneralOpen ? require('../assets/images/up_arrow.png') : require('../assets/images/down_arow.png')}></Image>
                                         </View>
 
                                     </TouchableOpacity>
@@ -1027,10 +1038,13 @@ function MyAccountEmployee() {
                                 <View style={[{ height: 40, width: '90%' }, styles['align_self_center']]}>
                                     <TouchableOpacity style={[styles['height_100%'], styles['width_100%'], styles['border_radius_8'], styles['justify_content_center'], styles['align_self_center']]} onPress={addressButtonPress}>
                                         <Text style={[styles['width_85%'], styles['text_align_left'], styles['font_size_16_semibold'], styles['text_color_black']]}>{translate('address')}</Text>
-                                        <View style={[styles['right_10'], styles['align_items_flex_end'], styles['absolute_position'], styles['']]}>
+                                        {/* <View style={[styles['right_10'], styles['align_items_flex_end'], styles['absolute_position'], styles['']]}>
                                             <Image
                                                 style={[{ width: 16, height: (Platform.OS == 'android') ? 16 : (Platform.OS == 'android') ? 7 : 15 }]}
                                                 source={sectionAddressOpen ? require('../assets/images/sectionUpArrow.png') : require('../assets/images/sectionDownArrow.png')} />
+                                        </View> */}
+                                        <View style={[styles['width_height_20'], styles['right_10'], styles['alignItems_center'], styles['absolute_position'], styles['justify_content_center'], { backgroundColor: dynamicStyles.primaryColor, borderRadius: 5 }]}>
+                                            <Image style={[styles['width_height_10'], { tintColor: dynamicStyles.secondaryColor }]} resizeMode='contain' source={sectionAddressOpen ? require('../assets/images/up_arrow.png') : require('../assets/images/down_arow.png')}></Image>
                                         </View>
 
                                     </TouchableOpacity>
@@ -1138,7 +1152,7 @@ function MyAccountEmployee() {
                                                 editable={isEdit}
                                                 onFocus={() => {
                                                 }}
-                                                 onChangeText={(text) => {
+                                                onChangeText={(text) => {
                                                     const formattedText = text
                                                     if (formattedText === '' || alphabetRegex.test(formattedText.trim())) {
                                                         updateEmployeeDetails('landMark', formattedText);
@@ -1331,17 +1345,8 @@ function MyAccountEmployee() {
                     noButtonText={showAlertNoButtonText} />
             )}
 
-            {showDatePicker && (
-                // <CustomCalendarModal
-                //   labelName={translate('dateofBirth')}
-                //   visible={true}
-                //   mode="date"
-                //   date={new Date(selectedDate)}
-                //   onConfirm={(date) => { handleConfirm(date) }}
-                //   onCancel={() => handleCancel()}
-                //   minimumDate={new Date(minimumDate)}
-                //   maximumDate={new Date(maximumDate)}
-                // />
+            {/* {showDatePicker && (
+
                 <DateTimePickerModal
                     isVisible={true}
                     mode="date"
@@ -1351,7 +1356,35 @@ function MyAccountEmployee() {
                     onConfirm={(date) => { updateEmployeeDetails('dateOfBirth', date); setDatePicker(false) }}
                     onCancel={() => handleCancel()}
                 />
-            )}
+            )} */}
+
+            {
+                showDatePicker && (
+                    <DateTimePicker
+                        value={
+                            employeeDetails?.[0]?.dateOfBirth
+                                ? new Date(employeeDetails[0].dateOfBirth)
+                                : (selectedDate || new Date())
+                        }
+                        mode="date"
+                        display="default"
+                        maximumDate={new Date()}
+                        is24Hour={false}
+                        onChange={(event, date) => {
+                            handleCancel();
+
+                            if (event.type === 'dismissed') {
+                                return;
+                            }
+
+                            if (date) {
+                                updateEmployeeDetails('dateOfBirth', date);
+                                setDatePicker(false);
+                            }
+                        }}
+                    />
+                )
+            }
 
             {showDropDowns &&
                 <CustomListViewModal

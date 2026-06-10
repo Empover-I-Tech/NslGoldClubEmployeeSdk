@@ -18,7 +18,7 @@ import { HTTP_OK, MAP_MY_INDIA_URL, configs } from '../helpers/URLConstants';
 import CustomInputDropDown from '../Components/CustomInputDropDown';
 import CustomListViewModal from '../Modals/CustomListViewModal';
 import CustomCalanderSelection from '../Components/CustomCalanderSelection';
-import DateTimePickerModal from "react-native-modal-datetime-picker";
+import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
 import SimpleToast from 'react-native-simple-toast';
 import { PERMISSIONS, RESULTS, request } from 'react-native-permissions';
@@ -1217,7 +1217,7 @@ function MyAccount({ route }) {
                   source={userProfileImg != undefined ? (userProfileImg.toString().includes("https:") || userProfileImg.toString().includes("http:")) ? { uri: userProfileImg } : userProfileImg != "" ? { uri: imageDataProfile.uri } : require('../assets/images/profileIcon.png') : require('../assets/images/profileIcon.png')}
                   size={95} />
                 {isEdit == true && <TouchableOpacity style={[styles['margin_top_minus_30'], styles['align_self_flex_end'], styles['flex_direction_row'], styles['width_height_30'], styles['alignItems_center'], styles['justify_content_center'], styles['margin_right_25'], { backgroundColor: dynamicStyles.primaryColor, borderRadius: 22 }]} onPress={() => { profileImageButtonPress() }}>
-                  <Image style={[styles['width_height_15'], , { tintColor: dynamicStyles.secondaryColor }]} resizeMode='contain' source={require('../assets/images/camera_new.png')}></Image>
+                  <Image style={[styles['width_height_15'], { tintColor: dynamicStyles.secondaryColor }]} resizeMode='contain' source={require('../assets/images/camera_new.png')}></Image>
                 </TouchableOpacity>}
               </View>
               <View style={[styles['margin_top_5'], styles['height_40']]}>
@@ -1612,7 +1612,7 @@ function MyAccount({ route }) {
           noButtonText={showAlertNoButtonText} />
       )}
 
-      {showDatePicker && (
+      {/* {showDatePicker && (
         <DateTimePickerModal
           isVisible={true}
           mode="date"
@@ -1623,7 +1623,27 @@ function MyAccount({ route }) {
           onConfirm={(date) => { handleConfirm(date) }}
           onCancel={() => handleCancel()}
         />
-      )}
+      )} */}
+
+      {
+        showDatePicker && (
+          <DateTimePicker
+            value={selectedDate || new Date()}
+            mode="date"
+            display="default"
+            is24Hour={false}
+            onChange={(event, date) => {
+              handleCancel();
+              if (event.type === 'dismissed') {
+                return;
+              }
+              if (date) {
+                handleConfirm(date);
+              }
+            }}
+          />
+        )
+      }
 
       {showDropDowns &&
         <CustomListViewModal

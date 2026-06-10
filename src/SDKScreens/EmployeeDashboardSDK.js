@@ -1119,11 +1119,11 @@ function EmployeeDashboardSDK({ route }) {
           </View>
           <View style={[
             { flexDirection: 'row', width: '95%', alignSelf: 'center', borderRadius: 6, paddingTop: 10 }]}>
-            <TouchableOpacity onPress={() => { profileButtonPress() }}>
+            <TouchableOpacity onPress={() => {  }}>
               {
 
                 <CustomCircularImageView
-                  onPressImageClick={() => { profileButtonPress() }}
+                  onPressImageClick={() => {  }}
                   source={
                     userImage !== undefined && userImage !== null
                       ? networkStatus
@@ -1147,7 +1147,7 @@ function EmployeeDashboardSDK({ route }) {
             <View style={[{ flexDirection: 'column', alignItems: 'center', justifyContent: 'center', alignSelf: 'center', }]}>
               <TouchableOpacity
                 style={{ marginLeft: 4 }}
-                onPress={() => { profileButtonPress() }}>
+                onPress={() => {  }}>
                 <Text style={[{ fontSize: 10, fontFamily: FontForWeight('regular'), textAlign: 'left', color: dynamicStyles.secondaryColor }]}>{greet}</Text>
                 <Text style={[{ fontSize: 11, fontFamily: FontForWeight('SemiBold'), textAlign: 'left', minWidth: 80, color: dynamicStyles.secondaryColor }]}
                   numberOfLines={2}
@@ -1806,7 +1806,7 @@ function EmployeeDashboardSDK({ route }) {
                             fontFamily: FontForWeight('SemiBold')
                           }}
                         >
-                          {translate('no_data_available')}
+                          {translate('no_data_available_en')}
                         </Text>
                       </View>
                     }
@@ -1836,7 +1836,7 @@ function EmployeeDashboardSDK({ route }) {
                             fontFamily: FontForWeight('SemiBold')
                           }}
                         >
-                          {translate('no_data_available')}
+                          {translate('no_data_available_en')}
                         </Text>
                       </View>
                     }
