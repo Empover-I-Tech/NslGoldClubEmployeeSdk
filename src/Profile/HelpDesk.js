@@ -846,7 +846,7 @@ function HelpDesk({ route }) {
     <SafeAreaView style={{ flex: 1, backgroundColor: dynamicStyles.primaryColor }} edges={['top']}>
       <View style={[styles['full_screen'], { backgroundColor: "rgba(249, 249, 249, 1)" }]}>
         {Platform.OS === 'android' && <StatusBar translucent={true} backgroundColor={{ backgroundColor: 'rgba(249, 249, 249, 1)' }} barStyle='dark-content' />}
-        <View style={[{ backgroundColor: dynamicStyles.primaryColor }, { paddingStart: 20, paddingEnd: 20, paddingBottom: 20, borderBottomStartRadius: 10, borderBottomEndRadius: 10, paddingTop: Platform.OS == 'ios' ? 20 : 20 }, stylesheetStyles.addFlex]}>
+        <View style={[{ backgroundColor: dynamicStyles.primaryColor }, { borderBottomStartRadius: 10, borderBottomEndRadius: 10 }, stylesheetStyles.addFlex]}>
           <TouchableOpacity style={[styles['flex_direction_row'], { alignItems: "center", marginRight: 5 }]} onPress={() => { goBack() }}>
             <Image style={[{ tintColor: dynamicStyles.secondaryColor }, { height: 22, width: 22, resizeMode: "contain" }]} source={require('../assets/images/previous.png')}></Image>
             <Text style={[styles['margin_left_10'], { color: dynamicStyles.secondaryColor }, styles['font_size_18_bold']]}>{translate('Samadhan')}</Text>
