@@ -854,7 +854,7 @@ function HelpDesk({ route }) {
           <TouchableOpacity onPress={() => {
             GetComplaintsApiCall(true)
           }}>
-            <Image style={[{ tintColor: dynamicStyles.secondaryColor }, { height: 30, width: 30, resizeMode: "contain" }]} source={require('../assets/images/dataRefresh.png')}></Image>
+            <Image style={[{ tintColor: dynamicStyles.secondaryColor }, { height: 30, width: 30, resizeMode: "contain", right : 15 }]} source={require('../assets/images/dataRefresh.png')}></Image>
           </TouchableOpacity>
         </View>
         <View style={[styles['height_100%'], styles['width_100%']]}>
