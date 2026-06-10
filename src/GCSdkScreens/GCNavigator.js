@@ -66,6 +66,7 @@ const GCNavigator = ({ route }) => {
                 component={GCLoaderScreen}
                 initialParams={{
                     navigateItem: sdkConfig,
+                    onSDKClose: () => navigation.goBack()
                 }}
             />
 

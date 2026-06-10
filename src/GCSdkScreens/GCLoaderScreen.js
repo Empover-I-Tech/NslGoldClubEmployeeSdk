@@ -26,6 +26,8 @@ const GCLoaderScreen = ({ route }) => {
     const [loadingCount, setLoadingCount] = useState(0);
     const [loadingMessage, setLoadingMessage] = useState('');
 
+    const onSDKClose = route?.params?.onSDKClose;
+
     const startLoading = (msg = '') => {
         setLoadingMessage(msg);
         setLoadingCount(prev => prev + 1);
@@ -118,13 +120,14 @@ const GCLoaderScreen = ({ route }) => {
                                 {
                                     text: translate('ok'),
                                     onPress: () => {
-                                        if (navigation.canGoBack()) {
+                                        if (onSDKClose) {
+                                            onSDKClose();
+                                        } else if (navigation.canGoBack()) {
                                             navigation.goBack();
                                         }
                                     }
                                 }
-                            ],
-                            { cancelable: false }
+                            ]
                         );
                     }
                 }
