@@ -16,6 +16,7 @@ const GCNavigator = () => {
             <Stack.Screen
                 name="GCLoaderScreen"
                 component={GCLoaderScreen}
+                initialParams={props.route?.params}
             />
 
             <Stack.Screen
