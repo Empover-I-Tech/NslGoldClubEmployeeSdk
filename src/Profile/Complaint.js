@@ -753,7 +753,7 @@ function Complaint() {
     <SafeAreaView style={{ flex: 1, backgroundColor: dynamicStyles.primaryColor }} edges={['top']}>
       <View style={[{ position: "relative", flex: 1, backgroundColor: 'white' }]}>
         {/* {Platform.OS === 'android' && <StatusBar backgroundColor={dynamicStyles.primaryColor} barStyle='dark-content' />} */}
-        <View style={[{ backgroundColor: dynamicStyles.primaryColor }, { borderBottomStartRadius: 10, borderBottomEndRadius: 10 }]}>
+        <View style={[{ backgroundColor: dynamicStyles.primaryColor }, { borderBottomStartRadius: 10, borderBottomEndRadius: 10, paddingBottom : 10 }]}>
           <TouchableOpacity style={[styles['flex_direction_row'], { alignItems: 'center' }]} onPress={() => { goBack() }}>
             <Image style={[styles['margin_left_20'], styles['tint_color_white'], { height: 15, width: 20, top: Platform.OS == 'ios' ? 10 : 0 }]} source={require('../assets/images/previous.png')}></Image>
             <Text style={[styles['margin_left_10'],  styles['text_color_white'], styles['font_size_18_bold']]}>{translate('complaint')}</Text>
