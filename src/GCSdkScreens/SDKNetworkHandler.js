@@ -1,18 +1,23 @@
-// SDKNetworkHandler.js
-
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Alert } from 'react-native';
-import { useSelector } from 'react-redux';
+import { getNetworkStatus } from '../NetworkUtils/NetworkUtils';
 
 const SDKNetworkHandler = () => {
-  const networkState = useSelector(state => state.networkStatus);
-
-  const isConnected =
-    typeof networkState?.value === 'boolean'
-      ? networkState.value
-      : networkState?.value?.isConnected;
-
+  const [isConnected, setIsConnected] = useState(true);
   const alertShown = useRef(false);
+
+  useEffect(() => {
+    const checkNetwork = async () => {
+      const status = await getNetworkStatus();
+      setIsConnected(status);
+    };
+
+    checkNetwork();
+
+    const interval = setInterval(checkNetwork, 3000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     if (isConnected === false && !alertShown.current) {
