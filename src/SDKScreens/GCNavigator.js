@@ -1,8 +1,8 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import GCLoaderScreen from '../SDKscreens/GCLoaderScreen';
-import EmployeeDashboardSDK from '../SDKscreens/EmployeeDashboardSDK';
+import GCLoaderScreen from './GCLoaderScreen';
+import EmployeeDashboardSDK from './EmployeeDashboardSDK';
 import Location from '../Login/Location';
 import WeatherScreen from '../Dashboard/WeatherScreen';
 import Notifications from '../Dashboard/Notifications';
