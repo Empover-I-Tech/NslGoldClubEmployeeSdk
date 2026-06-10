@@ -1,4 +1,4 @@
-import {  useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Alert } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux';
 import { changeLanguage, translate } from '../Localisation/Localisation';
@@ -117,7 +117,11 @@ const GCLoaderScreen = ({ route }) => {
                             [
                                 {
                                     text: translate('ok'),
-                                    onPress: () => { navigation.goBack() }
+                                    onPress: () => {
+                                        if (navigation.canGoBack()) {
+                                            navigation.goBack();
+                                        }
+                                    }
                                 }
                             ],
                             { cancelable: false }
