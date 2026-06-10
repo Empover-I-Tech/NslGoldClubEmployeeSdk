@@ -1,7 +1,7 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import GCLoaderScreen from './GCLoaderScreen';
+import GCLoaderScreen from './GCLoaderScreen'
 import EmployeeDashboardSDK from './EmployeeDashboardSDK';
 import Products from "../Products/Products";
 import ProgramDetails from "../Dashboard/ProgramDetails";
@@ -32,7 +32,6 @@ const GCNavigator = ({ route }) => {
     const sdkConfig = route?.params?.navigateItem;
 
     const screens = {
-        GCLoaderScreen,
         EmployeeDashboardSDK,
         Products,
         ProgramDetails,
@@ -79,40 +78,6 @@ const GCNavigator = ({ route }) => {
             ))}
         </Stack.Navigator>
     );
-
-    // return (
-    //     <Stack.Navigator screenOptions={{ headerShown: false }}>
-
-    //         <Stack.Screen
-    //             name="GCLoaderScreen"
-    //             component={GCLoaderScreen}
-    //             initialParams={{
-    //                 navigateItem: sdkConfig,
-    //             }}
-    //         />
-
-    //         <Stack.Screen
-    //             name="EmployeeDashboardSDK"
-    //             component={EmployeeDashboardSDK}
-    //         />
-
-    //         <Stack.Screen
-    //             name="Location"
-    //             component={Location}
-    //         />
-
-    //         <Stack.Screen
-    //             name="WeatherScreen"
-    //             component={WeatherScreen}
-    //         />
-
-    //         <Stack.Screen
-    //             name="Notifications"
-    //             component={Notifications}
-    //         />
-
-    //     </Stack.Navigator>
-    // );
 };
 
 export default GCNavigator;
