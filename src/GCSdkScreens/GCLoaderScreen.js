@@ -11,6 +11,7 @@ import { DEVICE_TOKEN, LOGINONCE, MOBILE_NUMBER, PROFILEIMAGE, ROLEID, ROLENAME,
 import { updateCompanyStyles } from '../redux/store/slices/CompanyStyleSlice';
 import SimpleToast from 'react-native-simple-toast';
 import { Colors } from '../assets/Utils/Color';
+import { setLanguage } from '../redux/store/slices/LanguageSlice';
 
 
 const GCLoaderScreen = ({ route }) => {
@@ -51,7 +52,9 @@ const GCLoaderScreen = ({ route }) => {
             if (!route?.params) return;
 
             console.log('Initializing SDK...');
-
+            dispatch(setLanguage({
+                languageCode: languageCode,
+            }))
             await changeLanguage(languageCode || 'en');
 
             setEnvironment(buildEnvironment || 'PROD');
