@@ -15,7 +15,7 @@ const GCRoot = (props) => {
         <Provider store={store}>
             <NavigationIndependentTree>
                 <NavigationContainer>
-                    <GCNavigator />
+                    <GCNavigator {...props} />
                 </NavigationContainer>
             </NavigationIndependentTree>
         </Provider>

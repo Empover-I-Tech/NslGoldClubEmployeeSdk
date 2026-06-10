@@ -9,14 +9,17 @@ import Notifications from '../Dashboard/Notifications';
 
 const Stack = createNativeStackNavigator();
 
-const GCNavigator = () => {
+const GCNavigator = ({ route }) => {
+    const sdkConfig = route?.params?.navigateItem;
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
 
             <Stack.Screen
                 name="GCLoaderScreen"
                 component={GCLoaderScreen}
-                initialParams={props.route?.params}
+                initialParams={{
+                    navigateItem: sdkConfig,
+                }}
             />
 
             <Stack.Screen
