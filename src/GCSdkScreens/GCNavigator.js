@@ -24,12 +24,14 @@ import HelpDesk from "../Profile/HelpDesk";
 import Complaint from "../Profile/Complaint";
 import MandiPricesScreen from "../Dashboard/MandiPricesScreen";
 import Notifications from '../Dashboard/Notifications';
+import { useNavigation } from '@react-navigation/native';
 
 
 const Stack = createNativeStackNavigator();
 
 const GCNavigator = ({ route }) => {
     const sdkConfig = route?.params?.navigateItem;
+    const navigation = useNavigation()
 
     const screens = {
         EmployeeDashboardSDK,
