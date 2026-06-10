@@ -45,7 +45,7 @@ function EmployeeDashboardSDK({ route }) {
   const [loaderImage, setLoaderImage] = useState(require('../assets/images/neutralloader.gif'))
   const getUserData = useSelector(selectUser);
   const companyStyle = useSelector(getCompanyStyles);
-  const [dynamicStyles, setDynamicStyles] = useState(companyStyle.value);
+  const [dynamicStyles, setDynamicStyles] = useState({});
   const navigation = useNavigation()
   const [showAlert, setShowAlert] = useState(false)
   const [alertTitle, setAlertTitle] = useState('');
@@ -124,6 +124,10 @@ function EmployeeDashboardSDK({ route }) {
 
   const loading = loadingCount > 0;
 
+
+  useEffect(() => {
+    setDynamicStyles(companyStyle?.value || {});
+  }, [companyStyle]);
 
   // Auto scroll logic
   useEffect(() => {
@@ -1119,11 +1123,11 @@ function EmployeeDashboardSDK({ route }) {
           </View>
           <View style={[
             { flexDirection: 'row', width: '95%', alignSelf: 'center', borderRadius: 6, paddingTop: 10 }]}>
-            <TouchableOpacity onPress={() => {  }}>
+            <TouchableOpacity onPress={() => { }}>
               {
 
                 <CustomCircularImageView
-                  onPressImageClick={() => {  }}
+                  onPressImageClick={() => { }}
                   source={
                     userImage !== undefined && userImage !== null
                       ? networkStatus
@@ -1147,7 +1151,7 @@ function EmployeeDashboardSDK({ route }) {
             <View style={[{ flexDirection: 'column', alignItems: 'center', justifyContent: 'center', alignSelf: 'center', }]}>
               <TouchableOpacity
                 style={{ marginLeft: 4 }}
-                onPress={() => {  }}>
+                onPress={() => { }}>
                 <Text style={[{ fontSize: 10, fontFamily: FontForWeight('regular'), textAlign: 'left', color: dynamicStyles.secondaryColor }]}>{greet}</Text>
                 <Text style={[{ fontSize: 11, fontFamily: FontForWeight('SemiBold'), textAlign: 'left', minWidth: 80, color: dynamicStyles.secondaryColor }]}
                   numberOfLines={2}
