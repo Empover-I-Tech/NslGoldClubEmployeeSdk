@@ -1,7 +1,7 @@
 // nslsubeejemployeesdk/index.js
 
 // ✅ Redux store
-export { default as GoldClubSDK } from './src/SDKScreens/GCRoot';
+export { default as GoldClubSDK } from './src/GCSdkScreens/GCRoot';
 // export { default as store, default as persistor } from './src/redux/store/store';
 // export { initLocalisation } from './src/Localisation/Localisation';
 // export { default as GCLoaderScreen } from './src/SDKScreens/GCLoaderScreen';
