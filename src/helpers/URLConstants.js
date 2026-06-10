@@ -4,11 +4,17 @@ export const IOS_STORE_LINK = "https://apps.apple.com/us/app/nsl-gold-club/id674
 export const FIREBASE_LOG = true;
 // export const APP_ENV_PROD = true; // Live
 export let APP_ENV_PROD = false; // UAT
- 
+
 //This is for SDK Purpose
-export const setEnvironment = (buildType) => { 
+export const setEnvironment = (buildType) => {
     APP_ENV_PROD = buildType === 'PROD';
+
+    console.log('================================');
+    console.log('Environment Changed');
     console.log('APP_ENV_PROD:', APP_ENV_PROD);
+    console.log('BASE_URL:', configs.BASE_URL);
+    console.log('SUBEEJ_BASE_URL:', configs.SUBEEJ_BASE_URL);
+    console.log('================================');
 };
 
 export const LOCAL_SERVER = '';
@@ -89,22 +95,57 @@ export const FIREBASE_VERSION_COLLECTION_NAME = "getAppVersion"
 export const FIREBASE_VERSION_DOC_ID = "OXbbvOZlBVnKgcIj19Qw"
 
 export const configs = {
-    BASE_URL: APP_ENV_PROD ? 'https://nvmretailpro.com:8443/rest/nsl/' : 'http://3.110.159.82:8080/vyapar_mitra/rest/nsl/',
-    TERMS_CONDIOTNS_URL: APP_ENV_PROD ? "https://nvmretailpro.com/Terms-conditions.html" : "http://nvmuat.empover.com:8080/Terms-conditions.html",
-    PRIVACY_POLICY_URL: "http://nvmuat.empover.com:8080/Privacy-Policy.html",
-    SUBEEJ_BASE_URL: APP_ENV_PROD ? 'https://subeejkisan.com:8443/rest/' : 'http://3.110.159.82:8080/subeejkisan/rest/',
-    //  ACCOUNT_CLOSE_URL : (mobileNumber) => APP_ENV_PROD ? `http://nvmuat.empover.com/nsl/accountClosure?mobileNumber=${mobileNumber}` : `http://nvmuat.empover.com/nsl/accountClosure?mobileNumber=${mobileNumber}`,
+
+    get BASE_URL() {
+        return APP_ENV_PROD
+            ? 'https://nvmretailpro.com:8443/rest/nsl/'
+            : 'http://3.110.159.82:8080/vyapar_mitra/rest/nsl/';
+    },
+
+    get TERMS_CONDIOTNS_URL() {
+        return APP_ENV_PROD
+            ? 'https://nvmretailpro.com/Terms-conditions.html'
+            : 'http://nvmuat.empover.com:8080/Terms-conditions.html';
+    },
+
+    get PRIVACY_POLICY_URL() {
+        return APP_ENV_PROD
+            ? 'https://nvmretailpro.com/Privacy-Policy.html'
+            : 'http://nvmuat.empover.com:8080/Privacy-Policy.html';
+    },
+
+    get SUBEEJ_BASE_URL() {
+        return APP_ENV_PROD
+            ? 'https://subeejkisan.com:8443/rest/'
+            : 'http://3.110.159.82:8080/subeejkisan/rest/';
+    },
 
     ACCOUNT_CLOSE_URL: ({ mobileNumber, languageId, buttonColor }) => {
-        const baseUrl = APP_ENV_PROD ? 'https://nvmretailpro.com/nsl/' : 'http://nvmuat.empover.com/nsl/';
-        const url = `${baseUrl}accountClosure?mobileNumber=${mobileNumber}&languageId=${languageId}&buttonColor=${encodeURIComponent(buttonColor)}`;
-        return url;
+        const baseUrl = APP_ENV_PROD
+            ? 'https://nvmretailpro.com/nsl/'
+            : 'http://nvmuat.empover.com/nsl/';
+
+        return `${baseUrl}accountClosure?mobileNumber=${mobileNumber}&languageId=${languageId}&buttonColor=${encodeURIComponent(buttonColor)}`;
     },
+
+
+
+    // BASE_URL: APP_ENV_PROD ? 'https://nvmretailpro.com:8443/rest/nsl/' : 'http://3.110.159.82:8080/vyapar_mitra/rest/nsl/',
+    // TERMS_CONDIOTNS_URL: APP_ENV_PROD ? "https://nvmretailpro.com/Terms-conditions.html" : "http://nvmuat.empover.com:8080/Terms-conditions.html",
+    // PRIVACY_POLICY_URL: "http://nvmuat.empover.com:8080/Privacy-Policy.html",
+    // SUBEEJ_BASE_URL: APP_ENV_PROD ? 'https://subeejkisan.com:8443/rest/' : 'http://3.110.159.82:8080/subeejkisan/rest/',
+    // //  ACCOUNT_CLOSE_URL : (mobileNumber) => APP_ENV_PROD ? `http://nvmuat.empover.com/nsl/accountClosure?mobileNumber=${mobileNumber}` : `http://nvmuat.empover.com/nsl/accountClosure?mobileNumber=${mobileNumber}`,
+
+    // ACCOUNT_CLOSE_URL: ({ mobileNumber, languageId, buttonColor }) => {
+    //     const baseUrl = APP_ENV_PROD ? 'https://nvmretailpro.com/nsl/' : 'http://nvmuat.empover.com/nsl/';
+    //     const url = `${baseUrl}accountClosure?mobileNumber=${mobileNumber}&languageId=${languageId}&buttonColor=${encodeURIComponent(buttonColor)}`;
+    //     return url;
+    // },
 
     AUTH: {
         SEND_OTP: 'sendOTP',
         VERIFY_OTP: 'validateOTP_v1',
-        VALIDATE_SDK_LOGIN : 'validateGCSDKAuthentication',
+        VALIDATE_SDK_LOGIN: 'validateGCSDKAuthentication',
         RESEND_OTP: 'reSendOTP',
         SIGNUP: 'addRetailer_v1',
         FORCE_UPDATE: 'Login/ForceUpdate',
@@ -267,7 +308,7 @@ export const configs = {
     KNOWLEDGECENTREADVCANCED: {
         // getAdvancedKnowledgeCenterDataByCompany: "getAdvancedKnowledgeCenterDataByCompany_v1",
         getAdvancedKnowledgeCenterDataByCompany: "getCropsListForAdvancedKnowledgeCenter",
-        getAdvancedKnowledgeCenterDataByCompany_DOC : "getAdvancedKnowledgeCenterDataByCompany_v2"
+        getAdvancedKnowledgeCenterDataByCompany_DOC: "getAdvancedKnowledgeCenterDataByCompany_v2"
     },
     EMPLOYEEDASHBOARD: {
         DASHBOARD_SUMMARY_API: 'getDashboardForCropInsightsAndSummery',
