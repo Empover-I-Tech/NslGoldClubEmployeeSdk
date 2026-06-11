@@ -18,7 +18,7 @@ import { getCompanyStyles } from '../redux/store/slices/CompanyStyleSlice';
 const RootContent = (props) => {
   const companyStyle = useSelector(getCompanyStyles);
   const dynamicStyles = companyStyle?.value;
-
+  const onSDKClose = props?.route?.params?.onSDKClose;
   return (
     <SafeAreaView
       edges={['top', 'bottom']}
@@ -30,7 +30,8 @@ const RootContent = (props) => {
       <NavigationIndependentTree>
         <NavigationContainer>
           <SDKNetworkHandler />
-          <GCNavigator {...props} />
+          <GCNavigator {...props} 
+          onSDKClose={onSDKClose}/>
         </NavigationContainer>
       </NavigationIndependentTree>
     </SafeAreaView>

@@ -29,10 +29,9 @@ import { useNavigation } from '@react-navigation/native';
 
 const Stack = createNativeStackNavigator();
 
-const GCNavigator = ({ route }) => {
+const GCNavigator = ({onSDKClose, route }) => {
+    console.log("route====>", JSON.stringify(route))
     const sdkConfig = route?.params?.navigateItem;
-    const onSDKClose = route?.params?.onSDKClose;
-    const navigation = useNavigation()
 
     const screens = {
         EmployeeDashboardSDK,
@@ -69,7 +68,7 @@ const GCNavigator = ({ route }) => {
                 component={GCLoaderScreen}
                 initialParams={{
                     navigateItem: sdkConfig,
-                    onSDKClose: () => onSDKClose
+                    onSDKClose: onSDKClose
                 }}
             />
 
