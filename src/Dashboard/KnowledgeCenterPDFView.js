@@ -280,26 +280,19 @@ const KnowledgeCenterPDFView = ({ route }) => {
       {Platform.OS === 'android' && (
         <StatusBar backgroundColor={dynamicStyles.primaryColor} barStyle="dark-content" />
       )}
-      <SafeAreaView
-        edges={['top']}
-        style={{ backgroundColor: dynamicStyles?.primaryColor || '#fff' }}
-      />
-
 
       <View style={{ flex: 1, backgroundColor: '#f9f9f9' }}>
 
         {/* Header */}
         <View style={{
           backgroundColor: dynamicStyles.primaryColor,
-          paddingHorizontal: 20,
-          paddingBottom: 20,
           borderBottomStartRadius: 10,
           borderBottomEndRadius: 10,
-          paddingTop: 20
+          padding: 15
         }}>
-          <TouchableOpacity style={{ flexDirection: 'row', width: "100%" }} onPress={() => navigation.goBack()}>
+          <TouchableOpacity style={{ flexDirection: 'row', width: "100%", alignItems:'center' }} onPress={() => navigation.goBack()}>
             <Image
-              style={{ tintColor: dynamicStyles.secondaryColor, height: 15, width: 20, top: 5 }}
+              style={{ tintColor: dynamicStyles.secondaryColor, height: 15, width: 20 }}
               source={require('../assets/images/previous.png')}
             />
             <Text style={{
@@ -441,7 +434,7 @@ const KnowledgeCenterPDFView = ({ route }) => {
 
       </View>
 
-      <SafeAreaView edges={['bottom']} style={{ backgroundColor: '#fff' }} />
+
     </View>
 
   );
