@@ -31,6 +31,7 @@ const Stack = createNativeStackNavigator();
 
 const GCNavigator = ({ route }) => {
     const sdkConfig = route?.params?.navigateItem;
+    const onSDKClose = route?.params?.onSDKClose;
     const navigation = useNavigation()
 
     const screens = {
@@ -68,7 +69,7 @@ const GCNavigator = ({ route }) => {
                 component={GCLoaderScreen}
                 initialParams={{
                     navigateItem: sdkConfig,
-                    onSDKClose: () => navigation.goBack()
+                    onSDKClose: () => onSDKClose
                 }}
             />
 

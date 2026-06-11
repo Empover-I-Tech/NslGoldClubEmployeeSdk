@@ -140,6 +140,9 @@ const GCLoaderScreen = ({ route }) => {
                                         } else if (navigation.canGoBack()) {
                                             navigation.goBack();
                                         }
+                                        else {
+                                            navigation.goBack()
+                                        }
                                     }
                                 }
                             ]
