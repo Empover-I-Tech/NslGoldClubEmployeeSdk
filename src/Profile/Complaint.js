@@ -43,7 +43,7 @@ const fs = require('fs');
 
 export const GetMastersComplaint = async () => {
   // let realm = new Realm({ path: 'User.realm' });
-
+  
   if (!realm) {
     console.log("Realm not initialized");
     return;
@@ -91,7 +91,7 @@ export const GetMastersComplaint = async () => {
 function Complaint() {
   styles = useMemo(() => createStyles(), [global.selectedLanguageCode]);
   // var realm = new Realm({ path: 'User.realm' });
-
+ 
   if (!realm) {
     console.log("Realm not initialized");
     return;

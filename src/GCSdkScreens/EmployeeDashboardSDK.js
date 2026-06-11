@@ -1744,28 +1744,30 @@ function EmployeeDashboardSDK({ route }) {
                       {translate('ActivitySummary')}
                     </Text>
 
-                    {activitySummaryList?.length > 0 && (
-                      <TouchableOpacity
-                        style={stylesheetStyles.dropdownBtn}
-                        onPress={() => setProgramDropdownOpen(v => !v)}
-                        activeOpacity={0.8}
-                      >
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                          <Text style={stylesheetStyles.dropdownText}>
-                            {selectedProgram?.displayName}
-                          </Text>
-                          <Image
-                            style={{
-                              width: 14,
-                              height: 8,
-                              tintColor: 'black',
-                              marginLeft: 8
-                            }}
-                            source={require('../assets/images/grayDownArrow.png')}
-                          />
-                        </View>
-                      </TouchableOpacity>
-                    )}
+                    <View style={{ alignSelf: 'flex-end' }}>
+                      {activitySummaryList?.length > 0 && (
+                        <TouchableOpacity
+                          style={stylesheetStyles.dropdownBtn}
+                          onPress={() => setProgramDropdownOpen(v => !v)}
+                          activeOpacity={0.8}
+                        >
+                          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <Text style={stylesheetStyles.dropdownText}>
+                              {selectedProgram?.displayName}
+                            </Text>
+                            <Image
+                              style={{
+                                width: 14,
+                                height: 8,
+                                tintColor: 'black',
+                                marginLeft: 8
+                              }}
+                              source={require('../assets/images/grayDownArrow.png')}
+                            />
+                          </View>
+                        </TouchableOpacity>
+                      )}
+                    </View>
                   </View>
 
                   {programDropdownOpen && (
@@ -2101,8 +2103,7 @@ const stylesheetStyles = StyleSheet.create({
   },
 
   sectionHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     justifyContent: 'space-between',
     marginBottom: 14,
   },

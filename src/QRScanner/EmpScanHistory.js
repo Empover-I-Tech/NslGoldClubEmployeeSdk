@@ -326,6 +326,8 @@ function EmpScanHistory({ route }) {
                     userId: header?.userId,
                     productName: "",
                     programName: "",
+                    headQuaterId: headQuaterId?.toString() || '',
+                    mobileNumber: mobileNumber?.toString() || '',
                     stateId: stateSelectedId?.toString() || '',
                     districtId: districtSelectedId?.toString() || '',
                     subDistrictId: subDistrictSelectedId?.toString() || '',
@@ -364,6 +366,8 @@ function EmpScanHistory({ route }) {
             var header = await GetApiHeaders();
             var input = {
                 userId: header?.userId,
+                headQuaterId: headQuaterId?.toString() || '',
+                mobileNumber: mobileNumber?.toString() || '',
                 stateId: stateSelectedId?.toString() || '',
                 districtId: districtSelectedId?.toString() || '',
                 subDistrictId: subDistrictSelectedId?.toString() || '',

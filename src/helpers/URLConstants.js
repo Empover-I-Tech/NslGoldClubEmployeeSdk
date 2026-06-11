@@ -4,9 +4,9 @@ export const IOS_STORE_LINK = "https://apps.apple.com/us/app/nsl-gold-club/id674
 export const FIREBASE_LOG = true;
 // export const APP_ENV_PROD = true; // Live
 export let APP_ENV_PROD = false; // UAT
-
+ 
 //This is for SDK Purpose
-export const setEnvironment = (buildType) => {
+export const setEnvironment = (buildType) => { 
     APP_ENV_PROD = buildType === 'PROD';
 
     console.log('================================');
@@ -145,7 +145,7 @@ export const configs = {
     AUTH: {
         SEND_OTP: 'sendOTP',
         VERIFY_OTP: 'validateOTP_v1',
-        VALIDATE_SDK_LOGIN: 'validateGCSDKAuthentication',
+        VALIDATE_SDK_LOGIN : 'validateGCSDKAuthentication',
         RESEND_OTP: 'reSendOTP',
         SIGNUP: 'addRetailer_v1',
         FORCE_UPDATE: 'Login/ForceUpdate',
@@ -308,7 +308,7 @@ export const configs = {
     KNOWLEDGECENTREADVCANCED: {
         // getAdvancedKnowledgeCenterDataByCompany: "getAdvancedKnowledgeCenterDataByCompany_v1",
         getAdvancedKnowledgeCenterDataByCompany: "getCropsListForAdvancedKnowledgeCenter",
-        getAdvancedKnowledgeCenterDataByCompany_DOC: "getAdvancedKnowledgeCenterDataByCompany_v2"
+        getAdvancedKnowledgeCenterDataByCompany_DOC : "getAdvancedKnowledgeCenterDataByCompany_v2"
     },
     EMPLOYEEDASHBOARD: {
         DASHBOARD_SUMMARY_API: 'getDashboardForCropInsightsAndSummery',
