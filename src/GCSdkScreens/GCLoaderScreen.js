@@ -43,6 +43,16 @@ const GCLoaderScreen = ({ route }) => {
 
     const loading = loadingCount > 0;
 
+    const languageData = [
+        { label: 'English', value: 'en', id: 1 },
+        { label: 'Telugu', value: 'te', id: 2 },
+        { label: 'Hindi', value: 'hi', id: 3 },
+        { label: 'Marathi', value: 'mr', id: 4 },
+    ];
+    const selectedLanguage =
+        languageData.find(item => item.value === languageCode)
+        || languageData[0];
+
     useEffect(() => {
         initializeSDK();
     }, [route?.params]);
@@ -53,14 +63,13 @@ const GCLoaderScreen = ({ route }) => {
 
             console.log('Initializing SDK...');
             dispatch(setLanguage({
-                languageCode: languageCode,
+                languageCode: selectedLanguage?.value,
+                languageName: selectedLanguage?.label,
+                languageId: `${selectedLanguage?.id}`,
             }))
-            await changeLanguage(languageCode || 'en');
-
+            await changeLanguage(selectedLanguage?.value);
             setEnvironment(buildEnvironment || 'PROD');
-
             await storeAuthData();
-
             await verifyOTPApiCall();
 
         } catch (error) {
