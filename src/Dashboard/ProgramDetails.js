@@ -528,10 +528,9 @@ const ProgramDetails = ({ route }) => {
 
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: dynamicStyles.primaryColor }} edges={['top']}>
       <View style={[styles['flex_1'], { backgroundColor: 'rgba(249, 249, 249, 1)' }]}>
         {Platform.OS === 'android' && <StatusBar backgroundColor={dynamicStyles.primaryColor} barStyle='dark-content' />}
-        <View style={[{ backgroundColor: dynamicStyles.primaryColor }, { width: "100%", paddingStart: 20, paddingEnd: 20, paddingBottom: 20, borderBottomStartRadius: 10, borderBottomEndRadius: 10, paddingTop: 20 }]}>
+        <View style={[{ backgroundColor: dynamicStyles.primaryColor }, { width: "100%", borderBottomStartRadius: 10, borderBottomEndRadius: 10, padding: 20 }]}>
           <TouchableOpacity style={[{ flexDirection: "row", alignItems: "center", maxWidth: "55%" }]} onPress={() => navigation.goBack()}>
             <Image style={[{ tintColor: dynamicStyles.secondaryColor }, { height: 15, width: 20, marginRight: 10 }]} source={require('../assets/images/previous.png')}></Image>
             <Text style={[{ color: dynamicStyles.secondaryColor }, styles['font_size_18_bold'], Platform.OS === 'ios' && { minHeight: 25 }]}>{translate('Program Details')}</Text>
@@ -676,7 +675,6 @@ const ProgramDetails = ({ route }) => {
           )}
 
       </View>
-    </SafeAreaView>
   );
 };
 

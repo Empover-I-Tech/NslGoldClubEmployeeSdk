@@ -4326,60 +4326,59 @@ function RetailerDashboard({ route }) {
 
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: dynamicStyles.primaryColor }} edges={['top']}>
-      <View style={[styles['full_screen'], styles['bg_light_grey_color']]}>
-        {Platform.OS === 'android' && <StatusBar backgroundColor={dynamicStyles.primaryColor} barStyle='dark-content' />}
-        {headerSec()}
-        {renderCOINSRow()}
-        <View style={[{ marginTop: 5, position: 'relative', flex: 1 }]}>
-          {weatherIsVisible && weatherInfo && renderWeatherCard()}
-          {getUserMenUCOntrollerUI()}
-        </View>
-        {showProfilePopup && profileMessage && routeName == 'RetailerDashboard' && renderProfileUpdatePopUp()}
-        {kycDetailsPopUp && routeName == 'RetailerDashboard' && renderPANUpdatePopUp()}
-        {!isKeyboardVisible && tabBarUI()}
-        {calculatorOptions && renderCalculatorOptions()}
-        {showDetailViewModal && showDetailViewSection()}
-        {showLinkModal == true && showLinkALert()}
-        {showLinkModalRedeem == true && showLinkALertRedeem()}
 
-        {showDropDowns &&
-          <CustomListViewModal
-            dropDownType={dropDownType}
-            listItems={dropDownData}
-            selectedItem={selectedDropDownItem}
-            onSelectedState={(item) => onSelectedState(item)}
-            onSelectedDistrict={(item) => onSelectedDistrict(item)}
-            onSelectedSubDistrict={(item) => onSelectedSubDistrict(item)}
-            onSelectedVillage={(item) => onSelectedVillage(item)}
-            closeModal={() => setShowDropDowns(false)} />}
-
-
-        {showPanEntryModal && getPanModal()}
-        {showAlert && <CustomAlert onPressClose={() => { handleCancelAlert() }} title={alertTitle} showHeader={showAlertHeader} showHeaderText={showAlertHeaderText} message={alertMessage} onPressOkButton={() => { handleOkAlert() }} onPressNoButton={() => { handleCancelAlert() }} showYesButton={showAlertYesButton} showNoButton={showAlertNoButton} yesButtonText={showAlertyesButtonText} noButtonText={showAlertNoButtonText} />}
-        {showEdit && getShowEditUI()}
-        <CustomGalleryPopup showOrNot={showSelectionModal} onPressingOut={() => setShowSelectionModal(false)} onPressingCamera={() => openCameraProfilePic()} onPressingGallery={() => openImagePickerProfilePic()} />
-        {showCustomActionSheet && CustomActionSheet()}
-        {isModalVisible && showUploadedImage()}
-        {loading && <CustomLoader loading={loading} message={loadingMessage} loaderImage={loaderImage} />}
-        {successLoading && <CustomSuccessLoader loading={successLoading} message={successLoadingMessage} />}
-
-        <MediaModal
-          visible={mediaVisible}
-          link={mediaLink}
-          onClose={() => setMediaVisible(false)}
-          loaderColor={dynamicStyles.primaryColor}
-        />
-
-        <EmployeeActivityAlertModal
-          visible={popupVisible}
-          data={popupData}
-          onClose={() => setPopupVisible(false)}
-          onButtonPress={handlePopupAction}
-        />
-
+    <View style={[styles['full_screen'], styles['bg_light_grey_color']]}>
+      {Platform.OS === 'android' && <StatusBar backgroundColor={dynamicStyles.primaryColor} barStyle='dark-content' />}
+      {headerSec()}
+      {renderCOINSRow()}
+      <View style={[{ marginTop: 5, position: 'relative', flex: 1 }]}>
+        {weatherIsVisible && weatherInfo && renderWeatherCard()}
+        {getUserMenUCOntrollerUI()}
       </View>
-    </SafeAreaView>
+      {showProfilePopup && profileMessage && routeName == 'RetailerDashboard' && renderProfileUpdatePopUp()}
+      {kycDetailsPopUp && routeName == 'RetailerDashboard' && renderPANUpdatePopUp()}
+      {!isKeyboardVisible && tabBarUI()}
+      {calculatorOptions && renderCalculatorOptions()}
+      {showDetailViewModal && showDetailViewSection()}
+      {showLinkModal == true && showLinkALert()}
+      {showLinkModalRedeem == true && showLinkALertRedeem()}
+
+      {showDropDowns &&
+        <CustomListViewModal
+          dropDownType={dropDownType}
+          listItems={dropDownData}
+          selectedItem={selectedDropDownItem}
+          onSelectedState={(item) => onSelectedState(item)}
+          onSelectedDistrict={(item) => onSelectedDistrict(item)}
+          onSelectedSubDistrict={(item) => onSelectedSubDistrict(item)}
+          onSelectedVillage={(item) => onSelectedVillage(item)}
+          closeModal={() => setShowDropDowns(false)} />}
+
+
+      {showPanEntryModal && getPanModal()}
+      {showAlert && <CustomAlert onPressClose={() => { handleCancelAlert() }} title={alertTitle} showHeader={showAlertHeader} showHeaderText={showAlertHeaderText} message={alertMessage} onPressOkButton={() => { handleOkAlert() }} onPressNoButton={() => { handleCancelAlert() }} showYesButton={showAlertYesButton} showNoButton={showAlertNoButton} yesButtonText={showAlertyesButtonText} noButtonText={showAlertNoButtonText} />}
+      {showEdit && getShowEditUI()}
+      <CustomGalleryPopup showOrNot={showSelectionModal} onPressingOut={() => setShowSelectionModal(false)} onPressingCamera={() => openCameraProfilePic()} onPressingGallery={() => openImagePickerProfilePic()} />
+      {showCustomActionSheet && CustomActionSheet()}
+      {isModalVisible && showUploadedImage()}
+      {loading && <CustomLoader loading={loading} message={loadingMessage} loaderImage={loaderImage} />}
+      {successLoading && <CustomSuccessLoader loading={successLoading} message={successLoadingMessage} />}
+
+      <MediaModal
+        visible={mediaVisible}
+        link={mediaLink}
+        onClose={() => setMediaVisible(false)}
+        loaderColor={dynamicStyles.primaryColor}
+      />
+
+      <EmployeeActivityAlertModal
+        visible={popupVisible}
+        data={popupData}
+        onClose={() => setPopupVisible(false)}
+        onButtonPress={handlePopupAction}
+      />
+
+    </View>
   )
 
 }

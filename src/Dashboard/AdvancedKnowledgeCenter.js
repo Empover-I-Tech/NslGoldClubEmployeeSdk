@@ -317,27 +317,22 @@ const AdvancedKnowledgeCenter = () => {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: dynamicStyles.primaryColor }} edges={['top']}>
-      {Platform.OS === 'android' && (
-        <StatusBar backgroundColor={dynamicStyles.primaryColor} barStyle="dark-content" />
-      )}
-
       <View style={{ flex: 1, backgroundColor: '#f9f9f9' }}>
-
+        {Platform.OS === 'android' && (
+          <StatusBar backgroundColor={dynamicStyles.primaryColor} barStyle="dark-content" />
+        )}
         {/* Header */}
         <View style={{
           backgroundColor: dynamicStyles.primaryColor,
-          width: "100%", paddingStart: 20,
-          paddingEnd: 20,
-          paddingBottom: 20,
+          width: "100%", 
           borderBottomStartRadius: 10,
           borderBottomEndRadius: 10,
-          paddingTop: 20
+          padding: 15
 
         }}>
-          <TouchableOpacity style={{ flexDirection: 'row', }} onPress={() => navigation.goBack()}>
+          <TouchableOpacity style={{ flexDirection: 'row', alignItems:'center'}} onPress={() => navigation.goBack()}>
             <Image
-              style={{ tintColor: dynamicStyles.secondaryColor, height: 15, width: 20, top: 5 }}
+              style={{ tintColor: dynamicStyles.secondaryColor, height: 15, width: 20,  }}
               source={require('../assets/images/previous.png')}
             />
             <Text style={{
@@ -434,7 +429,6 @@ const AdvancedKnowledgeCenter = () => {
           loaderColor={dynamicStyles.primaryColor}
         />
       </View>
-    </SafeAreaView>
   );
 };
 

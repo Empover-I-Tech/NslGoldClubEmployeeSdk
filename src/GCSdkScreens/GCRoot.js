@@ -21,7 +21,7 @@ const RootContent = (props) => {
 
   return (
     <SafeAreaView
-      edges={['top']}
+      edges={['top', 'bottom']}
       style={{
         flex: 1,
         backgroundColor: dynamicStyles?.primaryColor || '#ffffff',

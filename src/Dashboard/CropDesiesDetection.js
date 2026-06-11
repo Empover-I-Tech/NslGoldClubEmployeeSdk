@@ -90,78 +90,77 @@ const CropDesiesDetection = ({ route }) => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: dynamicStyles.primaryColor }} edges={['top']}>
-      <View style={[styles['flex_1'], { backgroundColor: 'rgba(249, 249, 249, 1)' }]}>
-        {Platform.OS === 'android' && <StatusBar backgroundColor={dynamicStyles.primaryColor} barStyle='dark-content' />}
-        <View style={[{ backgroundColor: dynamicStyles.primaryColor }, { paddingStart: 20, paddingEnd: 20, paddingBottom: 20, borderBottomStartRadius: 10, borderBottomEndRadius: 10, paddingTop: Platform.OS == 'ios' ? 20 : 20 }]}>
-          <TouchableOpacity style={[styles['flex_direction_row']]} onPress={() => navigation.goBack()}>
-            <Image style={[{ tintColor: dynamicStyles.secondaryColor }, { height: 15, width: 20, top: 5 }]} source={require('../assets/images/previous.png')}></Image>
-            <Text style={[styles['margin_left_10'], { color: dynamicStyles.secondaryColor }, styles['font_size_18_bold'], Platform.OS === 'ios' && { minHeight: 25 }]}>{translate('crop_disease_detection')}</Text>
-          </TouchableOpacity>
-        </View>
 
-        <ViewShot ref={viewShotRef} options={{ format: Platform.OS == 'android' ? "png" : "jpg", quality: 0.1 }}>
-          <Image source={{ uri: imageUrl }} style={{ width: "100%", height: 200, borderBottomLeftRadius: 10, borderBottomRightRadius: 10, resizeMode: 'cover' }} />
-          <ScrollView>
-            <View style={{ backgroundColor: "white", width: "95%", alignSelf: "center", marginTop: 20, borderRadius: 10, }}>
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between', margin: 10 }}>
-                <View>
-                  <Text style={[styles['font_size_14_bold'], { color: "grey" }]}>{translate('disease_name')}</Text>
-                  <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_bold']]}>{diseaseName || translate('not_available')}</Text>
-                </View>
-                {!isProcessing &&
-                  <TouchableOpacity
-                    style={{
-                      borderColor: '#0CB500',
-                      borderWidth: 1,
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      backgroundColor: '#0CB500',
-                      // backgroundColor : 'black',
-                      width: 40,
-                      height: 40,
-                      borderRadius: 20,
-                    }}
-                    onPress={() => shareProductDetails()}
-                  >
-                    <Image
-                      source={require('../assets/images/callIcon.png')}
-                      style={{ width: 25, height: 25, resizeMode: "contain", }}
-                    />
-                  </TouchableOpacity>}
+    <View style={[styles['flex_1'], { backgroundColor: 'rgba(249, 249, 249, 1)' }]}>
+      {Platform.OS === 'android' && <StatusBar backgroundColor={dynamicStyles.primaryColor} barStyle='dark-content' />}
+      <View style={[{ backgroundColor: dynamicStyles.primaryColor }, { borderBottomStartRadius: 10, borderBottomEndRadius: 10, padding: 15}]}>
+        <TouchableOpacity style={[styles['flex_direction_row'], {alignItems:'center'}]} onPress={() => navigation.goBack()}>
+          <Image style={[{ tintColor: dynamicStyles.secondaryColor }, { height: 15, width: 20}]} source={require('../assets/images/previous.png')}></Image>
+          <Text style={[styles['margin_left_10'], { color: dynamicStyles.secondaryColor }, styles['font_size_18_bold'], Platform.OS === 'ios' && { minHeight: 25 }]}>{translate('crop_disease_detection')}</Text>
+        </TouchableOpacity>
+      </View>
+
+      <ViewShot ref={viewShotRef} options={{ format: Platform.OS == 'android' ? "png" : "jpg", quality: 0.1 }}>
+        <Image source={{ uri: imageUrl }} style={{ width: "100%", height: 200, borderBottomLeftRadius: 10, borderBottomRightRadius: 10, resizeMode: 'cover' }} />
+        <ScrollView>
+          <View style={{ backgroundColor: "white", width: "95%", alignSelf: "center", marginTop: 20, borderRadius: 10, }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', margin: 10 }}>
+              <View>
+                <Text style={[styles['font_size_14_bold'], { color: "grey" }]}>{translate('disease_name')}</Text>
+                <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_bold']]}>{diseaseName || translate('not_available')}</Text>
               </View>
-              <View style={{ height: 2, backgroundColor: 'rgba(242, 246, 249, 1)', marginVertical: 7, margin: 10 }} />
+              {!isProcessing &&
+                <TouchableOpacity
+                  style={{
+                    borderColor: '#0CB500',
+                    borderWidth: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    backgroundColor: '#0CB500',
+                    // backgroundColor : 'black',
+                    width: 40,
+                    height: 40,
+                    borderRadius: 20,
+                  }}
+                  onPress={() => shareProductDetails()}
+                >
+                  <Image
+                    source={require('../assets/images/callIcon.png')}
+                    style={{ width: 25, height: 25, resizeMode: "contain", }}
+                  />
+                </TouchableOpacity>}
+            </View>
+            <View style={{ height: 2, backgroundColor: 'rgba(242, 246, 249, 1)', marginVertical: 7, margin: 10 }} />
 
-              <Text style={[{ color: dynamicStyles?.textColor, marginLeft: 10 }, styles['font_size_14_semibold']]}>{translate('most_possible_diagnosis')}</Text>
-              <View style={{ margin: 0, width: '90%' }}>
-                <Text style={[{ color: dynamicStyles?.textColor, marginLeft: 10, margin: 2, lineHeight: 23 }, styles['font_size_13_regular']]}>{diagnosis || translate('not_available')}</Text>
+            <Text style={[{ color: dynamicStyles?.textColor, marginLeft: 10 }, styles['font_size_14_semibold']]}>{translate('most_possible_diagnosis')}</Text>
+            <View style={{ margin: 0, width: '90%' }}>
+              <Text style={[{ color: dynamicStyles?.textColor, marginLeft: 10, margin: 2, lineHeight: 23 }, styles['font_size_13_regular']]}>{diagnosis || translate('not_available')}</Text>
 
-                <View style={{ marginBottom: 10 }}>
-                  {console.log('advisoryPointsInFlatlist', advisory)}
-                  {advisory.length > 0 ? (
-                    <FlatList
-                      data={advisory}
-                      keyExtractor={(_, index) => index.toString()}
-                      renderItem={({ item, index }) => (
-                        <View style={{ marginHorizontal: 10, flexDirection: 'row', width: '95%' }}>
-                          <Text style={[styles['font_size_14_regular'], { color: dynamicStyles?.textColor }]}>{index + 1}. </Text>
-                          <Text style={[styles['font_size_14_regular'], {
-                            flex: 1,
-                            flexShrink: 1, color: dynamicStyles?.textColor, lineHeight: 23, textAlign: 'auto'
-                          }]}>{item.point}</Text>
-                        </View>
-                      )}
-                    />
-                  ) : (
-                    <Text style={[{ color: dynamicStyles?.textColor, marginLeft: 10, margin: 2 }, styles['font_size_13_regular']]}>{translate('not_available')}</Text>
-                  )}
-                </View>
+              <View style={{ marginBottom: 10 }}>
+                {console.log('advisoryPointsInFlatlist', advisory)}
+                {advisory.length > 0 ? (
+                  <FlatList
+                    data={advisory}
+                    keyExtractor={(_, index) => index.toString()}
+                    renderItem={({ item, index }) => (
+                      <View style={{ marginHorizontal: 10, flexDirection: 'row', width: '95%' }}>
+                        <Text style={[styles['font_size_14_regular'], { color: dynamicStyles?.textColor }]}>{index + 1}. </Text>
+                        <Text style={[styles['font_size_14_regular'], {
+                          flex: 1,
+                          flexShrink: 1, color: dynamicStyles?.textColor, lineHeight: 23, textAlign: 'auto'
+                        }]}>{item.point}</Text>
+                      </View>
+                    )}
+                  />
+                ) : (
+                  <Text style={[{ color: dynamicStyles?.textColor, marginLeft: 10, margin: 2 }, styles['font_size_13_regular']]}>{translate('not_available')}</Text>
+                )}
               </View>
             </View>
-          </ScrollView>
-        </ViewShot>
-      </View>
-    </SafeAreaView>
+          </View>
+        </ScrollView>
+      </ViewShot>
+    </View>
   )
 }
 

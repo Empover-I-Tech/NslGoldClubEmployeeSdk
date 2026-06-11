@@ -1058,275 +1058,274 @@ const PlanningTool = ({ route }) => {
     }
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: dynamicStyles.primaryColor }} edges={['top']}>
-            <View style={[styles['full_screen'], styles['bg_white']]}>
-                {Platform.OS === 'android' && <StatusBar backgroundColor={dynamicStyles.primaryColor} barStyle='dark-content' />}
-                <View
-                    style={[styleSheetStyles.header, { backgroundColor: dynamicStyles.primaryColor }]}
-                >
-                    <TouchableOpacity style={styleSheetStyles.backButton} onPress={() => navigation.goBack()}>
-                        <Image source={require('../assets/images/previous.png')} resizeMode='contain' style={{
-                            height: 20, width: 20, tintColor: dynamicStyles.secondaryColor, marginLeft: 20, marginRight: 10
-                        }} />
-                        <Text style={[{ color: dynamicStyles.secondaryColor }, styles['font_size_18_bold'], Platform.OS === 'ios' && { minHeight: 25 }]}>{translate('RetailerPlanning')}</Text>
-                    </TouchableOpacity>
-                    {!networkStatus && isDataDifferent && <TouchableOpacity style={{ marginLeft: "auto", marginRight: 20 }} onPress={() => {
-                        SimpleToast.show(translate("no_internet_conneccted"))
-                    }}>
-                        <Image style={[{ tintColor: dynamicStyles.secondaryColor }, { height: 30, width: 30, resizeMode: "contain" }]} source={require('../assets/images/dataRefresh.png')}></Image>
-                    </TouchableOpacity>}
-                </View>
 
-                <ScrollView nestedScrollEnabled={true}
-                    contentContainerStyle={{ paddingBottom: 50, flexGrow: 1 }}>
-                    <View style={[styles['shadow_box'], styles['bg_white'], styles['align_self_center'], styles['border_radius_5'], { width: '90%', margin: 10 }]}>
-                        <View style={[{ width: '90%' }, styles['align_self_center'], { marginTop: 10, marginBottom: 5 }]}>
-                            <TouchableOpacity disabled={true} onPress={() => { openPotentialInfo() }} style={[styles['width_100%'], styles['border_radius_8'], styles['justify_content_center'], styles['align_self_center']]} >
-                                <Text style={[styles['width_85%'], styles['text_align_left'], styles['font_size_16_semibold'], { color: dynamicStyles.textColor }]}>{translate('RetailCounterPotential')}</Text>
-                            </TouchableOpacity>
-                        </View>
-                        {sectionAddressOpen == true &&
+        <View style={[styles['full_screen'], styles['bg_white']]}>
+            {Platform.OS === 'android' && <StatusBar backgroundColor={dynamicStyles.primaryColor} barStyle='dark-content' />}
+            <View
+                style={[styleSheetStyles.header, { backgroundColor: dynamicStyles.primaryColor }]}
+            >
+                <TouchableOpacity style={styleSheetStyles.backButton} onPress={() => navigation.goBack()}>
+                    <Image source={require('../assets/images/previous.png')} resizeMode='contain' style={{
+                        height: 20, width: 20, tintColor: dynamicStyles.secondaryColor, marginLeft: 20, marginRight: 10
+                    }} />
+                    <Text style={[{ color: dynamicStyles.secondaryColor }, styles['font_size_18_bold'], Platform.OS === 'ios' && { minHeight: 25 }]}>{translate('RetailerPlanning')}</Text>
+                </TouchableOpacity>
+                {!networkStatus && isDataDifferent && <TouchableOpacity style={{ marginLeft: "auto", marginRight: 20 }} onPress={() => {
+                    SimpleToast.show(translate("no_internet_conneccted"))
+                }}>
+                    <Image style={[{ tintColor: dynamicStyles.secondaryColor }, { height: 30, width: 30, resizeMode: "contain" }]} source={require('../assets/images/dataRefresh.png')}></Image>
+                </TouchableOpacity>}
+            </View>
 
-                            <View style={[styles['align_self_center'], styles['margin_top_5'], { flexGrow: 1, }]}>
+            <ScrollView nestedScrollEnabled={true}
+                contentContainerStyle={{ paddingBottom: 50, flexGrow: 1 }}>
+                <View style={[styles['shadow_box'], styles['bg_white'], styles['align_self_center'], styles['border_radius_5'], { width: '90%', margin: 10 }]}>
+                    <View style={[{ width: '90%' }, styles['align_self_center'], { marginTop: 10, marginBottom: 5 }]}>
+                        <TouchableOpacity disabled={true} onPress={() => { openPotentialInfo() }} style={[styles['width_100%'], styles['border_radius_8'], styles['justify_content_center'], styles['align_self_center']]} >
+                            <Text style={[styles['width_85%'], styles['text_align_left'], styles['font_size_16_semibold'], { color: dynamicStyles.textColor }]}>{translate('RetailCounterPotential')}</Text>
+                        </TouchableOpacity>
+                    </View>
+                    {sectionAddressOpen == true &&
 
-                                <FlatList
-                                    data={retailerEntries}
-                                    nestedScrollEnabled={false}
-                                    keyExtractor={(item, index) => index.toString()}
-                                    renderItem={({ item, index }) => (
-                                        <View style={{ marginBottom: 5, marginTop: 5, borderWidth: 1, borderColor: "rgba(180, 180, 180, 0.5)", borderRadius: 10, alignSelf: "center", padding: 8 }}>
+                        <View style={[styles['align_self_center'], styles['margin_top_5'], { flexGrow: 1, }]}>
 
-                                            <View style={{ width: "95%", alignSelf: "center", marginBottom: 5, marginTop: 5 }}>
-                                                <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_12_regular']]}  >
-                                                    {translate('selectCompany')}
+                            <FlatList
+                                data={retailerEntries}
+                                nestedScrollEnabled={false}
+                                keyExtractor={(item, index) => index.toString()}
+                                renderItem={({ item, index }) => (
+                                    <View style={{ marginBottom: 5, marginTop: 5, borderWidth: 1, borderColor: "rgba(180, 180, 180, 0.5)", borderRadius: 10, alignSelf: "center", padding: 8 }}>
+
+                                        <View style={{ width: "95%", alignSelf: "center", marginBottom: 5, marginTop: 5 }}>
+                                            <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_12_regular']]}  >
+                                                {translate('selectCompany')}
+                                            </Text>
+                                            {console.log('xy3', item.companyName)}
+                                            <CustomBorderInputDropDown
+                                                width={[{ width: '100%' }]}
+                                                defaultValue={(item.companyName) || ''}
+                                                // defaultValue={crop != undefined && crop != translate('select') ? crop : translate('select')}
+                                                IsRequired={true}
+                                                // disabled={selectedFilter === translate('YieldCalculator')}
+                                                placeholder={translate('select')}
+                                                placeholderTextColor={'rgba(180, 180, 180, 0.5)'}
+                                                onFocus={() => {
+                                                    changeDropDownData(companyList, strings.company, item.companyName, index)
+                                                }}
+                                            />
+                                        </View>
+
+                                        <View style={{
+                                            flexDirection: "row", alignItems: "center", justifyContent: "space-between",
+                                            width: "95%", alignSelf: "center", marginBottom: 5
+                                        }}>
+
+
+                                            <View style={{ width: '48%', marginLeft: responsiveWidth(1) }}>
+                                                <Text style={[{ color: dynamicStyles.textColor }, { marginBottom: 2.5 }, styles['font_size_12_regular']]}  >
+                                                    {translate('crop')}
                                                 </Text>
-                                                {console.log('xy3', item.companyName)}
                                                 <CustomBorderInputDropDown
                                                     width={[{ width: '100%' }]}
-                                                    defaultValue={(item.companyName) || ''}
+                                                    defaultValue={(item?.cropName.length > 12 ? `${item?.cropName.slice(0, 12).trim()}...` : item?.cropName) || ''}
                                                     // defaultValue={crop != undefined && crop != translate('select') ? crop : translate('select')}
                                                     IsRequired={true}
                                                     // disabled={selectedFilter === translate('YieldCalculator')}
                                                     placeholder={translate('select')}
                                                     placeholderTextColor={'rgba(180, 180, 180, 0.5)'}
                                                     onFocus={() => {
-                                                        changeDropDownData(companyList, strings.company, item.companyName, index)
+                                                        // console.log(cropMastersFilter,"crop masters<------------------------",typeof item?.companyCode)
+                                                        let filterItemsThroughCompanyCode = cropMastersFilter?.filter((dataa) => {
+                                                            return dataa?.companyCode == item?.companyCode
+                                                        })
+                                                        changeDropDownData(filterItemsThroughCompanyCode, strings.crop, item.cropName, index);
+                                                        // changeDropDownData(cropMastersFilter, strings.crop, item.cropName, index);
                                                     }}
                                                 />
                                             </View>
-
-                                            <View style={{
-                                                flexDirection: "row", alignItems: "center", justifyContent: "space-between",
-                                                width: "95%", alignSelf: "center", marginBottom: 5
-                                            }}>
-
-
-                                                <View style={{ width: '48%', marginLeft: responsiveWidth(1) }}>
-                                                    <Text style={[{ color: dynamicStyles.textColor }, { marginBottom: 2.5 }, styles['font_size_12_regular']]}  >
-                                                        {translate('crop')}
-                                                    </Text>
-                                                    <CustomBorderInputDropDown
-                                                        width={[{ width: '100%' }]}
-                                                        defaultValue={(item?.cropName.length > 12 ? `${item?.cropName.slice(0, 12).trim()}...` : item?.cropName) || ''}
-                                                        // defaultValue={crop != undefined && crop != translate('select') ? crop : translate('select')}
-                                                        IsRequired={true}
-                                                        // disabled={selectedFilter === translate('YieldCalculator')}
-                                                        placeholder={translate('select')}
-                                                        placeholderTextColor={'rgba(180, 180, 180, 0.5)'}
-                                                        onFocus={() => {
-                                                            // console.log(cropMastersFilter,"crop masters<------------------------",typeof item?.companyCode)
-                                                            let filterItemsThroughCompanyCode = cropMastersFilter?.filter((dataa) => {
-                                                                return dataa?.companyCode == item?.companyCode
+                                            <View style={{ width: '48%', marginLeft: responsiveWidth(1) }}>
+                                                <Text style={[{ color: dynamicStyles.textColor }, { marginBottom: 2.5 }, styles['font_size_12_regular']]}  >
+                                                    {translate('Hybrid')}
+                                                </Text>
+                                                <CustomBorderInputDropDown
+                                                    width={[{ width: '100%' }]}
+                                                    // defaultValue={item.brandName || ''}
+                                                    defaultValue={(item?.brandName.length > 12 ? `${item?.brandName.slice(0, 12).trim()}...` : item?.brandName) || ''}
+                                                    // defaultValue={hybrid != undefined && hybrid != translate('select') ? hybrid : translate('select')}
+                                                    IsRequired={true}
+                                                    // disabled={selectedFilter === translate('YieldCalculator')}
+                                                    placeholder={translate('select')}
+                                                    placeholderTextColor={'rgba(180, 180, 180, 0.5)'}
+                                                    onFocus={() => {
+                                                        if (item.cropName) {
+                                                            // console.log(hybridsList,"hybrid masters<------------------------",typeof item?.companyCode)
+                                                            let filterItemsThroughCompanyCode = hybridsList?.filter((dataa) => {
+                                                                return dataa?.cropName === item?.cropName && dataa?.companyCode === item?.companyCode
                                                             })
-                                                            changeDropDownData(filterItemsThroughCompanyCode, strings.crop, item.cropName, index);
-                                                            // changeDropDownData(cropMastersFilter, strings.crop, item.cropName, index);
-                                                        }}
-                                                    />
-                                                </View>
-                                                <View style={{ width: '48%', marginLeft: responsiveWidth(1) }}>
-                                                    <Text style={[{ color: dynamicStyles.textColor }, { marginBottom: 2.5 }, styles['font_size_12_regular']]}  >
-                                                        {translate('Hybrid')}
-                                                    </Text>
-                                                    <CustomBorderInputDropDown
-                                                        width={[{ width: '100%' }]}
-                                                        // defaultValue={item.brandName || ''}
-                                                        defaultValue={(item?.brandName.length > 12 ? `${item?.brandName.slice(0, 12).trim()}...` : item?.brandName) || ''}
-                                                        // defaultValue={hybrid != undefined && hybrid != translate('select') ? hybrid : translate('select')}
-                                                        IsRequired={true}
-                                                        // disabled={selectedFilter === translate('YieldCalculator')}
-                                                        placeholder={translate('select')}
-                                                        placeholderTextColor={'rgba(180, 180, 180, 0.5)'}
-                                                        onFocus={() => {
-                                                            if (item.cropName) {
-                                                                // console.log(hybridsList,"hybrid masters<------------------------",typeof item?.companyCode)
-                                                                let filterItemsThroughCompanyCode = hybridsList?.filter((dataa) => {
-                                                                    return dataa?.cropName === item?.cropName && dataa?.companyCode === item?.companyCode
-                                                                })
-                                                                console.log(JSON.stringify(filterItemsThroughCompanyCode), "<<< aslkdasklj")
-                                                                //    alert(JSON.stringify(filterItemsThroughCompanyCode),"< filtered")
-                                                                changeDropDownData(filterItemsThroughCompanyCode, strings.Hybrid, item.brandName, index)
-                                                            } else {
-                                                                SimpleToast.show(translate('please_select_crop'))
-                                                            }
-                                                        }}
-                                                    />
-                                                </View>
-                                            </View>
-
-                                            {retailerEntries.length > 1 &&
-                                                <TouchableOpacity onPress={() => removeEntry(index)} activeOpacity={0.5}
-                                                    style={{
-                                                        position: "absolute", right: 5, top: Platform.OS === 'android' ? 5 : 2.5,
-                                                        backgroundColor: dynamicStyles.iconPrimaryColor, borderRadius: 60, height: 20, width: 20,
-                                                        alignItems: "center", justifyContent: "center"
-                                                    }}>
-                                                    <Image source={require('../assets/images/minussTool.png')} resizeMode='contain' style={{ height: 8, width: 8 }} />
-                                                </TouchableOpacity>}
-
-                                            <View style={{
-                                                flexDirection: "row", alignItems: "center", justifyContent: "space-between",
-                                                alignSelf: "center", marginBottom: 10, marginTop: 2.5
-                                            }}>
-
-                                                <View style={{ width: '48%', marginLeft: responsiveWidth(2), }}>
-                                                    <Text style={[{ color: dynamicStyles.textColor }, { marginBottom: 6, marginLeft: 5, }, styles['font_size_12_regular']]}  >
-                                                        {`${translate('FY25')} ${item.cropName !== '' ? item.cropName.toLowerCase() === 'cotton' ? '(in pkts)' : '(in kgs)' : ''}`}
-                                                    </Text>
-                                                    <TextInput
-                                                        style={[{
-                                                            color: dynamicStyles?.textColor ?? Colors.black,
-                                                            borderWidth: 1,
-                                                            borderColor: "rgba(180, 180, 180, 0.5)",
-                                                            borderRadius: 5,
-                                                            width: '5%'
-                                                        },
-                                                        styles['font_size_14_regular'],
-                                                        styles['text_align_left'],
-                                                        { padding: 5, paddingLeft: 10, width: "95%" }]}
-                                                        value={item.fy25}
-                                                        keyboardType={'decimal-pad'}
-                                                        placeholder={translate('enter')}
-                                                        placeholderTextColor={'rgba(180, 180, 180, 0.5)'}
-                                                        underlineColorAndroid="transparent"
-                                                        editable={true}
-                                                        multiline={false}
-                                                        onChangeText={(text) => {
-                                                            let enteredText = text
-                                                                .replace(/[^0-9.]/g, '')
-                                                                .replace(/^\./, '0.')
-                                                                .replace(/(\..*)\./g, '$1')
-                                                                .replace(/(\.\d{2}).*/g, '$1');
-
-                                                            updateEntry(index, 'fy25', enteredText);
-                                                        }}
-                                                        onBlur={() => {
-                                                            if (item.fy25) {
-                                                                let formattedValue = parseFloat(item.fy25).toString();
-                                                                if (formattedValue.indexOf('.') !== -1) {
-                                                                    const [integerPart, decimalPart] = formattedValue.split('.');
-                                                                    if (decimalPart === '0' || decimalPart === '00') {
-                                                                        formattedValue = integerPart;
-                                                                    } else if (decimalPart.length === 1) {
-                                                                        formattedValue = `${integerPart}.${decimalPart}0`;
-                                                                    }
-                                                                }
-                                                                updateEntry(index, 'fy25', formattedValue);
-                                                            }
-                                                        }}
-                                                        maxLength={9}
-                                                        allowFontScaling={true}
-                                                    />
-                                                </View>
-                                                <View style={{ width: '48%', marginLeft: responsiveWidth(0.5) }}>
-                                                    <Text style={[{ color: dynamicStyles.textColor }, { marginBottom: 6, }, styles['font_size_12_regular']]}  >
-                                                        {/* {translate('FY26Plan')} */}
-                                                        {`${translate('FY26Plan')} ${item.cropName !== '' ? item.cropName.toLowerCase() === 'cotton' ? '(in pkts)' : '(in kgs)' : ''}`}
-                                                    </Text>
-                                                    <TextInput
-                                                        style={[{
-                                                            color: dynamicStyles?.textColor ?? Colors.black,
-                                                            borderWidth: 1,
-                                                            borderColor: "rgba(180, 180, 180, 0.5)",
-                                                            borderRadius: 5,
-                                                            width: '5%'
-                                                        },
-                                                        styles['font_size_14_regular'],
-                                                        styles['text_align_left'],
-                                                        { padding: 5, paddingLeft: 10, width: "95%" }]}
-                                                        value={item.fy26}
-                                                        keyboardType={'decimal-pad'}
-                                                        placeholder={translate('enter')}
-                                                        placeholderTextColor={'rgba(180, 180, 180, 0.5)'}
-                                                        underlineColorAndroid="transparent"
-                                                        editable={true}
-                                                        multiline={false}
-                                                        onChangeText={(text) => {
-                                                            let enteredText = text
-                                                                .replace(/[^0-9.]/g, '')
-                                                                .replace(/^\./, '0.')
-                                                                .replace(/(\..*)\./g, '$1')
-                                                                .replace(/(\.\d{2}).*/g, '$1');
-                                                            updateEntry(index, 'fy26', enteredText);
-                                                        }}
-                                                        onBlur={() => {
-                                                            if (item.fy26) {
-                                                                let formattedValue = parseFloat(item.fy26).toString();
-
-                                                                if (formattedValue.indexOf('.') !== -1) {
-                                                                    const [integerPart, decimalPart] = formattedValue.split('.');
-                                                                    if (decimalPart === '0' || decimalPart === '00') {
-                                                                        formattedValue = integerPart;
-                                                                    } else if (decimalPart.length === 1) {
-                                                                        formattedValue = `${integerPart}.${decimalPart}0`;
-                                                                    }
-                                                                }
-                                                                updateEntry(index, 'fy26', formattedValue);
-                                                            }
-                                                        }}
-                                                        maxLength={9}
-                                                        allowFontScaling={true}
-                                                    />
-                                                </View>
+                                                            console.log(JSON.stringify(filterItemsThroughCompanyCode), "<<< aslkdasklj")
+                                                            //    alert(JSON.stringify(filterItemsThroughCompanyCode),"< filtered")
+                                                            changeDropDownData(filterItemsThroughCompanyCode, strings.Hybrid, item.brandName, index)
+                                                        } else {
+                                                            SimpleToast.show(translate('please_select_crop'))
+                                                        }
+                                                    }}
+                                                />
                                             </View>
                                         </View>
-                                    )}
-                                    ListFooterComponent={() => (
-                                        <TouchableOpacity onPress={addEntry}
-                                            disabled={!validateLastEntry()} activeOpacity={0.5}
-                                            style={{
-                                                marginLeft: "auto", alignItems: "center",
-                                                justifyContent: "center", flexDirection: "row",
-                                                opacity: validateLastEntry() ? 1 : 0.5, right: 10, top: 10
-                                            }}>
-                                            <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular']]}  >{translate('Add')}</Text>
-                                            <View style={{ backgroundColor: dynamicStyles.iconPrimaryColor, borderRadius: 60, height: 20, width: 20, alignItems: "center", justifyContent: "center", marginLeft: responsiveWidth(1) }}>
-                                                <Image source={require('../assets/images/PlussTool.png')} resizeMode='contain' style={{ height: 10, width: 10 }} />
+
+                                        {retailerEntries.length > 1 &&
+                                            <TouchableOpacity onPress={() => removeEntry(index)} activeOpacity={0.5}
+                                                style={{
+                                                    position: "absolute", right: 5, top: Platform.OS === 'android' ? 5 : 2.5,
+                                                    backgroundColor: dynamicStyles.iconPrimaryColor, borderRadius: 60, height: 20, width: 20,
+                                                    alignItems: "center", justifyContent: "center"
+                                                }}>
+                                                <Image source={require('../assets/images/minussTool.png')} resizeMode='contain' style={{ height: 8, width: 8 }} />
+                                            </TouchableOpacity>}
+
+                                        <View style={{
+                                            flexDirection: "row", alignItems: "center", justifyContent: "space-between",
+                                            alignSelf: "center", marginBottom: 10, marginTop: 2.5
+                                        }}>
+
+                                            <View style={{ width: '48%', marginLeft: responsiveWidth(2), }}>
+                                                <Text style={[{ color: dynamicStyles.textColor }, { marginBottom: 6, marginLeft: 5, }, styles['font_size_12_regular']]}  >
+                                                    {`${translate('FY25')} ${item.cropName !== '' ? item.cropName.toLowerCase() === 'cotton' ? '(in pkts)' : '(in kgs)' : ''}`}
+                                                </Text>
+                                                <TextInput
+                                                    style={[{
+                                                        color: dynamicStyles?.textColor ?? Colors.black,
+                                                        borderWidth: 1,
+                                                        borderColor: "rgba(180, 180, 180, 0.5)",
+                                                        borderRadius: 5,
+                                                        width: '5%'
+                                                    },
+                                                    styles['font_size_14_regular'],
+                                                    styles['text_align_left'],
+                                                    { padding: 5, paddingLeft: 10, width: "95%" }]}
+                                                    value={item.fy25}
+                                                    keyboardType={'decimal-pad'}
+                                                    placeholder={translate('enter')}
+                                                    placeholderTextColor={'rgba(180, 180, 180, 0.5)'}
+                                                    underlineColorAndroid="transparent"
+                                                    editable={true}
+                                                    multiline={false}
+                                                    onChangeText={(text) => {
+                                                        let enteredText = text
+                                                            .replace(/[^0-9.]/g, '')
+                                                            .replace(/^\./, '0.')
+                                                            .replace(/(\..*)\./g, '$1')
+                                                            .replace(/(\.\d{2}).*/g, '$1');
+
+                                                        updateEntry(index, 'fy25', enteredText);
+                                                    }}
+                                                    onBlur={() => {
+                                                        if (item.fy25) {
+                                                            let formattedValue = parseFloat(item.fy25).toString();
+                                                            if (formattedValue.indexOf('.') !== -1) {
+                                                                const [integerPart, decimalPart] = formattedValue.split('.');
+                                                                if (decimalPart === '0' || decimalPart === '00') {
+                                                                    formattedValue = integerPart;
+                                                                } else if (decimalPart.length === 1) {
+                                                                    formattedValue = `${integerPart}.${decimalPart}0`;
+                                                                }
+                                                            }
+                                                            updateEntry(index, 'fy25', formattedValue);
+                                                        }
+                                                    }}
+                                                    maxLength={9}
+                                                    allowFontScaling={true}
+                                                />
                                             </View>
-                                        </TouchableOpacity>
-                                    )}
-                                />
+                                            <View style={{ width: '48%', marginLeft: responsiveWidth(0.5) }}>
+                                                <Text style={[{ color: dynamicStyles.textColor }, { marginBottom: 6, }, styles['font_size_12_regular']]}  >
+                                                    {/* {translate('FY26Plan')} */}
+                                                    {`${translate('FY26Plan')} ${item.cropName !== '' ? item.cropName.toLowerCase() === 'cotton' ? '(in pkts)' : '(in kgs)' : ''}`}
+                                                </Text>
+                                                <TextInput
+                                                    style={[{
+                                                        color: dynamicStyles?.textColor ?? Colors.black,
+                                                        borderWidth: 1,
+                                                        borderColor: "rgba(180, 180, 180, 0.5)",
+                                                        borderRadius: 5,
+                                                        width: '5%'
+                                                    },
+                                                    styles['font_size_14_regular'],
+                                                    styles['text_align_left'],
+                                                    { padding: 5, paddingLeft: 10, width: "95%" }]}
+                                                    value={item.fy26}
+                                                    keyboardType={'decimal-pad'}
+                                                    placeholder={translate('enter')}
+                                                    placeholderTextColor={'rgba(180, 180, 180, 0.5)'}
+                                                    underlineColorAndroid="transparent"
+                                                    editable={true}
+                                                    multiline={false}
+                                                    onChangeText={(text) => {
+                                                        let enteredText = text
+                                                            .replace(/[^0-9.]/g, '')
+                                                            .replace(/^\./, '0.')
+                                                            .replace(/(\..*)\./g, '$1')
+                                                            .replace(/(\.\d{2}).*/g, '$1');
+                                                        updateEntry(index, 'fy26', enteredText);
+                                                    }}
+                                                    onBlur={() => {
+                                                        if (item.fy26) {
+                                                            let formattedValue = parseFloat(item.fy26).toString();
 
-                            </View>
-                        }
-                    </View>
-                </ScrollView>
+                                                            if (formattedValue.indexOf('.') !== -1) {
+                                                                const [integerPart, decimalPart] = formattedValue.split('.');
+                                                                if (decimalPart === '0' || decimalPart === '00') {
+                                                                    formattedValue = integerPart;
+                                                                } else if (decimalPart.length === 1) {
+                                                                    formattedValue = `${integerPart}.${decimalPart}0`;
+                                                                }
+                                                            }
+                                                            updateEntry(index, 'fy26', formattedValue);
+                                                        }
+                                                    }}
+                                                    maxLength={9}
+                                                    allowFontScaling={true}
+                                                />
+                                            </View>
+                                        </View>
+                                    </View>
+                                )}
+                                ListFooterComponent={() => (
+                                    <TouchableOpacity onPress={addEntry}
+                                        disabled={!validateLastEntry()} activeOpacity={0.5}
+                                        style={{
+                                            marginLeft: "auto", alignItems: "center",
+                                            justifyContent: "center", flexDirection: "row",
+                                            opacity: validateLastEntry() ? 1 : 0.5, right: 10, top: 10
+                                        }}>
+                                        <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular']]}  >{translate('Add')}</Text>
+                                        <View style={{ backgroundColor: dynamicStyles.iconPrimaryColor, borderRadius: 60, height: 20, width: 20, alignItems: "center", justifyContent: "center", marginLeft: responsiveWidth(1) }}>
+                                            <Image source={require('../assets/images/PlussTool.png')} resizeMode='contain' style={{ height: 10, width: 10 }} />
+                                        </View>
+                                    </TouchableOpacity>
+                                )}
+                            />
 
-                {btnVisible &&
-                    <View style={[{ marginTop: "auto" }, styles['margin_bottom_10']]}>
-                        <CustomButton
-                            shouldDisable={isSubmitDisabled}
-                            onPress={() => saveAPI()}
-                            title={translate('submit')}
-                            margin={{ marginTop: 12, marginBottom: 4 }}
-                            buttonBg={
-                                isSubmitDisabled ? '#E5E5E5' :
-                                    dynamicStyles.primaryColor}
-                            btnWidth={"90%"}
-                            titleTextColor={
-                                isSubmitDisabled ? 'white' :
-                                    dynamicStyles.secondaryColor} />
-                    </View>}
-            </View>
+                        </View>
+                    }
+                </View>
+            </ScrollView>
+
+            {btnVisible &&
+                <View style={[{ marginTop: "auto" }, styles['margin_bottom_10']]}>
+                    <CustomButton
+                        shouldDisable={isSubmitDisabled}
+                        onPress={() => saveAPI()}
+                        title={translate('submit')}
+                        margin={{ marginTop: 12, marginBottom: 4 }}
+                        buttonBg={
+                            isSubmitDisabled ? '#E5E5E5' :
+                                dynamicStyles.primaryColor}
+                        btnWidth={"90%"}
+                        titleTextColor={
+                            isSubmitDisabled ? 'white' :
+                                dynamicStyles.secondaryColor} />
+                </View>}
             {
                 showDropDowns &&
                 <CustomListViewModal
@@ -1354,7 +1353,8 @@ const PlanningTool = ({ route }) => {
                     yesButtonText={showAlertyesButtonText}
                     noButtonText={showAlertNoButtonText} />
             )}
-        </SafeAreaView>
+        </View>
+
     );
 };
 

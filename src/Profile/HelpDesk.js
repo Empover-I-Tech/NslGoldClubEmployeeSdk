@@ -843,115 +843,115 @@ function HelpDesk({ route }) {
 
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: dynamicStyles.primaryColor }} edges={['top']}>
-      <View style={[styles['full_screen'], { backgroundColor: "rgba(249, 249, 249, 1)" }]}>
-        {Platform.OS === 'android' && <StatusBar translucent={true} backgroundColor={{ backgroundColor: 'rgba(249, 249, 249, 1)' }} barStyle='dark-content' />}
-        <View style={[{ backgroundColor: dynamicStyles.primaryColor }, { borderBottomStartRadius: 10, borderBottomEndRadius: 10, paddingBottom:14 }, stylesheetStyles.addFlex]}>
-          <TouchableOpacity style={[styles['flex_direction_row'], { alignItems: "center", marginRight: 5 }]} onPress={() => { goBack() }}>
-            <Image style={[styles['margin_left_20'],{ tintColor: dynamicStyles.secondaryColor }, { height: 22, width: 22, resizeMode: "contain" }]} source={require('../assets/images/previous.png')}></Image>
-            <Text style={[styles['margin_left_10'], { color: dynamicStyles.secondaryColor }, styles['font_size_18_bold']]}>{translate('Samadhan')}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => {
-            GetComplaintsApiCall(true)
-          }}>
-            <Image style={[{ tintColor: dynamicStyles.secondaryColor }, { height: 30, width: 30, resizeMode: "contain", right : 15 }]} source={require('../assets/images/dataRefresh.png')}></Image>
-          </TouchableOpacity>
-        </View>
-        <View style={[styles['height_100%'], styles['width_100%']]}>
 
-
-          <View style={[styles['padding_top_10'], styles['width_100%'], styles['height_100%']]}>
-
-            <Text style={[{ color: dynamicStyles.textColor, margin: 8 }, styles['centerItems'], styles['font_size_20_bold']]}>{translate('howcanwehelp')}</Text>
-            <View style={[styles['bg_lightish_grey'], styles['width_90%'], styles['height_0.5'], styles['centerItems'], { marginVertical: 10 }]} ></View>
-            <Text style={[styles['font_size_14_regular'], { color: dynamicStyles.textColor }, styles['text_align_center'], styles['width_75%'], styles['centerItems'], { marginVertical: 10 }]}>{translate('didntfindtheanswer')}</Text>
-
-
-            <View style={[
-              {
-                alignItems: "center",
-                flexDirection: "row",
-                width: "90%",
-                // height:90,
-                paddingVertical: 10,
-                alignSelf: "center",
-                borderRadius: 6,
-                backgroundColor: "white",
-                borderWidth: 0.5,
-                borderColor: "rgba(0, 0, 0, 0.1)",
-              }]}>
-              <View style={[{ backgroundColor: "rgba(246, 246, 246, 1)", height: 80, width: 65, alignItems: "center", justifyContent: "center", borderRadius: 8, marginLeft: 10 }]}>
-                <Image style={{ height: 50, width: 50, resizeMode: "contain" }} source={{ uri: logo }}></Image>
-              </View>
-              <View style={[{ left: 10, width: "59%" }]}>
-                <Text style={[{ color: dynamicStyles.textColor, textAlign: "left" }, styles['font_size_12_semibold']]}>{translate('Samadhan')}</Text>
-                <Text style={[{ color: dynamicStyles.textColor, marginVertical: -0.5 }, styles['font_size_9.5_regular']]}>{num}</Text>
-                <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_9.5_regular']]}>{desc}</Text>
-              </View>
-              {num != "" &&
-                <View style={[styles['flex_direction_row'], styles['align_self_center'], styles['absolute_position'], styles['right_15']]}>
-                  <TouchableOpacity style={[styles['flex_direction_row'], styles['width_height_35'], styles['alignItems_center'], styles['justify_content_center'], { backgroundColor: dynamicStyles.primaryColor, borderRadius: 22 }]} onPress={() => { callBtnClicked() }}>
-                    <Image style={[styles[''], { width: '40%', height: '40%', tintColor: dynamicStyles.secondaryColor }]} resizeMode='contain' source={require('../assets/images/helpCallGreenNew.png')}></Image>
-                  </TouchableOpacity>
-                </View>}
-            </View>
-
-            <View style={[styles['flex_direction_row'], styles['width_90%'], styles['margin_top_20'], styles['height_50'], styles['centerItems'], styles['align_self_center'], styles['border_radius_10'], styles['border_width_0.5'], styles['border_color_light_grey'], {
-              backgroundColor: dynamicStyles.primaryColor
-            }]}>
-              <Image style={[styles['width_height_25']]} resizeMode='contain' source={require('../assets/images/supportTicket.png')}></Image>
-              <Text style={[styles['align_self_center'], styles['margin_left_10'], styles['text_align_center'], { color: dynamicStyles.secondaryColor }, styles['font_size_14_regular']]}>{translate('addconcernsbyyou')}</Text>
-            </View>
-
-            {/* <View style={[styles['bg_lightish_grey'], styles['width_90%'], styles['height_0.5'], styles['centerItems'], styles['margin_top_10']]} ></View> */}
-
-
-            {/* <View style={[{ width: '95%' }]}> */}
-            <FlatList
-              data={complantData}
-              initialNumToRender={3}
-              nestedScrollEnable={true}
-              removeClippedSubviews={true}
-              maxToRenderPerBatch={10}
-              windowSize={5}
-              keyExtractor={(_, index) => index}
-              renderItem={({ item, index }) => renderItems(item, index, complantData.length - 1)}
-              scrollEnabled={true}
-              ListFooterComponent={<View style={{ height: 25 }} />}
-              showsVerticalScrollIndicator={false}
-              style={[{ flex: 1, marginBottom: responsiveHeight(16) }, styles['width_100%']]}>
-            </FlatList>
-          </View>
-        </View>
-
-        <View style={[styles['margin_top_100'], styles['align_self_center'], styles['flex_1'], styles['width_100%'], styles['bottom_10'], styles['absolute_position'], { bottom: Platform.OS === 'ios' ? 10 : 0 }]}>
-          <CustomButton title={translate('pluseComplaint')} onPress={complaintButtonPress} buttonBg={dynamicStyles.primaryColor} btnWidth={"90%"} titleTextColor={dynamicStyles.secondaryColor} />
-        </View>
-
-        {showDetailViewModal == true &&
-          showDetailViewSection(selectedItemData)
-        }
-        {renderModal && renderPopup()}
-        {showAlert && (
-          <CustomAlert
-            onPressClose={() => { handleCancelAlert() }}
-            title={alertTitle}
-            showHeader={showAlertHeader}
-            showHeaderText={showAlertHeaderText}
-            message={alertMessage}
-            onPressOkButton={() => { handleOkAlert() }}
-            onPressNoButton={() => { handleCancelAlert() }}
-            showYesButton={showAlertYesButton}
-            showNoButton={showAlertNoButton}
-            yesButtonText={showAlertyesButtonText}
-            noButtonText={showAlertNoButtonText} />
-        )}
-
-        {loading && <CustomLoader loading={loading} message={loadingMessage} loaderImage={loaderImage} />}
-        {successLoading && <CustomSuccessLoader loading={successLoading} message={successLoadingMessage} />}
-        {errorLoading && <CustomErrorLoader loading={errorLoading} message={errorLoadingMessage} />}
+    <View style={[styles['full_screen'], { backgroundColor: "rgba(249, 249, 249, 1)" }]}>
+      {Platform.OS === 'android' && <StatusBar translucent={true} backgroundColor={{ backgroundColor: 'rgba(249, 249, 249, 1)' }} barStyle='dark-content' />}
+      <View style={[{ backgroundColor: dynamicStyles.primaryColor }, { borderBottomStartRadius: 10, borderBottomEndRadius: 10, padding: 15 }, stylesheetStyles.addFlex]}>
+        <TouchableOpacity style={[styles['flex_direction_row'], { alignItems: "center", marginRight: 5 }]} onPress={() => { goBack() }}>
+          <Image style={[{ tintColor: dynamicStyles.secondaryColor }, { height: 22, width: 22, resizeMode: "contain" }]} source={require('../assets/images/previous.png')}></Image>
+          <Text style={[styles['margin_left_10'], { color: dynamicStyles.secondaryColor }, styles['font_size_18_bold']]}>{translate('Samadhan')}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => {
+          GetComplaintsApiCall(true)
+        }}>
+          <Image style={[{ tintColor: dynamicStyles.secondaryColor }, { height: 30, width: 30, resizeMode: "contain" }]} source={require('../assets/images/dataRefresh.png')}></Image>
+        </TouchableOpacity>
       </View>
-    </SafeAreaView>
+      <View style={[styles['height_100%'], styles['width_100%']]}>
+
+
+        <View style={[styles['padding_top_10'], styles['width_100%'], styles['height_100%']]}>
+
+          <Text style={[{ color: dynamicStyles.textColor, margin: 8 }, styles['centerItems'], styles['font_size_20_bold']]}>{translate('howcanwehelp')}</Text>
+          <View style={[styles['bg_lightish_grey'], styles['width_90%'], styles['height_0.5'], styles['centerItems'], { marginVertical: 10 }]} ></View>
+          <Text style={[styles['font_size_14_regular'], { color: dynamicStyles.textColor }, styles['text_align_center'], styles['width_75%'], styles['centerItems'], { marginVertical: 10 }]}>{translate('didntfindtheanswer')}</Text>
+
+
+          <View style={[
+            {
+              alignItems: "center",
+              flexDirection: "row",
+              width: "90%",
+              // height:90,
+              paddingVertical: 10,
+              alignSelf: "center",
+              borderRadius: 6,
+              backgroundColor: "white",
+              borderWidth: 0.5,
+              borderColor: "rgba(0, 0, 0, 0.1)",
+            }]}>
+            <View style={[{ backgroundColor: "rgba(246, 246, 246, 1)", height: 80, width: 65, alignItems: "center", justifyContent: "center", borderRadius: 8, marginLeft: 10 }]}>
+              <Image style={{ height: 50, width: 50, resizeMode: "contain" }} source={{ uri: logo }}></Image>
+            </View>
+            <View style={[{ left: 10, width: "59%" }]}>
+              <Text style={[{ color: dynamicStyles.textColor, textAlign: "left" }, styles['font_size_12_semibold']]}>{translate('Samadhan')}</Text>
+              <Text style={[{ color: dynamicStyles.textColor, marginVertical: -0.5 }, styles['font_size_9.5_regular']]}>{num}</Text>
+              <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_9.5_regular']]}>{desc}</Text>
+            </View>
+            {num != "" &&
+              <View style={[styles['flex_direction_row'], styles['align_self_center'], styles['absolute_position'], styles['right_15']]}>
+                <TouchableOpacity style={[styles['flex_direction_row'], styles['width_height_35'], styles['alignItems_center'], styles['justify_content_center'], { backgroundColor: dynamicStyles.primaryColor, borderRadius: 22 }]} onPress={() => { callBtnClicked() }}>
+                  <Image style={[styles[''], { width: '40%', height: '40%', tintColor: dynamicStyles.secondaryColor }]} resizeMode='contain' source={require('../assets/images/helpCallGreenNew.png')}></Image>
+                </TouchableOpacity>
+              </View>}
+          </View>
+
+          <View style={[styles['flex_direction_row'], styles['width_90%'], styles['margin_top_20'], styles['height_50'], styles['centerItems'], styles['align_self_center'], styles['border_radius_10'], styles['border_width_0.5'], styles['border_color_light_grey'], {
+            backgroundColor: dynamicStyles.primaryColor
+          }]}>
+            <Image style={[styles['width_height_25']]} resizeMode='contain' source={require('../assets/images/supportTicket.png')}></Image>
+            <Text style={[styles['align_self_center'], styles['margin_left_10'], styles['text_align_center'], { color: dynamicStyles.secondaryColor }, styles['font_size_14_regular']]}>{translate('addconcernsbyyou')}</Text>
+          </View>
+
+          {/* <View style={[styles['bg_lightish_grey'], styles['width_90%'], styles['height_0.5'], styles['centerItems'], styles['margin_top_10']]} ></View> */}
+
+
+          {/* <View style={[{ width: '95%' }]}> */}
+          <FlatList
+            data={complantData}
+            initialNumToRender={3}
+            nestedScrollEnable={true}
+            removeClippedSubviews={true}
+            maxToRenderPerBatch={10}
+            windowSize={5}
+            keyExtractor={(_, index) => index}
+            renderItem={({ item, index }) => renderItems(item, index, complantData.length - 1)}
+            scrollEnabled={true}
+            ListFooterComponent={<View style={{ height: 25 }} />}
+            showsVerticalScrollIndicator={false}
+            style={[{ flex: 1, marginBottom: responsiveHeight(16) }, styles['width_100%']]}>
+          </FlatList>
+        </View>
+      </View>
+
+      <View style={[styles['margin_top_100'], styles['align_self_center'], styles['flex_1'], styles['width_100%'], styles['bottom_10'], styles['absolute_position'], { bottom: Platform.OS === 'ios' ? 10 : 0 }]}>
+        <CustomButton title={translate('pluseComplaint')} onPress={complaintButtonPress} buttonBg={dynamicStyles.primaryColor} btnWidth={"90%"} titleTextColor={dynamicStyles.secondaryColor} />
+      </View>
+
+      {showDetailViewModal == true &&
+        showDetailViewSection(selectedItemData)
+      }
+      {renderModal && renderPopup()}
+      {showAlert && (
+        <CustomAlert
+          onPressClose={() => { handleCancelAlert() }}
+          title={alertTitle}
+          showHeader={showAlertHeader}
+          showHeaderText={showAlertHeaderText}
+          message={alertMessage}
+          onPressOkButton={() => { handleOkAlert() }}
+          onPressNoButton={() => { handleCancelAlert() }}
+          showYesButton={showAlertYesButton}
+          showNoButton={showAlertNoButton}
+          yesButtonText={showAlertyesButtonText}
+          noButtonText={showAlertNoButtonText} />
+      )}
+
+      {loading && <CustomLoader loading={loading} message={loadingMessage} loaderImage={loaderImage} />}
+      {successLoading && <CustomSuccessLoader loading={successLoading} message={successLoadingMessage} />}
+      {errorLoading && <CustomErrorLoader loading={errorLoading} message={errorLoadingMessage} />}
+    </View>
+
   )
 
 

@@ -814,22 +814,6 @@ function EmpScanHistory({ route }) {
                         }}
                     />
 
-                    <CustomInputDropDown
-                        width={[styles['width_95%'], styles['top_5'], styles['centerItems']]}
-                        defaultValue={statesMasterOriginal?.length == 1 ? statesMasterOriginal[0].name : stateSelectedName != undefined ? stateSelectedName : translate('SelectState')}
-                        labelName={translate('state')}
-                        IsRequired={false}
-                        placeholder={translate('SelectState')}
-                        onEndEditing={async event => {
-                        }}
-                        onFocus={() => {
-                            {
-                                statesMasterOriginal?.length == 1 ? undefined
-                                    : changeDropDownData(statesMasterOriginal, strings.state, stateSelectedName)
-                            }
-                        }}
-                    />
-
                     <View style={[{ width: "95%" }]}>
                         <CustomTextInput
                             textFiledWidth={"98%"}
@@ -853,6 +837,22 @@ function EmpScanHistory({ route }) {
                             }}
                         />
                     </View>
+
+                    <CustomInputDropDown
+                        width={[styles['width_95%'], styles['top_5'], styles['centerItems']]}
+                        defaultValue={statesMasterOriginal?.length == 1 ? statesMasterOriginal[0].name : stateSelectedName != undefined ? stateSelectedName : translate('SelectState')}
+                        labelName={translate('state')}
+                        IsRequired={false}
+                        placeholder={translate('SelectState')}
+                        onEndEditing={async event => {
+                        }}
+                        onFocus={() => {
+                            {
+                                statesMasterOriginal?.length == 1 ? undefined
+                                    : changeDropDownData(statesMasterOriginal, strings.state, stateSelectedName)
+                            }
+                        }}
+                    />
 
                     <CustomInputDropDown
                         width={[styles['width_95%'], styles['top_5'], styles['centerItems']]}

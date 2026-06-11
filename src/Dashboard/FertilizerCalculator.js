@@ -75,7 +75,7 @@ export let getMastersFertilizer = async () => {
 
 export const getFertilizerCalcRes = async () => {
     // let realm = new Realm({ path: 'User.realm' });
-    
+
     if (!realm) {
         console.log("Realm not initialized");
         return;
@@ -123,9 +123,9 @@ export const getFertilizerCalcRes = async () => {
 var styles = BuildStyleOverwrite(Styles);
 
 
-const FertilizerCalculator =  ({ route }) => {
+const FertilizerCalculator = ({ route }) => {
     // var realm = new Realm({ path: 'User.realm' });
-    
+
     if (!realm) {
         console.log("Realm not initialized");
         return;
@@ -671,353 +671,353 @@ const FertilizerCalculator =  ({ route }) => {
     }
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: dynamicStyles.primaryColor }} edges={['top']}>
-            <View style={[styleSheetStyles.flexFull, styleSheetStyles.gray300bg]}>
-                {Platform.OS === 'android' && <StatusBar backgroundColor={dynamicStyles.primaryColor} barStyle='dark-content' />}
-                <View style={[{ backgroundColor: dynamicStyles.primaryColor }, { paddingStart: 20, paddingEnd: 20, paddingBottom: 20, borderBottomStartRadius: 10, borderBottomEndRadius: 10, paddingTop: Platform.OS == 'ios' ? 60 : 20 }]}>
-                    <TouchableOpacity style={[styles['flex_direction_row']]} onPress={() => navigation.goBack()}>
-                        <Image style={[{ tintColor: dynamicStyles.secondaryColor }, { height: 15, width: 20, top: 5 }]} source={require('../assets/images/previous.png')}></Image>
-                        <Text style={[styles['margin_left_10'], { color: dynamicStyles.secondaryColor }, styles['font_size_18_bold'], Platform.OS === 'ios' && { minHeight: 25 }]}>{calcType}</Text>
-                    </TouchableOpacity>
-                </View>
-                <ScrollView>
-                    <ViewShot ref={viewShotRef} style={styleSheetStyles.viewShot} captureMode="mount" options={{ format: 'jpg', quality: 0.9 }}>
-                        <View style={{
-                            backgroundColor: "#fff",
-                            width: "90%",
-                            alignSelf: "center",
-                            elevation: 5,
-                            borderRadius: 5,
-                            marginTop: 10,
-                            marginBottom: responsiveHeight(3),
-                            paddingBottom: responsiveHeight(3),
-                        }}>
-                            <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], styles['top_5'], { marginBottom: 2.5, marginLeft: 15, marginTop: 10 }]}  >
-                                {translate('selectCrop')}
-                            </Text>
-                            <CustomBorderInputDropDown
-                                width={[{ width: '92%' }, styles['centerItems']]}
-                                defaultValue={selectedCrop != undefined && selectedCrop != translate('select') ? selectedCrop : translate('select')}
-                                IsRequired={true}
-                                placeholder={translate('selectCrop')}
-                                onFocus={() => {
-                                    changeDropDownData(cropsList, strings.yieldOne, selectedCrop)
-                                    // setSelectedSoil('')
-                                }}
-                            />
 
-
-                            <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], styles['top_5'], { marginBottom: 2.5, marginLeft: 15, marginTop: 10 }, Platform.OS === 'ios' && { lineHeight: 25 }]}  >
-                                {translate('yieldTwo')}
-                            </Text>
-                            <CustomBorderInputDropDown
-                                width={[{ width: '92%' }, styles['centerItems']]}
-                                defaultValue={selectedSoil != undefined && selectedSoil != translate('select') ? selectedSoil : translate('select')}
-                                IsRequired={true}
-                                placeholder={translate('yieldTwo')}
-                                onFocus={() => {
-                                    changeDropDownData(seasonsalList, strings.yieldTwo, selectedSoil)
-                                }}
-                            />
-
-                            <View>
-                                {renderContent && <View>
-                                    <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], styles['top_5'], { marginBottom: 2.5, marginLeft: 15, marginTop: 10 }]}  >
-                                        {translate('Atthetime')}
-                                    </Text>
-                                    <View style={[{
-                                        borderWidth: 1,
-                                        borderColor: 'rgba(180, 180, 180, 0.5)',
-                                        width: '92%',
-                                        alignSelf: "center",
-                                        borderRadius: 10,
-                                        paddingVertical: 10,
-                                        marginTop: 5
-                                    }]}>
-                                        {dapAtSowing !== translate('dataUnavailable') &&
-                                            <>
-                                                <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 2.5, marginLeft: 10, marginTop: 0 }}>
-                                                    <View style={{ width: '40%' }}>
-                                                        <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], {}]}  >
-                                                            {translate('DOP')}
-                                                        </Text>
-                                                    </View>
-                                                    <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular']]}  >
-                                                        {translate('dots')}
-                                                    </Text>
-                                                    <Text style={[{ color: dapAtSowing ? dynamicStyles.textColor : 'rgba(180, 180, 180, 1)' }, { marginLeft: 10 }, styles['font_size_20_bold']]}  >
-                                                        {dapAtSowing ? dapAtSowing : 0}
-                                                    </Text>
-                                                </View>
-                                            </>
-                                        }
-                                        {AtthetimeNPK !== translate('dataUnavailable') && <>
-                                            <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 2.5, marginLeft: 10, marginTop: 0 }}>
-                                                <View style={{ width: '40%' }}>
-                                                    <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], {}]}  >
-                                                        {translate('NPK')}
-                                                    </Text>
-                                                </View>
-                                                <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular']]}  >
-                                                    {translate('dots')}
-                                                </Text>
-                                                <Text style={[{ color: AtthetimeNPK ? dynamicStyles.textColor : 'rgba(180, 180, 180, 1)' }, { marginLeft: 10 }, styles['font_size_20_bold']]}  >
-                                                    {AtthetimeNPK ? AtthetimeNPK : 0}
-                                                </Text>
-                                            </View>
-                                        </>}
-                                        {atTheTimeUrea !== translate('dataUnavailable') && <>
-                                            <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 2.5, marginLeft: 10, marginTop: 0 }}>
-                                                <View style={{ width: '40%' }}>
-                                                    <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], {}]}  >
-                                                        {translate('Urea')}
-                                                    </Text>
-                                                </View>
-                                                <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular']]}  >
-                                                    {translate('dots')}
-                                                </Text>
-                                                <Text style={[{ color: atTheTimeUrea ? dynamicStyles.textColor : 'rgba(180, 180, 180, 1)' }, { marginLeft: 10 }, styles['font_size_20_bold']]}  >
-                                                    {atTheTimeUrea ? atTheTimeUrea : 0}
-                                                </Text>
-                                            </View>
-                                        </>}
-                                        {mopAtSowing !== translate('dataUnavailable') && <>
-                                            <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 2.5, marginLeft: 10, marginTop: 0 }}>
-                                                <View style={{ width: '40%' }}>
-                                                    <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], {}]}  >
-                                                        {translate('MOP')}
-                                                    </Text>
-                                                </View>
-                                                <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular']]}  >
-                                                    {translate('dots')}
-                                                </Text>
-                                                <Text style={[{ color: mopAtSowing ? dynamicStyles.textColor : 'rgba(180, 180, 180, 1)' }, { marginLeft: 10 }, styles['font_size_20_bold']]}  >
-                                                    {mopAtSowing ? mopAtSowing : 0}
-                                                </Text>
-                                            </View>
-                                        </>}
-                                        {zincSulphateAtSowing !== translate('dataUnavailable') && <>
-                                            <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 2.5, marginLeft: 10, marginTop: 0 }}>
-                                                <View style={{ width: '40%' }}>
-                                                    <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], {}]}  >
-                                                        {translate('zincSulphate')}
-                                                    </Text>
-                                                </View>
-                                                <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular']]}  >
-                                                    {translate('dots')}
-                                                </Text>
-                                                <Text style={[{ color: zincSulphateAtSowing ? dynamicStyles.textColor : 'rgba(180, 180, 180, 1)' }, { marginLeft: 10 }, styles['font_size_20_bold']]}  >
-                                                    {zincSulphateAtSowing ? zincSulphateAtSowing : 0}
-                                                </Text>
-                                            </View>
-                                        </>}
-                                        {sulphurAtSowing !== translate('dataUnavailable') && <>
-                                            <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 2.5, marginLeft: 10, marginTop: 0 }}>
-                                                <View style={{ width: '40%' }}>
-                                                    <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], {}]}  >
-                                                        {translate('Sulphur')}
-                                                    </Text>
-                                                </View>
-                                                <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular']]}  >
-                                                    {translate('dots')}
-                                                </Text>
-                                                <Text style={[{ color: sulphurAtSowing ? dynamicStyles.textColor : 'rgba(180, 180, 180, 1)' }, { marginLeft: 10 }, styles['font_size_20_bold']]}  >
-                                                    {sulphurAtSowing ? sulphurAtSowing : 0}
-                                                </Text>
-                                            </View>
-                                        </>}
-                                    </View>
-
-                                    <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], styles['top_5'], { marginBottom: 2.5, marginLeft: 15, marginTop: 10 }]}  >
-                                        {translate('FirstDose')}
-                                    </Text>
-                                    <View style={[{
-                                        borderWidth: 1,
-                                        borderColor: 'rgba(180, 180, 180, 0.5)',
-                                        width: '92%',
-                                        alignSelf: "center",
-                                        borderRadius: 10,
-                                        paddingVertical: 10,
-                                        marginTop: 5
-                                    }]}>
-                                        {FirstDose !== translate('dataUnavailable') && <>
-                                            <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 2.5, marginLeft: 10, marginTop: 0 }}>
-                                                <View style={{ width: '40%' }}>
-                                                    <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], {}]}  >
-                                                        {translate('NPK')}
-                                                    </Text>
-                                                </View>
-                                                <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular']]}  >
-                                                    {translate('dots')}
-                                                </Text>
-                                                <Text style={[{ color: FirstDose ? dynamicStyles.textColor : 'rgba(180, 180, 180, 1)' }, { marginLeft: 10 }, styles['font_size_20_bold']]}  >
-                                                    {FirstDose ? FirstDose : 0}
-                                                </Text>
-                                            </View>
-                                        </>}
-                                        {FirstDoseUrea !== translate('dataUnavailable') && <>
-                                            <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 2.5, marginLeft: 10, marginTop: 0 }}>
-                                                <View style={{ width: '40%' }}>
-                                                    <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], {}]}  >
-                                                        {translate('Urea')}
-                                                    </Text>
-                                                </View>
-                                                <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular']]}  >
-                                                    {translate('dots')}
-                                                </Text>
-                                                <Text style={[{ color: FirstDoseUrea ? dynamicStyles.textColor : 'rgba(180, 180, 180, 1)' }, { marginLeft: 10 }, styles['font_size_20_bold']]}  >
-                                                    {FirstDoseUrea ? FirstDoseUrea : 0}
-                                                </Text>
-                                            </View>
-                                        </>}
-                                    </View>
-
-                                    <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], styles['top_5'], { marginBottom: 2.5, marginLeft: 15, marginTop: 10 }]}  >
-                                        {translate('secondDose')}
-                                    </Text>
-                                    <View style={[{
-                                        borderWidth: 1,
-                                        borderColor: 'rgba(180, 180, 180, 0.5)',
-                                        width: '92%',
-                                        alignSelf: "center",
-                                        borderRadius: 10,
-                                        paddingVertical: 10,
-                                        marginTop: 5
-                                    }]}>
-                                        {secondDoseNPK !== translate('dataUnavailable') && <>
-                                            <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 2.5, marginLeft: 10, marginTop: 0 }}>
-                                                <View style={{ width: '40%' }}>
-                                                    <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], {}]}  >
-                                                        {translate('NPK')}
-                                                    </Text>
-                                                </View>
-                                                <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular']]}  >
-                                                    {translate('dots')}
-                                                </Text>
-                                                <Text style={[{ color: secondDoseNPK ? dynamicStyles.textColor : 'rgba(180, 180, 180, 1)' }, { marginLeft: 10 }, styles['font_size_20_bold']]}  >
-                                                    {secondDoseNPK ? secondDoseNPK : 0}
-                                                </Text>
-                                            </View>
-                                        </>}
-                                        {secondDoseUrea !== translate('dataUnavailable') && <>
-                                            <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 2.5, marginLeft: 10, marginTop: 0 }}>
-                                                <View style={{ width: '40%' }}>
-                                                    <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], {}]}  >
-                                                        {translate('Urea')}
-                                                    </Text>
-                                                </View>
-                                                <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular']]}  >
-                                                    {translate('dots')}
-                                                </Text>
-                                                <Text style={[{ color: secondDoseUrea ? dynamicStyles.textColor : 'rgba(180, 180, 180, 1)' }, { marginLeft: 10 }, styles['font_size_20_bold']]}  >
-                                                    {secondDoseUrea ? secondDoseUrea : 0}
-                                                </Text>
-                                            </View>
-                                        </>}
-                                        {mopSecondDose !== translate('dataUnavailable') && <>
-                                            <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 2.5, marginLeft: 10, marginTop: 0 }}>
-                                                <View style={{ width: '40%' }}>
-                                                    <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], {}]}  >
-                                                        {translate('MOP')}
-                                                    </Text>
-                                                </View>
-                                                <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular']]}  >
-                                                    {translate('dots')}
-                                                </Text>
-                                                <Text style={[{ color: mopSecondDose ? dynamicStyles.textColor : 'rgba(180, 180, 180, 1)' }, { marginLeft: 10 }, styles['font_size_20_bold']]}  >
-                                                    {mopSecondDose ? mopSecondDose : 0}
-                                                </Text>
-                                            </View>
-                                        </>}
-                                        {zincSulphateSecondDose !== translate('dataUnavailable') && <>
-                                            <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 2.5, marginLeft: 10, marginTop: 0 }}>
-                                                <View style={{ width: '40%' }}>
-                                                    <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], {}]}  >
-                                                        {translate('zincSulphate')}
-                                                    </Text>
-                                                </View>
-                                                <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular']]}  >
-                                                    {translate('dots')}
-                                                </Text>
-                                                <Text style={[{ color: zincSulphateSecondDose ? dynamicStyles.textColor : 'rgba(180, 180, 180, 1)' }, { marginLeft: 10 }, styles['font_size_20_bold']]}  >
-                                                    {zincSulphateSecondDose ? zincSulphateSecondDose : 0}
-                                                </Text>
-                                            </View>
-                                        </>}
-                                        {sulphurSecondDose !== translate('dataUnavailable') && <>
-                                            <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 2.5, marginLeft: 10, marginTop: 0 }}>
-                                                <View style={{ width: '40%' }}>
-                                                    <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], {}]}  >
-                                                        {translate('Sulphur')}
-                                                    </Text>
-                                                </View>
-                                                <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular']]}  >
-                                                    {translate('dots')}
-                                                </Text>
-                                                <Text style={[{ color: sulphurSecondDose ? dynamicStyles.textColor : 'rgba(180, 180, 180, 1)' }, { marginLeft: 10 }, styles['font_size_20_bold']]}  >
-                                                    {sulphurSecondDose ? sulphurSecondDose : 0}
-                                                </Text>
-                                            </View>
-                                        </>}
-                                    </View>
-                                </View>}
-                                {
-                                    showDropDowns &&
-                                    <CustomListViewModal
-                                        dropDownType={dropDownType}
-                                        listItems={dropDownData}
-                                        selectedItem={selectedDropDownItem}
-                                        onSelectedCropCal={(item) => onSelectCropItem(item, setSelectedCrop)}
-                                        onSelectedSoilType={(item) => onSelectItem(item, setSelectedSoil)}
-                                        onSelectedPlantingType={(item) => onSelectItem(item, setVarietyOrPlantingSystem)}
-                                        onSelectedRowSpacing={(item) => onSelectItem(item, setRowSpacing)}
-                                        onSelectedPlantSpacing={(item) => onSelectItem(item, setPlantSpacing)}
-                                        onSelectedAreaToPlanted={(item) => onSelectItem(item, setAreaToPlanted)}
-                                        onSelectedAvgBollsPerPlant={(item) => onSelectItem(item, setAvgBollsPerPlant)}
-                                        onSelectedsetAvgBollWt={(item) => onSelectItem(item, setAvgBollWt)}
-                                        onSelectedAtthetime={(item) => onSelectItem(item, setAtthetimeNPK)}
-                                        // new addings start
-                                        onSelectedDAPAtSowing={(item) => onSelectItem(item, setDapAtSowing)}
-                                        onSelectedMOPAtSowing={(item) => onSelectItem(item, setMopAtSowing)}
-                                        onSelectedZincSuplhateAtSowing={(item) => onSelectItem(item, setZincSulphateAtSowing)}
-                                        onSelectedSulphurSowing={(item) => onSelectItem(item, setSulphurAtSowing)}
-                                        //second dose
-                                        onSelectedMopSecondDose={(item) => onSelectItem(item, setMopSecondDose)}
-                                        onSelectedSulphurSecondDose={(item) => onSelectItem(item, setSulphurSecondDose)}
-                                        onSelectedZincSulphateSecondDose={(item) => onSelectItem(item, setZincSulphateSecondDose)}
-                                        // end
-                                        onSelectedUrea={(item) => onSelectItem(item, setAtTheTimeUrea)}
-                                        onSelectedFirstDose={(item) => onSelectItem(item, setFirstDose)}
-                                        onSelectedFirstDoseUrea={(item) => onSelectItem(item, setFirstDoseUrea)}
-                                        onSelectedsecondDose={(item) => onSelectItem(item, setsecondDoseNpk)}
-                                        onSelectedsecondDoseUrea={(item) => onSelectItem(item, setsecondDoseUrea)}
-
-                                        closeModal={() => setShowDropDowns(false)}
-                                    />
-                                }
-                                <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_semibold'], styles['top_5'], { marginBottom: 2.5, marginLeft: 15, marginTop: 10 }]}  >
-                                    {yieldNote}
-                                </Text>
-                                <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], { marginBottom: 2.5, marginLeft: 15, marginTop: 5, width: "90%", textAlign: "left" }]}  >
-                                    {yieldNoteDesc}
-                                </Text>
-                            </View>
-                        </View>
-                    </ViewShot>
-                    {loading && <CustomLoader loading={loading} message={loadingMessage} loaderImage={loaderImage} />}
-                    {/* {successLoading && <CustomSuccessLoader loading={successLoading} message={successLoadingMessage} />} */}
-                    {/* {errorLoading && <CustomErrorLoader loading={errorLoading} message={errorLoadingMessage} />} */}
-                </ScrollView>
-                {!isProcessing && <View style={{ bottom: 10 }}>
-                    <CustomButton shouldDisable={!showStatus()} title={translate('Share')} onPress={() => { takeScreenshot() }}
-                        buttonBg={!showStatus() ? Colors.lightGray : dynamicStyles.primaryColor}
-                        titleTextColor={!showStatus() ? Colors.white : dynamicStyles.secondaryColor}
-                        btnWidth={'90%'}
-                        addIcon={showStatus()}
-                        textAlign='center' />
-                </View>}
+        <View style={[styleSheetStyles.flexFull, styleSheetStyles.gray300bg]}>
+            {Platform.OS === 'android' && <StatusBar backgroundColor={dynamicStyles.primaryColor} barStyle='dark-content' />}
+            <View style={[{ backgroundColor: dynamicStyles.primaryColor }, { borderBottomStartRadius: 10, borderBottomEndRadius: 10, padding: 15 }]}>
+                <TouchableOpacity style={[styles['flex_direction_row'], {alignItems:'center'}]} onPress={() => navigation.goBack()}>
+                    <Image style={[{ tintColor: dynamicStyles.secondaryColor }, { height: 15, width: 20 }]} source={require('../assets/images/previous.png')}></Image>
+                    <Text style={[styles['margin_left_10'], { color: dynamicStyles.secondaryColor }, styles['font_size_18_bold'], Platform.OS === 'ios' && { minHeight: 25 }]}>{calcType}</Text>
+                </TouchableOpacity>
             </View>
-        </SafeAreaView>
+            <ScrollView>
+                <ViewShot ref={viewShotRef} style={styleSheetStyles.viewShot} captureMode="mount" options={{ format: 'jpg', quality: 0.9 }}>
+                    <View style={{
+                        backgroundColor: "#fff",
+                        width: "90%",
+                        alignSelf: "center",
+                        elevation: 5,
+                        borderRadius: 5,
+                        marginTop: 10,
+                        marginBottom: responsiveHeight(3),
+                        paddingBottom: responsiveHeight(3),
+                    }}>
+                        <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], styles['top_5'], { marginBottom: 2.5, marginLeft: 15, marginTop: 10 }]}  >
+                            {translate('selectCrop')}
+                        </Text>
+                        <CustomBorderInputDropDown
+                            width={[{ width: '92%' }, styles['centerItems']]}
+                            defaultValue={selectedCrop != undefined && selectedCrop != translate('select') ? selectedCrop : translate('select')}
+                            IsRequired={true}
+                            placeholder={translate('selectCrop')}
+                            onFocus={() => {
+                                changeDropDownData(cropsList, strings.yieldOne, selectedCrop)
+                                // setSelectedSoil('')
+                            }}
+                        />
+
+
+                        <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], styles['top_5'], { marginBottom: 2.5, marginLeft: 15, marginTop: 10 }, Platform.OS === 'ios' && { lineHeight: 25 }]}  >
+                            {translate('yieldTwo')}
+                        </Text>
+                        <CustomBorderInputDropDown
+                            width={[{ width: '92%' }, styles['centerItems']]}
+                            defaultValue={selectedSoil != undefined && selectedSoil != translate('select') ? selectedSoil : translate('select')}
+                            IsRequired={true}
+                            placeholder={translate('yieldTwo')}
+                            onFocus={() => {
+                                changeDropDownData(seasonsalList, strings.yieldTwo, selectedSoil)
+                            }}
+                        />
+
+                        <View>
+                            {renderContent && <View>
+                                <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], styles['top_5'], { marginBottom: 2.5, marginLeft: 15, marginTop: 10 }]}  >
+                                    {translate('Atthetime')}
+                                </Text>
+                                <View style={[{
+                                    borderWidth: 1,
+                                    borderColor: 'rgba(180, 180, 180, 0.5)',
+                                    width: '92%',
+                                    alignSelf: "center",
+                                    borderRadius: 10,
+                                    paddingVertical: 10,
+                                    marginTop: 5
+                                }]}>
+                                    {dapAtSowing !== translate('dataUnavailable') &&
+                                        <>
+                                            <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 2.5, marginLeft: 10, marginTop: 0 }}>
+                                                <View style={{ width: '40%' }}>
+                                                    <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], {}]}  >
+                                                        {translate('DOP')}
+                                                    </Text>
+                                                </View>
+                                                <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular']]}  >
+                                                    {translate('dots')}
+                                                </Text>
+                                                <Text style={[{ color: dapAtSowing ? dynamicStyles.textColor : 'rgba(180, 180, 180, 1)' }, { marginLeft: 10 }, styles['font_size_20_bold']]}  >
+                                                    {dapAtSowing ? dapAtSowing : 0}
+                                                </Text>
+                                            </View>
+                                        </>
+                                    }
+                                    {AtthetimeNPK !== translate('dataUnavailable') && <>
+                                        <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 2.5, marginLeft: 10, marginTop: 0 }}>
+                                            <View style={{ width: '40%' }}>
+                                                <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], {}]}  >
+                                                    {translate('NPK')}
+                                                </Text>
+                                            </View>
+                                            <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular']]}  >
+                                                {translate('dots')}
+                                            </Text>
+                                            <Text style={[{ color: AtthetimeNPK ? dynamicStyles.textColor : 'rgba(180, 180, 180, 1)' }, { marginLeft: 10 }, styles['font_size_20_bold']]}  >
+                                                {AtthetimeNPK ? AtthetimeNPK : 0}
+                                            </Text>
+                                        </View>
+                                    </>}
+                                    {atTheTimeUrea !== translate('dataUnavailable') && <>
+                                        <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 2.5, marginLeft: 10, marginTop: 0 }}>
+                                            <View style={{ width: '40%' }}>
+                                                <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], {}]}  >
+                                                    {translate('Urea')}
+                                                </Text>
+                                            </View>
+                                            <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular']]}  >
+                                                {translate('dots')}
+                                            </Text>
+                                            <Text style={[{ color: atTheTimeUrea ? dynamicStyles.textColor : 'rgba(180, 180, 180, 1)' }, { marginLeft: 10 }, styles['font_size_20_bold']]}  >
+                                                {atTheTimeUrea ? atTheTimeUrea : 0}
+                                            </Text>
+                                        </View>
+                                    </>}
+                                    {mopAtSowing !== translate('dataUnavailable') && <>
+                                        <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 2.5, marginLeft: 10, marginTop: 0 }}>
+                                            <View style={{ width: '40%' }}>
+                                                <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], {}]}  >
+                                                    {translate('MOP')}
+                                                </Text>
+                                            </View>
+                                            <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular']]}  >
+                                                {translate('dots')}
+                                            </Text>
+                                            <Text style={[{ color: mopAtSowing ? dynamicStyles.textColor : 'rgba(180, 180, 180, 1)' }, { marginLeft: 10 }, styles['font_size_20_bold']]}  >
+                                                {mopAtSowing ? mopAtSowing : 0}
+                                            </Text>
+                                        </View>
+                                    </>}
+                                    {zincSulphateAtSowing !== translate('dataUnavailable') && <>
+                                        <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 2.5, marginLeft: 10, marginTop: 0 }}>
+                                            <View style={{ width: '40%' }}>
+                                                <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], {}]}  >
+                                                    {translate('zincSulphate')}
+                                                </Text>
+                                            </View>
+                                            <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular']]}  >
+                                                {translate('dots')}
+                                            </Text>
+                                            <Text style={[{ color: zincSulphateAtSowing ? dynamicStyles.textColor : 'rgba(180, 180, 180, 1)' }, { marginLeft: 10 }, styles['font_size_20_bold']]}  >
+                                                {zincSulphateAtSowing ? zincSulphateAtSowing : 0}
+                                            </Text>
+                                        </View>
+                                    </>}
+                                    {sulphurAtSowing !== translate('dataUnavailable') && <>
+                                        <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 2.5, marginLeft: 10, marginTop: 0 }}>
+                                            <View style={{ width: '40%' }}>
+                                                <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], {}]}  >
+                                                    {translate('Sulphur')}
+                                                </Text>
+                                            </View>
+                                            <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular']]}  >
+                                                {translate('dots')}
+                                            </Text>
+                                            <Text style={[{ color: sulphurAtSowing ? dynamicStyles.textColor : 'rgba(180, 180, 180, 1)' }, { marginLeft: 10 }, styles['font_size_20_bold']]}  >
+                                                {sulphurAtSowing ? sulphurAtSowing : 0}
+                                            </Text>
+                                        </View>
+                                    </>}
+                                </View>
+
+                                <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], styles['top_5'], { marginBottom: 2.5, marginLeft: 15, marginTop: 10 }]}  >
+                                    {translate('FirstDose')}
+                                </Text>
+                                <View style={[{
+                                    borderWidth: 1,
+                                    borderColor: 'rgba(180, 180, 180, 0.5)',
+                                    width: '92%',
+                                    alignSelf: "center",
+                                    borderRadius: 10,
+                                    paddingVertical: 10,
+                                    marginTop: 5
+                                }]}>
+                                    {FirstDose !== translate('dataUnavailable') && <>
+                                        <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 2.5, marginLeft: 10, marginTop: 0 }}>
+                                            <View style={{ width: '40%' }}>
+                                                <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], {}]}  >
+                                                    {translate('NPK')}
+                                                </Text>
+                                            </View>
+                                            <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular']]}  >
+                                                {translate('dots')}
+                                            </Text>
+                                            <Text style={[{ color: FirstDose ? dynamicStyles.textColor : 'rgba(180, 180, 180, 1)' }, { marginLeft: 10 }, styles['font_size_20_bold']]}  >
+                                                {FirstDose ? FirstDose : 0}
+                                            </Text>
+                                        </View>
+                                    </>}
+                                    {FirstDoseUrea !== translate('dataUnavailable') && <>
+                                        <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 2.5, marginLeft: 10, marginTop: 0 }}>
+                                            <View style={{ width: '40%' }}>
+                                                <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], {}]}  >
+                                                    {translate('Urea')}
+                                                </Text>
+                                            </View>
+                                            <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular']]}  >
+                                                {translate('dots')}
+                                            </Text>
+                                            <Text style={[{ color: FirstDoseUrea ? dynamicStyles.textColor : 'rgba(180, 180, 180, 1)' }, { marginLeft: 10 }, styles['font_size_20_bold']]}  >
+                                                {FirstDoseUrea ? FirstDoseUrea : 0}
+                                            </Text>
+                                        </View>
+                                    </>}
+                                </View>
+
+                                <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], styles['top_5'], { marginBottom: 2.5, marginLeft: 15, marginTop: 10 }]}  >
+                                    {translate('secondDose')}
+                                </Text>
+                                <View style={[{
+                                    borderWidth: 1,
+                                    borderColor: 'rgba(180, 180, 180, 0.5)',
+                                    width: '92%',
+                                    alignSelf: "center",
+                                    borderRadius: 10,
+                                    paddingVertical: 10,
+                                    marginTop: 5
+                                }]}>
+                                    {secondDoseNPK !== translate('dataUnavailable') && <>
+                                        <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 2.5, marginLeft: 10, marginTop: 0 }}>
+                                            <View style={{ width: '40%' }}>
+                                                <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], {}]}  >
+                                                    {translate('NPK')}
+                                                </Text>
+                                            </View>
+                                            <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular']]}  >
+                                                {translate('dots')}
+                                            </Text>
+                                            <Text style={[{ color: secondDoseNPK ? dynamicStyles.textColor : 'rgba(180, 180, 180, 1)' }, { marginLeft: 10 }, styles['font_size_20_bold']]}  >
+                                                {secondDoseNPK ? secondDoseNPK : 0}
+                                            </Text>
+                                        </View>
+                                    </>}
+                                    {secondDoseUrea !== translate('dataUnavailable') && <>
+                                        <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 2.5, marginLeft: 10, marginTop: 0 }}>
+                                            <View style={{ width: '40%' }}>
+                                                <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], {}]}  >
+                                                    {translate('Urea')}
+                                                </Text>
+                                            </View>
+                                            <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular']]}  >
+                                                {translate('dots')}
+                                            </Text>
+                                            <Text style={[{ color: secondDoseUrea ? dynamicStyles.textColor : 'rgba(180, 180, 180, 1)' }, { marginLeft: 10 }, styles['font_size_20_bold']]}  >
+                                                {secondDoseUrea ? secondDoseUrea : 0}
+                                            </Text>
+                                        </View>
+                                    </>}
+                                    {mopSecondDose !== translate('dataUnavailable') && <>
+                                        <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 2.5, marginLeft: 10, marginTop: 0 }}>
+                                            <View style={{ width: '40%' }}>
+                                                <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], {}]}  >
+                                                    {translate('MOP')}
+                                                </Text>
+                                            </View>
+                                            <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular']]}  >
+                                                {translate('dots')}
+                                            </Text>
+                                            <Text style={[{ color: mopSecondDose ? dynamicStyles.textColor : 'rgba(180, 180, 180, 1)' }, { marginLeft: 10 }, styles['font_size_20_bold']]}  >
+                                                {mopSecondDose ? mopSecondDose : 0}
+                                            </Text>
+                                        </View>
+                                    </>}
+                                    {zincSulphateSecondDose !== translate('dataUnavailable') && <>
+                                        <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 2.5, marginLeft: 10, marginTop: 0 }}>
+                                            <View style={{ width: '40%' }}>
+                                                <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], {}]}  >
+                                                    {translate('zincSulphate')}
+                                                </Text>
+                                            </View>
+                                            <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular']]}  >
+                                                {translate('dots')}
+                                            </Text>
+                                            <Text style={[{ color: zincSulphateSecondDose ? dynamicStyles.textColor : 'rgba(180, 180, 180, 1)' }, { marginLeft: 10 }, styles['font_size_20_bold']]}  >
+                                                {zincSulphateSecondDose ? zincSulphateSecondDose : 0}
+                                            </Text>
+                                        </View>
+                                    </>}
+                                    {sulphurSecondDose !== translate('dataUnavailable') && <>
+                                        <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 2.5, marginLeft: 10, marginTop: 0 }}>
+                                            <View style={{ width: '40%' }}>
+                                                <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], {}]}  >
+                                                    {translate('Sulphur')}
+                                                </Text>
+                                            </View>
+                                            <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular']]}  >
+                                                {translate('dots')}
+                                            </Text>
+                                            <Text style={[{ color: sulphurSecondDose ? dynamicStyles.textColor : 'rgba(180, 180, 180, 1)' }, { marginLeft: 10 }, styles['font_size_20_bold']]}  >
+                                                {sulphurSecondDose ? sulphurSecondDose : 0}
+                                            </Text>
+                                        </View>
+                                    </>}
+                                </View>
+                            </View>}
+                            {
+                                showDropDowns &&
+                                <CustomListViewModal
+                                    dropDownType={dropDownType}
+                                    listItems={dropDownData}
+                                    selectedItem={selectedDropDownItem}
+                                    onSelectedCropCal={(item) => onSelectCropItem(item, setSelectedCrop)}
+                                    onSelectedSoilType={(item) => onSelectItem(item, setSelectedSoil)}
+                                    onSelectedPlantingType={(item) => onSelectItem(item, setVarietyOrPlantingSystem)}
+                                    onSelectedRowSpacing={(item) => onSelectItem(item, setRowSpacing)}
+                                    onSelectedPlantSpacing={(item) => onSelectItem(item, setPlantSpacing)}
+                                    onSelectedAreaToPlanted={(item) => onSelectItem(item, setAreaToPlanted)}
+                                    onSelectedAvgBollsPerPlant={(item) => onSelectItem(item, setAvgBollsPerPlant)}
+                                    onSelectedsetAvgBollWt={(item) => onSelectItem(item, setAvgBollWt)}
+                                    onSelectedAtthetime={(item) => onSelectItem(item, setAtthetimeNPK)}
+                                    // new addings start
+                                    onSelectedDAPAtSowing={(item) => onSelectItem(item, setDapAtSowing)}
+                                    onSelectedMOPAtSowing={(item) => onSelectItem(item, setMopAtSowing)}
+                                    onSelectedZincSuplhateAtSowing={(item) => onSelectItem(item, setZincSulphateAtSowing)}
+                                    onSelectedSulphurSowing={(item) => onSelectItem(item, setSulphurAtSowing)}
+                                    //second dose
+                                    onSelectedMopSecondDose={(item) => onSelectItem(item, setMopSecondDose)}
+                                    onSelectedSulphurSecondDose={(item) => onSelectItem(item, setSulphurSecondDose)}
+                                    onSelectedZincSulphateSecondDose={(item) => onSelectItem(item, setZincSulphateSecondDose)}
+                                    // end
+                                    onSelectedUrea={(item) => onSelectItem(item, setAtTheTimeUrea)}
+                                    onSelectedFirstDose={(item) => onSelectItem(item, setFirstDose)}
+                                    onSelectedFirstDoseUrea={(item) => onSelectItem(item, setFirstDoseUrea)}
+                                    onSelectedsecondDose={(item) => onSelectItem(item, setsecondDoseNpk)}
+                                    onSelectedsecondDoseUrea={(item) => onSelectItem(item, setsecondDoseUrea)}
+
+                                    closeModal={() => setShowDropDowns(false)}
+                                />
+                            }
+                            <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_semibold'], styles['top_5'], { marginBottom: 2.5, marginLeft: 15, marginTop: 10 }]}  >
+                                {yieldNote}
+                            </Text>
+                            <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], { marginBottom: 2.5, marginLeft: 15, marginTop: 5, width: "90%", textAlign: "left" }]}  >
+                                {yieldNoteDesc}
+                            </Text>
+                        </View>
+                    </View>
+                </ViewShot>
+                {loading && <CustomLoader loading={loading} message={loadingMessage} loaderImage={loaderImage} />}
+                {/* {successLoading && <CustomSuccessLoader loading={successLoading} message={successLoadingMessage} />} */}
+                {/* {errorLoading && <CustomErrorLoader loading={errorLoading} message={errorLoadingMessage} />} */}
+            </ScrollView>
+            {!isProcessing && <View style={{ bottom: 10 }}>
+                <CustomButton shouldDisable={!showStatus()} title={translate('Share')} onPress={() => { takeScreenshot() }}
+                    buttonBg={!showStatus() ? Colors.lightGray : dynamicStyles.primaryColor}
+                    titleTextColor={!showStatus() ? Colors.white : dynamicStyles.secondaryColor}
+                    btnWidth={'90%'}
+                    addIcon={showStatus()}
+                    textAlign='center' />
+            </View>}
+        </View>
+
     );
 };
 

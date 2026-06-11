@@ -350,138 +350,136 @@ function RedemptionsHistory() {
         );
     }
     return (
+        <View style={[styles['full_screen'], styles['bg_white']]}>
+            {Platform.OS === 'android' && <StatusBar backgroundColor={dynamicStyles.primaryColor} barStyle='dark-content' />}
 
-        <SafeAreaView style={{ flex: 1, backgroundColor: dynamicStyles.primaryColor }} edges={['top']}>
-            <View style={[styles['full_screen'], styles['bg_white']]}>
-                {Platform.OS === 'android' && <StatusBar backgroundColor={dynamicStyles.primaryColor} barStyle='dark-content' />}
-
-                <View style={[{ backgroundColor: dynamicStyles.primaryColor },
-                {
-                    paddingStart: 20, paddingEnd: 20, paddingBottom: 20, borderBottomStartRadius: 10, borderBottomEndRadius: 10,
-                    paddingTop: Platform.OS == 'ios' ? 20 : 20, flexDirection: 'row', width: '100%', justifyContent: 'space-between', alignItems: 'center'
-                }]}>
-                    <TouchableOpacity style={[styles['flex_direction_row'],
-                    { backgroundColor: dynamicStyles.primaryColor }]} onPress={() => { goBack() }}>
-                        <Image style={[{ tintColor: dynamicStyles.secondaryColor }, { height: 15, width: 20, top: 5 }]} source={require('../assets/images/previous.png')}></Image>
-                        <Text style={[styles['margin_left_10'], styles['font_size_18_bold'], { color: dynamicStyles.secondaryColor }]}>{translate('redemptions_history')}</Text>
+            <View style={[{ backgroundColor: dynamicStyles.primaryColor },
+            {
+                borderBottomStartRadius: 10, borderBottomEndRadius: 10,
+                padding: 15, flexDirection: 'row', width: '100%', justifyContent: 'space-between', alignItems: 'center'
+            }]}>
+                <TouchableOpacity style={[styles['flex_direction_row'],
+                { backgroundColor: dynamicStyles.primaryColor, alignItems:'center' }]} onPress={() => { goBack() }}>
+                    <Image style={[{ tintColor: dynamicStyles.secondaryColor }, { height: 15, width: 20 }]} source={require('../assets/images/previous.png')}></Image>
+                    <Text style={[styles['margin_left_10'], styles['font_size_18_bold'], { color: dynamicStyles.secondaryColor }]}>{translate('redemptions_history')}</Text>
+                </TouchableOpacity>
+                <View style={[styles['flex_direction_row'], styles['space_between']]}>
+                    <TouchableOpacity onPress={() => {
+                        if (networkStatus) {
+                            setSearchText("")
+                            setSearchApiHit(false)
+                            setCurrentPage(1)
+                            GetRedemptionHistory(1, null, null, null)
+                        } else {
+                            SimpleToast.show(translate('no_internet_conneccted'));
+                        }
+                    }}>
+                        <Image style={[{ tintColor: Colors.white, height: 25, width: 25, marginEnd: 10 }]} source={require('../assets/images/dataRefresh.png')} resizeMode='contain'></Image>
                     </TouchableOpacity>
-                    <View style={[styles['flex_direction_row'], styles['space_between']]}>
-                        <TouchableOpacity onPress={() => {
-                            if (networkStatus) {
-                                setSearchText("")
+                    {<TouchableOpacity onPress={() => {
+                        setShowFilterModal(true)
+                        // setFromDate(null)
+                        // setToDate(null)
+                    }}>
+                        <Image style={[{ tintColor: dynamicStyles.secondaryColor }, { height: 20, width: 20, top: 5 }]} source={require('../assets/images/ic_filter_gc.png')}></Image>
+                    </TouchableOpacity>}
+                </View>
+
+
+            </View>
+
+            <View style={[styles['margin_5']]}>
+                <View style={[styles['height_60'], styles['bg_white'], styles['border_radius_8']]}>
+                    <View style={[styles['flex_direction_row'], styles['bg_white'], styles['border_radius_normal'], styles['height_40'], styles['border_width_1'], styles['align_end'], styles['border_color_light_grey'], { right: 0, top: 20, width: '95%' }, styles['centerItems']]}>
+                        <TouchableOpacity style={[styles['centerItems']]}
+                            onPress={() => {
+                                if (searchText != "") {
+                                    Keyboard.dismiss();
+                                }
+                                setSearchText('')
                                 setSearchApiHit(false)
                                 setCurrentPage(1)
                                 GetRedemptionHistory(1, null, null, null)
-                            } else {
-                                SimpleToast.show(translate('no_internet_conneccted'));
-                            }
-                        }}>
-                            <Image style={[{ tintColor: Colors.white, height: 25, width: 25, marginEnd: 10 }]} source={require('../assets/images/dataRefresh.png')} resizeMode='contain'></Image>
+                            }}>
+
+                            <Image style={[styles['width_height_20'], styles['centerItems'], { tintColor: "#C0C1C1" }]}
+                                source={(searchText == '') ? require('../assets/images/searchGray.png') : require('../assets/images/close.png')} />
+
                         </TouchableOpacity>
-                        {<TouchableOpacity onPress={() => {
-                            setShowFilterModal(true)
-                            // setFromDate(null)
-                            // setToDate(null)
-                        }}>
-                            <Image style={[{ tintColor: dynamicStyles.secondaryColor }, { height: 20, width: 20, top: 5 }]} source={require('../assets/images/ic_filter_gc.png')}></Image>
-                        </TouchableOpacity>}
-                    </View>
-
-
-                </View>
-
-                <View style={[styles['margin_5']]}>
-                    <View style={[styles['height_60'], styles['bg_white'], styles['border_radius_8']]}>
-                        <View style={[styles['flex_direction_row'], styles['bg_white'], styles['border_radius_normal'], styles['height_40'], styles['border_width_1'], styles['align_end'], styles['border_color_light_grey'], { right: 0, top: 20, width: '95%' }, styles['centerItems']]}>
-                            <TouchableOpacity style={[styles['centerItems']]}
-                                onPress={() => {
-                                    if (searchText != "") {
-                                        Keyboard.dismiss();
-                                    }
-                                    setSearchText('')
+                        <TextInput
+                            value={searchText}
+                            onChangeText={(search) => {
+                                console.log(3)
+                                setSearchText(search)
+                                if (search != '') {
+                                    console.log(1)
+                                    setTimeout(() => {
+                                        searchFilter(search)
+                                    }, 200);
+                                } else if (searchApiHit) {
+                                    console.log(2)
                                     setSearchApiHit(false)
                                     setCurrentPage(1)
                                     GetRedemptionHistory(1, null, null, null)
-                                }}>
-
-                                <Image style={[styles['width_height_20'], styles['centerItems'], { tintColor: "#C0C1C1" }]}
-                                    source={(searchText == '') ? require('../assets/images/searchGray.png') : require('../assets/images/close.png')} />
-
-                            </TouchableOpacity>
-                            <TextInput
-                                value={searchText}
-                                onChangeText={(search) => {
-                                    console.log(3)
-                                    setSearchText(search)
-                                    if (search != '') {
-                                        console.log(1)
-                                        setTimeout(() => {
-                                            searchFilter(search)
-                                        }, 200);
-                                    } else if (searchApiHit) {
-                                        console.log(2)
-                                        setSearchApiHit(false)
-                                        setCurrentPage(1)
-                                        GetRedemptionHistory(1, null, null, null)
-                                    }
-                                }}
-                                onEndEditing={() => {
-                                    if (searchText == '') {
-                                        setSearchApiHit(false)
-                                        setCurrentPage(1)
-                                        GetRedemptionHistory(1, null, null, null)
-                                    }
-                                }}
-                                placeholder={translate('searchByOrderId')}
-                                placeholderTextColor={Colors.darkgrey}
-                                style={[styles['width_91%'], styles['font_size_14_regular'], { color: dynamicStyles.textColor }, styles['height_45'], { paddingLeft: 5 }]} />
-                        </View>
-
-                    </View>
-
-                    <View style={[styles['bg_white'], styles['border_radius_8'], styles['margin_top_10']]}>
-                        <View style={[styles['margin_horizontal_10']]}>
-                            <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_bold'], styles['margin_top_10']]}>{translate('orders')}</Text>
-                            <View style={[styles['border_bottom_width_1'], styles['border_color_light_grey'], styles['margin_top_10 ']]}></View>
-                            {(data && data?.length > 0) && (
-                                <View style={[{ height: getFlatListHeight(itemTotalCount != null && itemTotalCount > 10) }]}>
-                                    <FlatList
-                                        style={{ flexGrow: 0 }}
-                                        ListEmptyComponent={handleEmpty}
-                                        data={data}
-                                        renderItem={({ item, index }) => renderDetails(item, index)}
-                                        keyExtractor={(item, index) => index.toString()}
-                                        ItemSeparatorComponent={<View style={[styles['height_10']]}></View>}
-                                    />
-                                </View>
-                            )}
-                            {(!data || data?.length <= 0) && (
-                                <View>
-                                    <Text style={[styles['text_color_black'], styles['centerItems'], styles['margin_top_100'], { lineHeight: Platform.OS == 'android' ? 40 : 25 }]}>{translate('no_orders_found')}</Text>
-                                </View>
-                            )}
-                        </View>
-
-                        {itemTotalCount != null && itemTotalCount > 10 &&
-                            <View style={[{ width: '100%', borderRadius: 8, height: 60 }]}>
-                                {dataUpdated && currentPage &&
-                                    <CustomPaginationFunctional
-                                        selectedIndex={currentPage}
-                                        pageItemArray={data}
-                                        onpressIndexClicked={(index) => { if (dataAPI?.count && (index <= Math.ceil(dataAPI.count / 10))) { setCurrentPage(index); GetRedemptionHistory(index) } }}
-                                        pgHeight={40}
-                                        itemsPerPage={dataAPI?.count ? Math.ceil((dataAPI.count / 10)) : 1}
-                                        itemBackgroundColor={'#B58A37'}
-                                        pgWidth={'100%'}
-                                    />
                                 }
-                            </View>}
-
+                            }}
+                            onEndEditing={() => {
+                                if (searchText == '') {
+                                    setSearchApiHit(false)
+                                    setCurrentPage(1)
+                                    GetRedemptionHistory(1, null, null, null)
+                                }
+                            }}
+                            placeholder={translate('searchByOrderId')}
+                            placeholderTextColor={Colors.darkgrey}
+                            style={[styles['width_91%'], styles['font_size_14_regular'], { color: dynamicStyles.textColor }, styles['height_45'], { paddingLeft: 5 }]} />
                     </View>
-
 
                 </View>
-                {/* {showDatePicker &&
+
+                <View style={[styles['bg_white'], styles['border_radius_8'], styles['margin_top_10']]}>
+                    <View style={[styles['margin_horizontal_10']]}>
+                        <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_bold'], styles['margin_top_10']]}>{translate('orders')}</Text>
+                        <View style={[styles['border_bottom_width_1'], styles['border_color_light_grey'], styles['margin_top_10 ']]}></View>
+                        {(data && data?.length > 0) && (
+                            <View style={[{ height: getFlatListHeight(itemTotalCount != null && itemTotalCount > 10) }]}>
+                                <FlatList
+                                    style={{ flexGrow: 0 }}
+                                    ListEmptyComponent={handleEmpty}
+                                    data={data}
+                                    renderItem={({ item, index }) => renderDetails(item, index)}
+                                    keyExtractor={(item, index) => index.toString()}
+                                    ItemSeparatorComponent={<View style={[styles['height_10']]}></View>}
+                                />
+                            </View>
+                        )}
+                        {(!data || data?.length <= 0) && (
+                            <View>
+                                <Text style={[styles['text_color_black'], styles['centerItems'], styles['margin_top_100'], { lineHeight: Platform.OS == 'android' ? 40 : 25 }]}>{translate('no_orders_found')}</Text>
+                            </View>
+                        )}
+                    </View>
+
+                    {itemTotalCount != null && itemTotalCount > 10 &&
+                        <View style={[{ width: '100%', borderRadius: 8, height: 60 }]}>
+                            {dataUpdated && currentPage &&
+                                <CustomPaginationFunctional
+                                    selectedIndex={currentPage}
+                                    pageItemArray={data}
+                                    onpressIndexClicked={(index) => { if (dataAPI?.count && (index <= Math.ceil(dataAPI.count / 10))) { setCurrentPage(index); GetRedemptionHistory(index) } }}
+                                    pgHeight={40}
+                                    itemsPerPage={dataAPI?.count ? Math.ceil((dataAPI.count / 10)) : 1}
+                                    itemBackgroundColor={'#B58A37'}
+                                    pgWidth={'100%'}
+                                />
+                            }
+                        </View>}
+
+                </View>
+
+
+            </View>
+            {/* {showDatePicker &&
                     (
                         <DateTimePickerModal
                             isVisible={true}
@@ -496,94 +494,92 @@ function RedemptionsHistory() {
                     )
                 } */}
 
-                {
-                    showDatePicker && (
-                        <DateTimePicker
-                            value={selectedDate}
-                            mode="date"
-                            display="default"
-                            minimumDate={minimumDate}
-                            maximumDate={maximumDate}
-                            is24Hour={false}
-                            onChange={(event, date) => {
-                                handleCancel();
+            {
+                showDatePicker && (
+                    <DateTimePicker
+                        value={selectedDate}
+                        mode="date"
+                        display="default"
+                        minimumDate={minimumDate}
+                        maximumDate={maximumDate}
+                        is24Hour={false}
+                        onChange={(event, date) => {
+                            handleCancel();
 
-                                if (event.type === 'dismissed') {
-                                    return;
-                                }
+                            if (event.type === 'dismissed') {
+                                return;
+                            }
 
-                                if (date) {
-                                    handleConfirm(date);
-                                }
-                            }}
-                        />
-                    )
-                }
-
-                {
-                    showDropDowns &&
-                    <CustomListViewModal
-                        dropDownType={dropDownType}
-                        listItems={dropDownData}
-                        selectedItem={selectedDropDownItem}
-                        onSelectedStatus={(item) => { setPostStatus(item.name); setShowDropDowns(false); }}
-                        onSelectedCompanyName={(item) => { onSelectedCompanyNameItem(item) }}
-                        closeModal={() => setShowDropDowns(false)} />
-                }
-
-                {
-                    showAlert &&
-                    <CustomAlert
-                        onPressClose={() => { handleCancelAlert() }}
-                        title={alertTitle}
-                        showHeader={showAlertHeader}
-                        showHeaderText={showAlertHeaderText}
-                        message={alertMessage}
-                        onPressOkButton={() => { handleOkAlert() }}
-                        onPressNoButton={() => { handleCancelAlert() }}
-                        showYesButton={showAlertYesButton}
-                        showNoButton={showAlertNoButton}
-                        yesButtonText={showAlertyesButtonText}
-                        noButtonText={showAlertNoButtonText} />
-                }
-
-                {showFilterModal &&
-                    <RedemptionHistoryFilterModal
-                        isVisible={showFilterModal}
-                        onClose={() => setShowFilterModal(false)}
-                        fromDate={fromDate}
-                        toDate={toDate}
-                        dynamicStyles={dynamicStyles}
-
-                        // ✅ These are already correct
-                        onFromDatePress={(date) => setFromDate(date)}
-                        onToDatePress={(date) => setToDate(date)}
-
-                        onApplyPress={(from, to) => {
-                            if (from && to) {
-                                setFromDate(from);
-                                setToDate(to);
-                                setShowFilterModal(false);
-                                filterDataByDateRange(from, to);
-                            } else {
-                                if (!from) {
-                                    SimpleToast.show(translate('pleaseSelectFromDate'));
-                                } else if (!to) {
-                                    SimpleToast.show(translate('pleaseSelectToDate'));
-                                }
+                            if (date) {
+                                handleConfirm(date);
                             }
                         }}
-
-                        onClearPress={() => {
-                            setFromDate(null);
-                            setToDate(null);
-                        }}
                     />
-                }
-                {loading && <CustomLoader loading={loading} message={loadingMessage} loaderImage={loaderImage} />}
-            </View>
-        </SafeAreaView>
+                )
+            }
 
+            {
+                showDropDowns &&
+                <CustomListViewModal
+                    dropDownType={dropDownType}
+                    listItems={dropDownData}
+                    selectedItem={selectedDropDownItem}
+                    onSelectedStatus={(item) => { setPostStatus(item.name); setShowDropDowns(false); }}
+                    onSelectedCompanyName={(item) => { onSelectedCompanyNameItem(item) }}
+                    closeModal={() => setShowDropDowns(false)} />
+            }
+
+            {
+                showAlert &&
+                <CustomAlert
+                    onPressClose={() => { handleCancelAlert() }}
+                    title={alertTitle}
+                    showHeader={showAlertHeader}
+                    showHeaderText={showAlertHeaderText}
+                    message={alertMessage}
+                    onPressOkButton={() => { handleOkAlert() }}
+                    onPressNoButton={() => { handleCancelAlert() }}
+                    showYesButton={showAlertYesButton}
+                    showNoButton={showAlertNoButton}
+                    yesButtonText={showAlertyesButtonText}
+                    noButtonText={showAlertNoButtonText} />
+            }
+
+            {showFilterModal &&
+                <RedemptionHistoryFilterModal
+                    isVisible={showFilterModal}
+                    onClose={() => setShowFilterModal(false)}
+                    fromDate={fromDate}
+                    toDate={toDate}
+                    dynamicStyles={dynamicStyles}
+
+                    // ✅ These are already correct
+                    onFromDatePress={(date) => setFromDate(date)}
+                    onToDatePress={(date) => setToDate(date)}
+
+                    onApplyPress={(from, to) => {
+                        if (from && to) {
+                            setFromDate(from);
+                            setToDate(to);
+                            setShowFilterModal(false);
+                            filterDataByDateRange(from, to);
+                        } else {
+                            if (!from) {
+                                SimpleToast.show(translate('pleaseSelectFromDate'));
+                            } else if (!to) {
+                                SimpleToast.show(translate('pleaseSelectToDate'));
+                            }
+                        }
+                    }}
+
+                    onClearPress={() => {
+                        setFromDate(null);
+                        setToDate(null);
+                    }}
+                />
+            }
+            {loading && <CustomLoader loading={loading} message={loadingMessage} loaderImage={loaderImage} />}
+        </View>
     );
 }
 

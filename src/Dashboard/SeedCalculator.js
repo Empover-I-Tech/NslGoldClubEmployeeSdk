@@ -121,7 +121,7 @@ var styles = BuildStyleOverwrite(Styles);
 const SeedCalculator = ({ route }) => {
     styles = useMemo(() => createStyles(), [global.selectedLanguageCode]);
     // var realm = new Realm({ path: 'User.realm' });
-   
+
     if (!realm) {
         console.log("Realm not initialized");
         return;
@@ -1672,108 +1672,107 @@ const SeedCalculator = ({ route }) => {
     };
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: dynamicStyles.primaryColor }} edges={['top']}>
-            {/* <SafeAreaView style={{flex:1, backgroundColor: dynamicStyles.primaryColor}}> */}
-            <View style={[styleSheetStyles.flexFull, styleSheetStyles.gray300bg]}>
-                {Platform.OS === 'android' && <StatusBar backgroundColor={dynamicStyles.primaryColor} barStyle='dark-content' />}
-                <View style={[{ backgroundColor: dynamicStyles.primaryColor }, { paddingStart: 20, paddingEnd: 20, paddingBottom: 20, borderBottomStartRadius: 10, borderBottomEndRadius: 10, paddingTop: Platform.OS == 'ios' ? 20 : 20 }]}>
-                    <TouchableOpacity style={[styles['flex_direction_row']]} onPress={() => navigation.goBack()}>
-                        <Image style={[{ tintColor: dynamicStyles.secondaryColor }, { height: 15, width: 20, top: 5 }]} source={require('../assets/images/previous.png')}></Image>
-                        <Text style={[styles['margin_left_10'], { color: dynamicStyles.secondaryColor }, styles['font_size_18_bold'], Platform.OS === 'ios' && { minHeight: 25 }]}>{calcType}</Text>
-                    </TouchableOpacity>
-                </View>
-                <ScrollView>
-                    <ViewShot ref={viewShotRef} style={styleSheetStyles.viewShot} captureMode="mount" options={{ format: 'jpg', quality: 0.9 }}>
-                        <View style={{
-                            backgroundColor: "#fff",
-                            width: "90%",
-                            alignSelf: "center",
-                            elevation: 5,
-                            borderRadius: 5,
-                            marginTop: 10,
-                            marginBottom: responsiveHeight(3),
-                            paddingBottom: responsiveHeight(3),
-                        }}>
+
+        <View style={[styleSheetStyles.flexFull, styleSheetStyles.gray300bg]}>
+            {Platform.OS === 'android' && <StatusBar backgroundColor={dynamicStyles.primaryColor} barStyle='dark-content' />}
+            <View style={[{ backgroundColor: dynamicStyles.primaryColor }, { borderBottomStartRadius: 10, borderBottomEndRadius: 10, padding: 15 }]}>
+                <TouchableOpacity style={[styles['flex_direction_row'], {alignItems:'center'}]} onPress={() => navigation.goBack()}>
+                    <Image style={[{ tintColor: dynamicStyles.secondaryColor }, { height: 15, width: 20 }]} source={require('../assets/images/previous.png')}></Image>
+                    <Text style={[styles['margin_left_10'], { color: dynamicStyles.secondaryColor }, styles['font_size_18_bold'], Platform.OS === 'ios' && { minHeight: 25 }]}>{calcType}</Text>
+                </TouchableOpacity>
+            </View>
+            <ScrollView>
+                <ViewShot ref={viewShotRef} style={styleSheetStyles.viewShot} captureMode="mount" options={{ format: 'jpg', quality: 0.9 }}>
+                    <View style={{
+                        backgroundColor: "#fff",
+                        width: "90%",
+                        alignSelf: "center",
+                        elevation: 5,
+                        borderRadius: 5,
+                        marginTop: 10,
+                        marginBottom: responsiveHeight(3),
+                        paddingBottom: responsiveHeight(3),
+                    }}>
+                        <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], styles['top_5'], { marginBottom: 2.5, marginLeft: 15, marginTop: 10 }]}  >
+                            {translate('selectCrop')}
+                        </Text>
+                        <CustomBorderInputDropDown
+                            width={[{ width: '92%' }, styles['centerItems']]}
+                            defaultValue={selectedCrop != undefined && selectedCrop != translate('select') ? selectedCrop : translate('select')}
+                            IsRequired={true}
+                            placeholder={translate('selectCrop')}
+                            onFocus={() => {
+                                changeDropDownData(cropsList, strings.yieldOne, selectedCrop)
+                                setRetreivedFrmSavedData(false)
+                            }}
+                        />
+
+
+                        {selectedCrop !== "" && seasonsalList?.length > 0 && <>
                             <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], styles['top_5'], { marginBottom: 2.5, marginLeft: 15, marginTop: 10 }]}  >
-                                {translate('selectCrop')}
+                                {translate('yieldTwo')}
                             </Text>
                             <CustomBorderInputDropDown
                                 width={[{ width: '92%' }, styles['centerItems']]}
-                                defaultValue={selectedCrop != undefined && selectedCrop != translate('select') ? selectedCrop : translate('select')}
+                                defaultValue={selectedSoil != undefined && selectedSoil != translate('select') ? selectedSoil : translate('select')}
                                 IsRequired={true}
-                                placeholder={translate('selectCrop')}
+                                placeholder={translate('yieldTwo')}
                                 onFocus={() => {
-                                    changeDropDownData(cropsList, strings.yieldOne, selectedCrop)
+                                    changeDropDownData(seasonsalList, strings.yieldTwo, selectedSoil)
                                     setRetreivedFrmSavedData(false)
                                 }}
                             />
+                        </>}
+
+                        <View>
 
 
-                            {selectedCrop !== "" && seasonsalList?.length > 0 && <>
-                                <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], styles['top_5'], { marginBottom: 2.5, marginLeft: 15, marginTop: 10 }]}  >
-                                    {translate('yieldTwo')}
-                                </Text>
-                                <CustomBorderInputDropDown
-                                    width={[{ width: '92%' }, styles['centerItems']]}
-                                    defaultValue={selectedSoil != undefined && selectedSoil != translate('select') ? selectedSoil : translate('select')}
-                                    IsRequired={true}
-                                    placeholder={translate('yieldTwo')}
-                                    onFocus={() => {
-                                        changeDropDownData(seasonsalList, strings.yieldTwo, selectedSoil)
-                                        setRetreivedFrmSavedData(false)
-                                    }}
-                                />
-                            </>}
-
-                            <View>
-
-
-                                {selectedCrop !== "" && listRowSpace?.length !== 0 &&
-                                    <>
-                                        <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], styles['top_5'], { marginBottom: 2.5, marginLeft: 15, marginTop: 10 }, Platform.OS === 'ios' && { minHeight: 20 }]}  >
-                                            {translate('yieldFour')}
-                                        </Text>
-                                        <CustomBorderInputDropDown
-                                            width={[{ width: '92%' }, styles['centerItems']]}
-                                            defaultValue={rowSpacing != undefined && rowSpacing != translate('select') ? rowSpacing : translate('select')}
-                                            IsRequired={true}
-                                            disabled={listRowSpace.length === 1}
-                                            placeholder={translate('yieldFour')}
-                                            onFocus={() => {
-                                                listRowSpace.length !== 1 && changeDropDownData(listRowSpace, strings.yieldFour, rowSpacing)
-                                            }}
-                                        /></>
-                                }
-                                {selectedCrop !== "" && PlantToPlantArr?.length !== 0 &&
-                                    <><Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], styles['top_5'], { marginBottom: 2.5, marginLeft: 15, marginTop: 10 }, Platform.OS === 'ios' && { minHeight: 20 }]}  >
-                                        {translate('yieldFive')}
+                            {selectedCrop !== "" && listRowSpace?.length !== 0 &&
+                                <>
+                                    <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], styles['top_5'], { marginBottom: 2.5, marginLeft: 15, marginTop: 10 }, Platform.OS === 'ios' && { minHeight: 20 }]}  >
+                                        {translate('yieldFour')}
                                     </Text>
-                                        <CustomBorderInputDropDown
-                                            width={[{ width: '92%' }, styles['centerItems']]}
-                                            defaultValue={plantSpacing != undefined && plantSpacing != translate('select') ? plantSpacing : translate('select')}
-                                            IsRequired={true}
-                                            disabled={PlantToPlantArr.length === 1}
-                                            placeholder={translate('yieldFive')}
-                                            onFocus={() => {
-                                                PlantToPlantArr.length !== 1 && changeDropDownData(PlantToPlantArr, strings.yieldFive, plantSpacing)
-                                            }}
-                                        /></>
-                                }
-                                {(PlantToPlantArr?.length === 0 || listRowSpace?.length === 0) ? null : <View style={[styles['margin_top_10']]}>
-                                    <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 0, marginTop: 10, marginLeft: 15 }}>
-                                        <View style={{ width: '50%' }}>
-                                            <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular']]}  >
-                                                {translate('IdealPlantPopulationOrAcre')}
-                                            </Text>
-                                        </View>
+                                    <CustomBorderInputDropDown
+                                        width={[{ width: '92%' }, styles['centerItems']]}
+                                        defaultValue={rowSpacing != undefined && rowSpacing != translate('select') ? rowSpacing : translate('select')}
+                                        IsRequired={true}
+                                        disabled={listRowSpace.length === 1}
+                                        placeholder={translate('yieldFour')}
+                                        onFocus={() => {
+                                            listRowSpace.length !== 1 && changeDropDownData(listRowSpace, strings.yieldFour, rowSpacing)
+                                        }}
+                                    /></>
+                            }
+                            {selectedCrop !== "" && PlantToPlantArr?.length !== 0 &&
+                                <><Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], styles['top_5'], { marginBottom: 2.5, marginLeft: 15, marginTop: 10 }, Platform.OS === 'ios' && { minHeight: 20 }]}  >
+                                    {translate('yieldFive')}
+                                </Text>
+                                    <CustomBorderInputDropDown
+                                        width={[{ width: '92%' }, styles['centerItems']]}
+                                        defaultValue={plantSpacing != undefined && plantSpacing != translate('select') ? plantSpacing : translate('select')}
+                                        IsRequired={true}
+                                        disabled={PlantToPlantArr.length === 1}
+                                        placeholder={translate('yieldFive')}
+                                        onFocus={() => {
+                                            PlantToPlantArr.length !== 1 && changeDropDownData(PlantToPlantArr, strings.yieldFive, plantSpacing)
+                                        }}
+                                    /></>
+                            }
+                            {(PlantToPlantArr?.length === 0 || listRowSpace?.length === 0) ? null : <View style={[styles['margin_top_10']]}>
+                                <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 0, marginTop: 10, marginLeft: 15 }}>
+                                    <View style={{ width: '50%' }}>
                                         <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular']]}  >
-                                            {translate('dots')}
-                                        </Text>
-                                        <Text style={[{ color: IdealPlantPopulationOrAcre ? dynamicStyles.textColor : 'rgba(180, 180, 180, 1)' }, { marginLeft: 10 }, styles['font_size_20_bold']]}  >
-                                            {IdealPlantPopulationOrAcre ? IdealPlantPopulationOrAcre : 0}
+                                            {translate('IdealPlantPopulationOrAcre')}
                                         </Text>
                                     </View>
-                                    {/* <CustomTextInput
+                                    <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular']]}  >
+                                        {translate('dots')}
+                                    </Text>
+                                    <Text style={[{ color: IdealPlantPopulationOrAcre ? dynamicStyles.textColor : 'rgba(180, 180, 180, 1)' }, { marginLeft: 10 }, styles['font_size_20_bold']]}  >
+                                        {IdealPlantPopulationOrAcre ? IdealPlantPopulationOrAcre : 0}
+                                    </Text>
+                                </View>
+                                {/* <CustomTextInput
                                     style={[styles['margin_top_20'], styles['centerItems']]}
                                     labelName={translate('IdealPlantPopulationOrAcre')}
                                     IsRequired={false}
@@ -1791,63 +1790,63 @@ const SeedCalculator = ({ route }) => {
                                     }}
                                     onEndEditing={event => { }}
                                 /> */}
-                                </View>}
+                            </View>}
 
-                                <View style={[{ marginTop: 10 }]}>
-                                    <View style={{ flexDirection: "row", alignItems: "center", marginBottom: -5, marginTop: 0, marginLeft: 15 }}>
-                                        <View style={{ width: '50%' }}>
-                                            <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular']]}  >
-                                                {translate('SeedRateKg')}
-                                            </Text>
-                                        </View>
+                            <View style={[{ marginTop: 10 }]}>
+                                <View style={{ flexDirection: "row", alignItems: "center", marginBottom: -5, marginTop: 0, marginLeft: 15 }}>
+                                    <View style={{ width: '50%' }}>
                                         <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular']]}  >
-                                            {translate('dots')}
-                                        </Text>
-                                        <Text style={[{ color: CottonSeedRate ? dynamicStyles.textColor : 'rgba(180, 180, 180, 1)' }, { marginLeft: 10 }, styles['font_size_20_bold']]}  >
-                                            {CottonSeedRate ? CottonSeedRate : 0}
-                                        </Text>
-                                        <Text style={[{ color: dynamicStyles.textColor, marginLeft: 5, }, styles['font_size_14_regular']]}  >
-                                            {seedRateUnits}
+                                            {translate('SeedRateKg')}
                                         </Text>
                                     </View>
+                                    <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular']]}  >
+                                        {translate('dots')}
+                                    </Text>
+                                    <Text style={[{ color: CottonSeedRate ? dynamicStyles.textColor : 'rgba(180, 180, 180, 1)' }, { marginLeft: 10 }, styles['font_size_20_bold']]}  >
+                                        {CottonSeedRate ? CottonSeedRate : 0}
+                                    </Text>
+                                    <Text style={[{ color: dynamicStyles.textColor, marginLeft: 5, }, styles['font_size_14_regular']]}  >
+                                        {seedRateUnits}
+                                    </Text>
                                 </View>
-                                <CustomTextInput
-                                    style={[styles['margin_top_20'], styles['centerItems']]}
-                                    labelName={translate('yieldSix')}
-                                    IsRequired={false}
-                                    maxLength={30}
-                                    keyboardType='number-pad'
-                                    placeholder={translate('yieldSix')}
-                                    value={areaToPlanted}
-                                    editable={true}
-                                    addSpace={true}
-                                    onFocus={() => {
-                                    }}
-                                    onChangeText={(text) => {
-                                        var enteredNumber = text.replace(/[^0-9]/g, '');
-                                        setAreaToPlanted(enteredNumber)
-                                    }}
-                                    onEndEditing={event => { }}
-                                />
-                                <View style={[styles['margin_top_10']]}>
-                                    <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 0, marginTop: 15, marginLeft: 15 }}>
-                                        <View style={{ width: '40%' }}>
-                                            <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular']]}  >
-                                                {translate('totalSeedRequired')}
-                                            </Text>
-                                        </View>
+                            </View>
+                            <CustomTextInput
+                                style={[styles['margin_top_20'], styles['centerItems']]}
+                                labelName={translate('yieldSix')}
+                                IsRequired={false}
+                                maxLength={30}
+                                keyboardType='number-pad'
+                                placeholder={translate('yieldSix')}
+                                value={areaToPlanted}
+                                editable={true}
+                                addSpace={true}
+                                onFocus={() => {
+                                }}
+                                onChangeText={(text) => {
+                                    var enteredNumber = text.replace(/[^0-9]/g, '');
+                                    setAreaToPlanted(enteredNumber)
+                                }}
+                                onEndEditing={event => { }}
+                            />
+                            <View style={[styles['margin_top_10']]}>
+                                <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 0, marginTop: 15, marginLeft: 15 }}>
+                                    <View style={{ width: '40%' }}>
                                         <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular']]}  >
-                                            {translate('dots')}
-                                        </Text>
-                                        <Text style={[{ color: totalSeedRequired ? dynamicStyles.textColor : 'rgba(180, 180, 180, 1)' }, { marginLeft: 10 }, styles['font_size_20_bold']]}  >
-                                            {totalSeedRequired ? totalSeedRequired : 0}
-                                        </Text>
-                                        <Text style={[{ color: dynamicStyles.textColor, marginLeft: 5, }, styles['font_size_14_regular']]}  >
-                                            {totalSeedRequiredUnits}
-                                            {/* {selectedCrop === 'Cotton' ? Number(totalSeedRequired) > 1 ? 'pkts' :  'pkt' :  Number(totalSeedRequired) > 1 ? 'kgs' : 'kg'} */}
+                                            {translate('totalSeedRequired')}
                                         </Text>
                                     </View>
-                                    {/* <CustomTextInput
+                                    <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular']]}  >
+                                        {translate('dots')}
+                                    </Text>
+                                    <Text style={[{ color: totalSeedRequired ? dynamicStyles.textColor : 'rgba(180, 180, 180, 1)' }, { marginLeft: 10 }, styles['font_size_20_bold']]}  >
+                                        {totalSeedRequired ? totalSeedRequired : 0}
+                                    </Text>
+                                    <Text style={[{ color: dynamicStyles.textColor, marginLeft: 5, }, styles['font_size_14_regular']]}  >
+                                        {totalSeedRequiredUnits}
+                                        {/* {selectedCrop === 'Cotton' ? Number(totalSeedRequired) > 1 ? 'pkts' :  'pkt' :  Number(totalSeedRequired) > 1 ? 'kgs' : 'kg'} */}
+                                    </Text>
+                                </View>
+                                {/* <CustomTextInput
                                     style={[styles['margin_top_20'], styles['centerItems']]}
                                     labelName={translate('totalSeedRequired')}
                                     IsRequired={false}
@@ -1862,63 +1861,63 @@ const SeedCalculator = ({ route }) => {
                                     onChangeText={() => {}}
                                     onEndEditing={event => { }}
                                 /> */}
-                                </View>
-
-                                {
-                                    showDropDowns &&
-                                    <CustomListViewModal
-                                        dropDownType={dropDownType}
-                                        listItems={dropDownData}
-                                        selectedItem={selectedDropDownItem}
-                                        onSelectedCropCal={(item) => onSelectItem(item, setSelectedCrop)}
-                                        onSelectedSoilType={(item) => onSelectItem(item, setSelectedSoil)}
-                                        onSelectedPlantingType={(item) => onSelectItem(item, setVarietyOrPlantingSystem)}
-                                        onSelectedRowSpacing={(item) => onSelectItem(item, setRowSpacing)}
-                                        onSelectedPlantSpacing={(item) => onSelectItem(item, setPlantSpacing)}
-                                        onSelectedAreaToPlanted={(item) => onSelectItem(item, setAreaToPlanted)}
-                                        onSelectedAvgBollsPerPlant={(item) => onSelectItem(item, setAvgBollsPerPlant)}
-                                        onSelectedsetAvgBollWt={(item) => onSelectItem(item, setAvgBollWt)}
-                                        closeModal={() => setShowDropDowns(false)}
-                                    />
-                                }
                             </View>
-                        </View>
-                    </ViewShot>
-                    {loading && <CustomLoader loading={loading} message={loadingMessage} loaderImage={loaderImage} />}
-                    {/* {successLoading && <CustomSuccessLoader loading={successLoading} message={successLoadingMessage} />} */}
-                    {/* {errorLoading && <CustomErrorLoader loading={errorLoading} message={errorLoadingMessage} />} */}
-                </ScrollView>
-                <View style={[styleSheetStyles.container]}>
-                    {<TouchableOpacity onPress={() => { saveAPI() }} disabled={!showStatus()} style={[styleSheetStyles.button, styleSheetStyles.clearButton, { borderColor: !showStatus() ? Colors.lightGray : dynamicStyles.iconPrimaryColor }]}>
-                        <Text style={[Platform.OS === 'ios' ? styles['font_size_14_bold'] : styles['font_size_14_semibold'], { color: !showStatus() ? Colors.lightGray : dynamicStyles.iconPrimaryColor }]}>{translate('Save')}</Text>
-                    </TouchableOpacity>}
-                </View>
-                {!isProcessing && <View style={{ bottom: 10 }}>
-                    <CustomButton shouldDisable={!showStatus()} title={translate('Share')} onPress={() => { takeScreenshot() }}
-                        buttonBg={!showStatus() ? Colors.lightGray : dynamicStyles.primaryColor}
-                        titleTextColor={!showStatus() ? Colors.white : dynamicStyles.secondaryColor}
-                        btnWidth={'90%'}
-                        addIcon={showStatus()}
-                        textAlign='center' />
-                </View>}
-                {
-                    showAlert &&
-                    <CustomAlert
-                        onPressClose={() => { handleCancelAlert() }}
-                        title={alertTitle}
-                        showHeader={showAlertHeader}
-                        showHeaderText={showAlertHeaderText}
-                        message={alertMessage}
-                        onPressOkButton={() => { handleCancelAlert() }}
-                        onPressNoButton={() => { handleCancelAlert() }}
-                        showYesButton={showAlertYesButton}
-                        showNoButton={showAlertNoButton}
-                        yesButtonText={showAlertyesButtonText}
-                        noButtonText={showAlertNoButtonText} />
 
-                }
+                            {
+                                showDropDowns &&
+                                <CustomListViewModal
+                                    dropDownType={dropDownType}
+                                    listItems={dropDownData}
+                                    selectedItem={selectedDropDownItem}
+                                    onSelectedCropCal={(item) => onSelectItem(item, setSelectedCrop)}
+                                    onSelectedSoilType={(item) => onSelectItem(item, setSelectedSoil)}
+                                    onSelectedPlantingType={(item) => onSelectItem(item, setVarietyOrPlantingSystem)}
+                                    onSelectedRowSpacing={(item) => onSelectItem(item, setRowSpacing)}
+                                    onSelectedPlantSpacing={(item) => onSelectItem(item, setPlantSpacing)}
+                                    onSelectedAreaToPlanted={(item) => onSelectItem(item, setAreaToPlanted)}
+                                    onSelectedAvgBollsPerPlant={(item) => onSelectItem(item, setAvgBollsPerPlant)}
+                                    onSelectedsetAvgBollWt={(item) => onSelectItem(item, setAvgBollWt)}
+                                    closeModal={() => setShowDropDowns(false)}
+                                />
+                            }
+                        </View>
+                    </View>
+                </ViewShot>
+                {loading && <CustomLoader loading={loading} message={loadingMessage} loaderImage={loaderImage} />}
+                {/* {successLoading && <CustomSuccessLoader loading={successLoading} message={successLoadingMessage} />} */}
+                {/* {errorLoading && <CustomErrorLoader loading={errorLoading} message={errorLoadingMessage} />} */}
+            </ScrollView>
+            <View style={[styleSheetStyles.container]}>
+                {<TouchableOpacity onPress={() => { saveAPI() }} disabled={!showStatus()} style={[styleSheetStyles.button, styleSheetStyles.clearButton, { borderColor: !showStatus() ? Colors.lightGray : dynamicStyles.iconPrimaryColor }]}>
+                    <Text style={[Platform.OS === 'ios' ? styles['font_size_14_bold'] : styles['font_size_14_semibold'], { color: !showStatus() ? Colors.lightGray : dynamicStyles.iconPrimaryColor }]}>{translate('Save')}</Text>
+                </TouchableOpacity>}
             </View>
-        </SafeAreaView>
+            {!isProcessing && <View style={{ bottom: 10 }}>
+                <CustomButton shouldDisable={!showStatus()} title={translate('Share')} onPress={() => { takeScreenshot() }}
+                    buttonBg={!showStatus() ? Colors.lightGray : dynamicStyles.primaryColor}
+                    titleTextColor={!showStatus() ? Colors.white : dynamicStyles.secondaryColor}
+                    btnWidth={'90%'}
+                    addIcon={showStatus()}
+                    textAlign='center' />
+            </View>}
+            {
+                showAlert &&
+                <CustomAlert
+                    onPressClose={() => { handleCancelAlert() }}
+                    title={alertTitle}
+                    showHeader={showAlertHeader}
+                    showHeaderText={showAlertHeaderText}
+                    message={alertMessage}
+                    onPressOkButton={() => { handleCancelAlert() }}
+                    onPressNoButton={() => { handleCancelAlert() }}
+                    showYesButton={showAlertYesButton}
+                    showNoButton={showAlertNoButton}
+                    yesButtonText={showAlertyesButtonText}
+                    noButtonText={showAlertNoButtonText} />
+
+            }
+        </View>
+
     );
 };
 

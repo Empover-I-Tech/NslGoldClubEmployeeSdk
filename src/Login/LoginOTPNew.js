@@ -142,7 +142,7 @@ function LoginOTPNew({ route }) {
               setSuccessLoadingMessage(translate('otp_verified_message'))
             }, 1000);
             var verifyOTPResponse = APIResponse?.response;
-            console.log('verifyOTPResponse is', verifyOTPResponse)
+            console.log('verifyOTPResponse is', JSON.stringify(verifyOTPResponse))
             if (verifyOTPResponse != undefined && verifyOTPResponse != null && verifyOTPResponse.length > 0) {
               setRoleNameNav(verifyOTPResponse[0].roleName)
               setOTPApiresponse(verifyOTPResponse)

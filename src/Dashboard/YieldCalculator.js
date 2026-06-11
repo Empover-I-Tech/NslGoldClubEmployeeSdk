@@ -30,7 +30,7 @@ import realm from '../realmOffline/realmConfig';
 
 export const getYieldCalcMasters = async () => {
     // let realm = new Realm({ path: 'User.realm' });
-   
+
     if (!realm) {
         console.log("Realm not initialized");
         return;
@@ -76,7 +76,7 @@ export const getYieldCalcMasters = async () => {
 
 export const SaveYieldCalcValues = async (jsonData, dispatch) => {
     // let realm = new Realm({ path: 'User.realm' });
-   
+
     if (!realm) {
         console.log("Realm not initialized");
         return;
@@ -124,7 +124,7 @@ var styles = BuildStyleOverwrite(Styles);
 const YieldCalculator = ({ route }) => {
     styles = useMemo(() => createStyles(), [global.selectedLanguageCode]);
     // var realm = new Realm({ path: 'User.realm' });
-   
+
     if (!realm) {
         console.log("Realm not initialized");
         return;
@@ -2192,132 +2192,131 @@ const YieldCalculator = ({ route }) => {
 
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: dynamicStyles.primaryColor }} edges={['top']}>
-            <View style={[styleSheetStyles.flexFull, styleSheetStyles.gray300bg]}>
-                {Platform.OS === 'android' && <StatusBar backgroundColor={dynamicStyles.primaryColor} barStyle='dark-content' />}
-                <View style={[{ backgroundColor: dynamicStyles.primaryColor }, { paddingStart: 20, paddingEnd: 20, paddingBottom: 20, borderBottomStartRadius: 10, borderBottomEndRadius: 10, paddingTop: Platform.OS == 'ios' ? 20 : 20 }]}>
-                    <TouchableOpacity style={[styles['flex_direction_row']]} onPress={() => navigation.goBack()}>
-                        <Image style={[{ tintColor: dynamicStyles.secondaryColor }, { height: 15, width: 20, top: 5 }]} source={require('../assets/images/previous.png')}></Image>
-                        <Text style={[styles['margin_left_10'], { color: dynamicStyles.secondaryColor }, styles['font_size_18_bold'], Platform.OS === 'ios' && { minHeight: 25 }]}>{calcType}</Text>
-                    </TouchableOpacity>
-                </View>
-                <ScrollView style={{ bottom: 10 }}>
-                    <ViewShot ref={viewShotRef} style={styleSheetStyles.viewShot} captureMode="mount" options={{ format: 'jpg', quality: 0.9 }}>
-                        <View style={{
-                            backgroundColor: "#fff",
-                            width: "90%",
+        <View style={[styleSheetStyles.flexFull, styleSheetStyles.gray300bg]}>
+            {Platform.OS === 'android' && <StatusBar backgroundColor={dynamicStyles.primaryColor} barStyle='dark-content' />}
+            <View style={[{ backgroundColor: dynamicStyles.primaryColor }, { borderBottomStartRadius: 10, borderBottomEndRadius: 10, padding: 15 }]}>
+                <TouchableOpacity style={[styles['flex_direction_row'], {alignItems:'center'}]} onPress={() => navigation.goBack()}>
+                    <Image style={[{ tintColor: dynamicStyles.secondaryColor }, { height: 15, width: 20}]} source={require('../assets/images/previous.png')}></Image>
+                    <Text style={[styles['margin_left_10'], { color: dynamicStyles.secondaryColor }, styles['font_size_18_bold'], Platform.OS === 'ios' && { minHeight: 25 }]}>{calcType}</Text>
+                </TouchableOpacity>
+            </View>
+            <ScrollView style={{ bottom: 10 }}>
+                <ViewShot ref={viewShotRef} style={styleSheetStyles.viewShot} captureMode="mount" options={{ format: 'jpg', quality: 0.9 }}>
+                    <View style={{
+                        backgroundColor: "#fff",
+                        width: "90%",
+                        alignSelf: "center",
+                        elevation: 5,
+                        borderRadius: 5,
+                        marginTop: 10,
+                        marginBottom: responsiveHeight(3),
+                        paddingBottom: responsiveHeight(3),
+                    }}>
+                        <View style={[{
+                            // borderWidth: 1,
+                            // borderColor: 'rgba(180, 180, 180, 0.5)',
+                            // width: '92%',
                             alignSelf: "center",
-                            elevation: 5,
-                            borderRadius: 5,
-                            marginTop: 10,
-                            marginBottom: responsiveHeight(3),
-                            paddingBottom: responsiveHeight(3),
-                        }}>
-                            <View style={[{
-                                // borderWidth: 1,
-                                // borderColor: 'rgba(180, 180, 180, 0.5)',
-                                // width: '92%',
-                                alignSelf: "center",
-                                // borderRadius: 10,
-                                // paddingTop: 10,
-                                // paddingBottom: 20,
-                                marginTop: 15,
-                                paddingBottom: 5,
-                            }]}>
-                                <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], styles['top_5'], { marginBottom: 0.5, marginLeft: 0, marginTop: 0 }]}  >
-                                    {translate('selectCrop')}
-                                </Text>
-                                <CustomBorderInputDropDown
-                                    width={[{ width: '92%' }, styles['centerItems']]}
-                                    defaultValue={selectedCrop != undefined && selectedCrop != translate('select') ? selectedCrop : translate('select')}
-                                    IsRequired={true}
-                                    // disabled={selectedFilter === translate('YieldCalculator')}
-                                    placeholder={translate('selectCrop')}
-                                    onFocus={() => {
-                                        changeDropDownData(cropsList, strings.yieldOne, selectedCrop)
-                                        // selectedFilter === strings.TotalSeed &&  changeDropDownData(cropsList, strings.yieldOne, selectedCrop)
-                                        setRetreivedFrmSavedData(false)
-                                    }}
-                                />
-                                <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], styles['top_5'], { marginBottom: 0.5, marginLeft: 0, marginTop: 10 }]}  >
-                                    {translate('yieldTwo')}
-                                </Text>
-                                <CustomBorderInputDropDown
-                                    width={[{ width: '92%' }, styles['centerItems']]}
-                                    defaultValue={selectedSoil != undefined && selectedSoil != translate('select') ? selectedSoil : translate('select')}
-                                    IsRequired={true}
-                                    // disabled={selectedFilter === translate('YieldCalculator')}
-                                    placeholder={translate('yieldTwo')}
-                                    onFocus={() => {
-                                        changeDropDownData(seasonsalList, strings.yieldTwo, selectedSoil)
-                                        // selectedFilter === strings.TotalSeed && changeDropDownData(seasonsalList, strings.yieldTwo, selectedSoil)
-                                        setRetreivedFrmSavedData(false)
-                                    }}
-                                />
-                                {selectedCrop !== 'Maize' &&
-                                    <>
-                                        <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], styles['top_5'], { marginBottom: 0.5, marginLeft: 0, marginTop: 10 }]}  >
-                                            {translate('yieldThree')}
-                                        </Text>
-                                        <CustomBorderInputDropDown
-                                            width={[{ width: '92%' }, styles['centerItems']]}
-                                            defaultValue={VarietyOrPlantingSystem != undefined && VarietyOrPlantingSystem != translate('select') ? VarietyOrPlantingSystem : translate('select')}
-                                            IsRequired={true}
-                                            disabled={listPlantingSystem.length === 1}
-                                            // disabled={selectedFilter === translate('YieldCalculator')}
-                                            placeholder={translate('yieldThree')}
-                                            onFocus={() => {
-                                                listPlantingSystem.length !== 1 && changeDropDownData(listPlantingSystem, strings.yieldThree, VarietyOrPlantingSystem)
-                                                // selectedFilter === strings.TotalSeed && changeDropDownData(listPlantingSystem, strings.yieldThree, VarietyOrPlantingSystem)
-                                            }}
-                                        />
-                                    </>
-                                }
-                                <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], styles['top_5'], { marginBottom: 0.5, marginLeft: 0, marginTop: 10 }]}  >
-                                    {translate('yieldFour')}
-                                </Text>
-                                <CustomBorderInputDropDown
-                                    width={[{ width: '92%' }, styles['centerItems']]}
-                                    defaultValue={rowSpacing != undefined && rowSpacing != translate('select') ? rowSpacing : translate('select')}
-                                    IsRequired={true}
-                                    disabled={listRowSpace.length === 1}
-                                    // disabled={selectedFilter === translate('YieldCalculator')}
-                                    placeholder={translate('yieldFour')}
-                                    onFocus={() => {
-                                        listRowSpace.length !== 1 && changeDropDownData(listRowSpace, strings.yieldFour, rowSpacing)
-                                        // selectedFilter === strings.TotalSeed && changeDropDownData(listRowSpace, strings.yieldFour, rowSpacing)
-                                    }}
-                                />
-                                <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], styles['top_5'], { marginBottom: 0.5, marginLeft: 0, marginTop: 10 }]}  >
-                                    {translate('yieldFive')}
-                                </Text>
-                                <CustomBorderInputDropDown
-                                    width={[{ width: '92%' }, styles['centerItems']]}
-                                    defaultValue={plantSpacing != undefined && plantSpacing != translate('select') ? plantSpacing : translate('select')}
-                                    IsRequired={true}
-                                    disabled={PlantToPlantArr.length === 1}
-                                    // disabled={selectedFilter === translate('YieldCalculator')}
-                                    placeholder={translate('yieldFive')}
-                                    onFocus={() => {
-                                        PlantToPlantArr.length !== 1 && changeDropDownData(PlantToPlantArr, strings.yieldFive, plantSpacing)
-                                        // selectedFilter === strings.TotalSeed &&  changeDropDownData(PlantToPlantArr, strings.yieldFive, plantSpacing)
-                                    }}
-                                />
-                                <View style={[styles['margin_top_10']]}>
-                                    <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 2.5, marginTop: 10, minHeight: responsiveHeight(5) }}>
-                                        <View style={{ width: '55%' }}>
-                                            <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular']]}  >
-                                                {translate('IdealPlantPopulationOrAcre')}
-                                            </Text>
-                                        </View>
+                            // borderRadius: 10,
+                            // paddingTop: 10,
+                            // paddingBottom: 20,
+                            marginTop: 15,
+                            paddingBottom: 5,
+                        }]}>
+                            <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], styles['top_5'], { marginBottom: 0.5, marginLeft: 0, marginTop: 0 }]}  >
+                                {translate('selectCrop')}
+                            </Text>
+                            <CustomBorderInputDropDown
+                                width={[{ width: '92%' }, styles['centerItems']]}
+                                defaultValue={selectedCrop != undefined && selectedCrop != translate('select') ? selectedCrop : translate('select')}
+                                IsRequired={true}
+                                // disabled={selectedFilter === translate('YieldCalculator')}
+                                placeholder={translate('selectCrop')}
+                                onFocus={() => {
+                                    changeDropDownData(cropsList, strings.yieldOne, selectedCrop)
+                                    // selectedFilter === strings.TotalSeed &&  changeDropDownData(cropsList, strings.yieldOne, selectedCrop)
+                                    setRetreivedFrmSavedData(false)
+                                }}
+                            />
+                            <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], styles['top_5'], { marginBottom: 0.5, marginLeft: 0, marginTop: 10 }]}  >
+                                {translate('yieldTwo')}
+                            </Text>
+                            <CustomBorderInputDropDown
+                                width={[{ width: '92%' }, styles['centerItems']]}
+                                defaultValue={selectedSoil != undefined && selectedSoil != translate('select') ? selectedSoil : translate('select')}
+                                IsRequired={true}
+                                // disabled={selectedFilter === translate('YieldCalculator')}
+                                placeholder={translate('yieldTwo')}
+                                onFocus={() => {
+                                    changeDropDownData(seasonsalList, strings.yieldTwo, selectedSoil)
+                                    // selectedFilter === strings.TotalSeed && changeDropDownData(seasonsalList, strings.yieldTwo, selectedSoil)
+                                    setRetreivedFrmSavedData(false)
+                                }}
+                            />
+                            {selectedCrop !== 'Maize' &&
+                                <>
+                                    <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], styles['top_5'], { marginBottom: 0.5, marginLeft: 0, marginTop: 10 }]}  >
+                                        {translate('yieldThree')}
+                                    </Text>
+                                    <CustomBorderInputDropDown
+                                        width={[{ width: '92%' }, styles['centerItems']]}
+                                        defaultValue={VarietyOrPlantingSystem != undefined && VarietyOrPlantingSystem != translate('select') ? VarietyOrPlantingSystem : translate('select')}
+                                        IsRequired={true}
+                                        disabled={listPlantingSystem.length === 1}
+                                        // disabled={selectedFilter === translate('YieldCalculator')}
+                                        placeholder={translate('yieldThree')}
+                                        onFocus={() => {
+                                            listPlantingSystem.length !== 1 && changeDropDownData(listPlantingSystem, strings.yieldThree, VarietyOrPlantingSystem)
+                                            // selectedFilter === strings.TotalSeed && changeDropDownData(listPlantingSystem, strings.yieldThree, VarietyOrPlantingSystem)
+                                        }}
+                                    />
+                                </>
+                            }
+                            <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], styles['top_5'], { marginBottom: 0.5, marginLeft: 0, marginTop: 10 }]}  >
+                                {translate('yieldFour')}
+                            </Text>
+                            <CustomBorderInputDropDown
+                                width={[{ width: '92%' }, styles['centerItems']]}
+                                defaultValue={rowSpacing != undefined && rowSpacing != translate('select') ? rowSpacing : translate('select')}
+                                IsRequired={true}
+                                disabled={listRowSpace.length === 1}
+                                // disabled={selectedFilter === translate('YieldCalculator')}
+                                placeholder={translate('yieldFour')}
+                                onFocus={() => {
+                                    listRowSpace.length !== 1 && changeDropDownData(listRowSpace, strings.yieldFour, rowSpacing)
+                                    // selectedFilter === strings.TotalSeed && changeDropDownData(listRowSpace, strings.yieldFour, rowSpacing)
+                                }}
+                            />
+                            <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], styles['top_5'], { marginBottom: 0.5, marginLeft: 0, marginTop: 10 }]}  >
+                                {translate('yieldFive')}
+                            </Text>
+                            <CustomBorderInputDropDown
+                                width={[{ width: '92%' }, styles['centerItems']]}
+                                defaultValue={plantSpacing != undefined && plantSpacing != translate('select') ? plantSpacing : translate('select')}
+                                IsRequired={true}
+                                disabled={PlantToPlantArr.length === 1}
+                                // disabled={selectedFilter === translate('YieldCalculator')}
+                                placeholder={translate('yieldFive')}
+                                onFocus={() => {
+                                    PlantToPlantArr.length !== 1 && changeDropDownData(PlantToPlantArr, strings.yieldFive, plantSpacing)
+                                    // selectedFilter === strings.TotalSeed &&  changeDropDownData(PlantToPlantArr, strings.yieldFive, plantSpacing)
+                                }}
+                            />
+                            <View style={[styles['margin_top_10']]}>
+                                <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 2.5, marginTop: 10, minHeight: responsiveHeight(5) }}>
+                                    <View style={{ width: '55%' }}>
                                         <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular']]}  >
-                                            {translate('dots')}
-                                        </Text>
-                                        <Text style={[{ color: IdealPlantPopulationOrAcre ? dynamicStyles.textColor : 'rgba(180, 180, 180, 1)' }, { marginLeft: 10, }, styles['font_size_20_bold']]}  >
-                                            {IdealPlantPopulationOrAcre ? IdealPlantPopulationOrAcre : 0}
+                                            {translate('IdealPlantPopulationOrAcre')}
                                         </Text>
                                     </View>
-                                    {/* <CustomTextInput
+                                    <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular']]}  >
+                                        {translate('dots')}
+                                    </Text>
+                                    <Text style={[{ color: IdealPlantPopulationOrAcre ? dynamicStyles.textColor : 'rgba(180, 180, 180, 1)' }, { marginLeft: 10, }, styles['font_size_20_bold']]}  >
+                                        {IdealPlantPopulationOrAcre ? IdealPlantPopulationOrAcre : 0}
+                                    </Text>
+                                </View>
+                                {/* <CustomTextInput
                                     style={[styles['margin_top_20'], styles['centerItems']]}
                                     labelName={translate('IdealPlantPopulationOrAcre')}
                                     IsRequired={false}
@@ -2335,71 +2334,71 @@ const YieldCalculator = ({ route }) => {
                                     }}
                                     onEndEditing={event => { }}
                                 /> */}
-                                </View>
                             </View>
+                        </View>
 
 
-                            <View>
+                        <View>
 
 
-                                {
-                                    //    selectedFilter === translate('TotalSeed') && 
-                                    <>
-                                        <View style={[styles['margin_top_10']]}>
-                                            <View style={{ flexDirection: "row", alignItems: "center", marginBottom: -1, marginTop: 5, marginLeft: 15 }}>
-                                                <View style={{ width: '52.5%' }}>
-                                                    <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular']]}  >
-                                                        {selectedCrop === 'Cotton' ? translate('CottonSeedRate') : translate('SeedRateKgAc')}
-                                                    </Text>
-                                                </View>
+                            {
+                                //    selectedFilter === translate('TotalSeed') && 
+                                <>
+                                    <View style={[styles['margin_top_10']]}>
+                                        <View style={{ flexDirection: "row", alignItems: "center", marginBottom: -1, marginTop: 5, marginLeft: 15 }}>
+                                            <View style={{ width: '52.5%' }}>
                                                 <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular']]}  >
-                                                    {translate('dots')}
-                                                </Text>
-                                                <Text style={[{ color: CottonSeedRate ? dynamicStyles.textColor : 'rgba(180, 180, 180, 1)' }, { marginLeft: 10, }, styles['font_size_20_bold']]}  >
-                                                    {CottonSeedRate ? CottonSeedRate : 0}
-                                                </Text>
-                                                <Text style={[{ color: dynamicStyles.textColor, marginLeft: 5, }, styles['font_size_14_regular']]}  >
-                                                    {seedRateUnits}
+                                                    {selectedCrop === 'Cotton' ? translate('CottonSeedRate') : translate('SeedRateKgAc')}
                                                 </Text>
                                             </View>
+                                            <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular']]}  >
+                                                {translate('dots')}
+                                            </Text>
+                                            <Text style={[{ color: CottonSeedRate ? dynamicStyles.textColor : 'rgba(180, 180, 180, 1)' }, { marginLeft: 10, }, styles['font_size_20_bold']]}  >
+                                                {CottonSeedRate ? CottonSeedRate : 0}
+                                            </Text>
+                                            <Text style={[{ color: dynamicStyles.textColor, marginLeft: 5, }, styles['font_size_14_regular']]}  >
+                                                {seedRateUnits}
+                                            </Text>
                                         </View>
-                                        <CustomTextInput
-                                            style={[styles['margin_top_20'], styles['centerItems']]}
-                                            labelName={translate('yieldSix')}
-                                            IsRequired={false}
-                                            maxLength={30}
-                                            keyboardType='number-pad'
-                                            placeholder={translate('yieldSix')}
-                                            value={areaToPlanted}
-                                            editable={true}
-                                            addSpace={true}
-                                            onFocus={() => {
-                                            }}
-                                            onChangeText={(text) => {
-                                                var enteredNumber = text.replace(/[^0-9]/g, '');
-                                                setAreaToPlanted(enteredNumber)
-                                            }}
-                                            onEndEditing={event => { }}
-                                        />
-                                        <View style={[styles['margin_top_10']]}>
-                                            <View style={{ flexDirection: "row", alignItems: "center", marginBottom: -1, marginTop: 15, marginLeft: 15 }}>
-                                                {/* <View style={{ width: '60%' }}> */}
-                                                <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular']]}  >
-                                                    {translate('totalSeedRequired')}
-                                                </Text>
-                                                {/* </View> */}
-                                                <Text style={[{ color: dynamicStyles.textColor, marginLeft: 5, }, styles['font_size_14_regular']]}  >
-                                                    {translate('dots')}
-                                                </Text>
-                                                <Text style={[{ color: totalSeedRequired ? dynamicStyles.textColor : 'rgba(180, 180, 180, 1)' }, { marginLeft: 10, }, styles['font_size_20_bold']]}  >
-                                                    {totalSeedRequired ? totalSeedRequired : 0}
-                                                </Text>
-                                                <Text style={[{ color: dynamicStyles.textColor, marginLeft: 5, }, styles['font_size_14_regular']]}  >
-                                                    {totalSeedRequiredUnits}
-                                                    {/* {selectedCrop === 'Cotton' ? Number(totalSeedRequired) > 1 ? 'pkts' :  'pkt' :  Number(totalSeedRequired) > 1 ? 'kgs' : 'kg'} */}
-                                                </Text>
-                                            </View>
-                                            {/* <CustomTextInput
+                                    </View>
+                                    <CustomTextInput
+                                        style={[styles['margin_top_20'], styles['centerItems']]}
+                                        labelName={translate('yieldSix')}
+                                        IsRequired={false}
+                                        maxLength={30}
+                                        keyboardType='number-pad'
+                                        placeholder={translate('yieldSix')}
+                                        value={areaToPlanted}
+                                        editable={true}
+                                        addSpace={true}
+                                        onFocus={() => {
+                                        }}
+                                        onChangeText={(text) => {
+                                            var enteredNumber = text.replace(/[^0-9]/g, '');
+                                            setAreaToPlanted(enteredNumber)
+                                        }}
+                                        onEndEditing={event => { }}
+                                    />
+                                    <View style={[styles['margin_top_10']]}>
+                                        <View style={{ flexDirection: "row", alignItems: "center", marginBottom: -1, marginTop: 15, marginLeft: 15 }}>
+                                            {/* <View style={{ width: '60%' }}> */}
+                                            <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular']]}  >
+                                                {translate('totalSeedRequired')}
+                                            </Text>
+                                            {/* </View> */}
+                                            <Text style={[{ color: dynamicStyles.textColor, marginLeft: 5, }, styles['font_size_14_regular']]}  >
+                                                {translate('dots')}
+                                            </Text>
+                                            <Text style={[{ color: totalSeedRequired ? dynamicStyles.textColor : 'rgba(180, 180, 180, 1)' }, { marginLeft: 10, }, styles['font_size_20_bold']]}  >
+                                                {totalSeedRequired ? totalSeedRequired : 0}
+                                            </Text>
+                                            <Text style={[{ color: dynamicStyles.textColor, marginLeft: 5, }, styles['font_size_14_regular']]}  >
+                                                {totalSeedRequiredUnits}
+                                                {/* {selectedCrop === 'Cotton' ? Number(totalSeedRequired) > 1 ? 'pkts' :  'pkt' :  Number(totalSeedRequired) > 1 ? 'kgs' : 'kg'} */}
+                                            </Text>
+                                        </View>
+                                        {/* <CustomTextInput
                                     style={[styles['margin_top_20'], styles['centerItems']]}
                                     labelName={translate('totalSeedRequired')}
                                     IsRequired={false}
@@ -2417,101 +2416,101 @@ const YieldCalculator = ({ route }) => {
                                     }}
                                     onEndEditing={event => { }}
                                 /> */}
-                                        </View>
-                                    </>}
+                                    </View>
+                                </>}
 
-                                {/* {selectedCrop === 'Cotton' ? selectedFilter !== translate('TotalSeed') && <View> */}
-                                {selectedCrop === 'Cotton' ? <View>
+                            {/* {selectedCrop === 'Cotton' ? selectedFilter !== translate('TotalSeed') && <View> */}
+                            {selectedCrop === 'Cotton' ? <View>
+                                <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], styles['top_5'], { marginBottom: 0.5, marginLeft: 15, marginTop: 15 }]}  >
+                                    {translate('AvgBollsPerPlant')}
+                                </Text>
+                                <CustomBorderInputDropDown
+                                    width={[{ width: '92%' }, styles['centerItems']]}
+                                    defaultValue={AvgBollsPerPlant != undefined && AvgBollsPerPlant != translate('select') ? AvgBollsPerPlant : translate('select')}
+                                    IsRequired={true}
+                                    disabled={AvgBollsPerPlantListtt.length === 1}
+                                    placeholder={translate('AvgBollsPerPlant')}
+                                    onFocus={() => {
+                                        AvgBollsPerPlantListtt.length !== 1 && changeDropDownData(AvgBollsPerPlantListtt, strings.AvgBollsPerPlant, AvgBollsPerPlant)
+                                    }}
+                                />
+                                <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], styles['top_5'], { marginBottom: 0.5, marginLeft: 15, marginTop: 10 }]}  >
+                                    {translate('AvgBollWt')}
+                                </Text>
+                                <CustomBorderInputDropDown
+                                    width={[{ width: '92%' }, styles['centerItems']]}
+                                    defaultValue={AvgBollWt != undefined && AvgBollWt != translate('select') ? AvgBollWt : translate('select')}
+                                    IsRequired={true}
+                                    placeholder={translate('AvgBollWt')}
+                                    disabled={AvgBollWtListt.length === 1}
+                                    onFocus={() => {
+                                        AvgBollWtListt.length !== 1 && changeDropDownData(AvgBollWtListt, strings.AvgBollWt, AvgBollWt)
+                                    }}
+                                />
+                            </View> : selectedCrop === 'Maize' ?
+                                // </View> : selectedCrop === 'Maize' ? selectedFilter !== translate('TotalSeed') &&
+                                <View>
                                     <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], styles['top_5'], { marginBottom: 0.5, marginLeft: 15, marginTop: 15 }]}  >
-                                        {translate('AvgBollsPerPlant')}
+                                        {translate('GrainYield')}
                                     </Text>
                                     <CustomBorderInputDropDown
                                         width={[{ width: '92%' }, styles['centerItems']]}
-                                        defaultValue={AvgBollsPerPlant != undefined && AvgBollsPerPlant != translate('select') ? AvgBollsPerPlant : translate('select')}
+                                        defaultValue={GrainYield != undefined && GrainYield != translate('select') ? GrainYield : translate('select')}
                                         IsRequired={true}
-                                        disabled={AvgBollsPerPlantListtt.length === 1}
-                                        placeholder={translate('AvgBollsPerPlant')}
+                                        placeholder={translate('GrainYield')}
+                                        disabled={GrainYieldListtt.length === 1}
                                         onFocus={() => {
-                                            AvgBollsPerPlantListtt.length !== 1 && changeDropDownData(AvgBollsPerPlantListtt, strings.AvgBollsPerPlant, AvgBollsPerPlant)
+                                            GrainYieldListtt.length !== 1 && changeDropDownData(GrainYieldListtt, strings.GrainYield, GrainYield)
+                                        }}
+                                    />
+                                </View>
+                                : <View>
+                                    {/* : selectedFilter !== translate('TotalSeed') && <View> */}
+                                    <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], styles['top_5'], { marginBottom: 0.5, marginLeft: 15, marginTop: 15 }]}  >
+                                        {translate('productiveTillers')}
+                                    </Text>
+                                    <CustomBorderInputDropDown
+                                        width={[{ width: '92%' }, styles['centerItems']]}
+                                        defaultValue={productiveTillers != undefined && productiveTillers != translate('select') ? productiveTillers : translate('select')}
+                                        IsRequired={true}
+                                        placeholder={translate('productiveTillers')}
+                                        disabled={productiveTillersListt.length === 1}
+                                        onFocus={() => {
+                                            productiveTillersListt.length !== 1 && changeDropDownData(productiveTillersListt, strings.productiveTillers, productiveTillers)
                                         }}
                                     />
                                     <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], styles['top_5'], { marginBottom: 0.5, marginLeft: 15, marginTop: 10 }]}  >
-                                        {translate('AvgBollWt')}
+                                        {translate('AvgGrainsPannicle')}
                                     </Text>
                                     <CustomBorderInputDropDown
                                         width={[{ width: '92%' }, styles['centerItems']]}
-                                        defaultValue={AvgBollWt != undefined && AvgBollWt != translate('select') ? AvgBollWt : translate('select')}
+                                        defaultValue={AvgGrainsPannicle != undefined && AvgGrainsPannicle != translate('select') ? AvgGrainsPannicle : translate('select')}
                                         IsRequired={true}
-                                        placeholder={translate('AvgBollWt')}
-                                        disabled={AvgBollWtListt.length === 1}
+                                        disabled={AvgGrainsPannicleListtt.length === 1}
+                                        placeholder={translate('AvgGrainsPannicle')}
                                         onFocus={() => {
-                                            AvgBollWtListt.length !== 1 && changeDropDownData(AvgBollWtListt, strings.AvgBollWt, AvgBollWt)
+                                            AvgGrainsPannicleListtt.length !== 1 && changeDropDownData(AvgGrainsPannicleListtt, strings.AvgGrainsPannicle, AvgGrainsPannicle)
                                         }}
                                     />
-                                </View> : selectedCrop === 'Maize' ?
-                                    // </View> : selectedCrop === 'Maize' ? selectedFilter !== translate('TotalSeed') &&
-                                    <View>
-                                        <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], styles['top_5'], { marginBottom: 0.5, marginLeft: 15, marginTop: 15 }]}  >
-                                            {translate('GrainYield')}
-                                        </Text>
-                                        <CustomBorderInputDropDown
-                                            width={[{ width: '92%' }, styles['centerItems']]}
-                                            defaultValue={GrainYield != undefined && GrainYield != translate('select') ? GrainYield : translate('select')}
-                                            IsRequired={true}
-                                            placeholder={translate('GrainYield')}
-                                            disabled={GrainYieldListtt.length === 1}
-                                            onFocus={() => {
-                                                GrainYieldListtt.length !== 1 && changeDropDownData(GrainYieldListtt, strings.GrainYield, GrainYield)
-                                            }}
-                                        />
-                                    </View>
-                                    : <View>
-                                        {/* : selectedFilter !== translate('TotalSeed') && <View> */}
-                                        <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], styles['top_5'], { marginBottom: 0.5, marginLeft: 15, marginTop: 15 }]}  >
-                                            {translate('productiveTillers')}
-                                        </Text>
-                                        <CustomBorderInputDropDown
-                                            width={[{ width: '92%' }, styles['centerItems']]}
-                                            defaultValue={productiveTillers != undefined && productiveTillers != translate('select') ? productiveTillers : translate('select')}
-                                            IsRequired={true}
-                                            placeholder={translate('productiveTillers')}
-                                            disabled={productiveTillersListt.length === 1}
-                                            onFocus={() => {
-                                                productiveTillersListt.length !== 1 && changeDropDownData(productiveTillersListt, strings.productiveTillers, productiveTillers)
-                                            }}
-                                        />
-                                        <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], styles['top_5'], { marginBottom: 0.5, marginLeft: 15, marginTop: 10 }]}  >
-                                            {translate('AvgGrainsPannicle')}
-                                        </Text>
-                                        <CustomBorderInputDropDown
-                                            width={[{ width: '92%' }, styles['centerItems']]}
-                                            defaultValue={AvgGrainsPannicle != undefined && AvgGrainsPannicle != translate('select') ? AvgGrainsPannicle : translate('select')}
-                                            IsRequired={true}
-                                            disabled={AvgGrainsPannicleListtt.length === 1}
-                                            placeholder={translate('AvgGrainsPannicle')}
-                                            onFocus={() => {
-                                                AvgGrainsPannicleListtt.length !== 1 && changeDropDownData(AvgGrainsPannicleListtt, strings.AvgGrainsPannicle, AvgGrainsPannicle)
-                                            }}
-                                        />
-                                    </View>}
+                                </View>}
 
-                                {
-                                    //    selectedFilter !== translate('TotalSeed') && 
-                                    <View style={[styles['margin_top_10']]}>
-                                        <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 2.5, marginLeft: 15, marginTop: 10 }}>
-                                            {/* <View style={{ width: '62%' }}> */}
-                                            <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular']]}  >
-                                                {translate('ExpectedYieldQtlPerAcre')}
-                                            </Text>
-                                            {/* </View> */}
-                                            <Text style={[{ color: dynamicStyles.textColor, marginLeft: 5, }, styles['font_size_14_regular']]}  >
-                                                {translate('dots')}
-                                            </Text>
-                                            <Text style={[{ color: ExpectedYieldQtlPerAcre ? dynamicStyles.textColor : 'rgba(180, 180, 180, 1)' }, { marginLeft: 10, }, styles['font_size_20_bold']]}  >
-                                                {ExpectedYieldQtlPerAcre ? ExpectedYieldQtlPerAcre : 0}
-                                            </Text>
-                                        </View>
-                                        {/* <CustomTextInput
+                            {
+                                //    selectedFilter !== translate('TotalSeed') && 
+                                <View style={[styles['margin_top_10']]}>
+                                    <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 2.5, marginLeft: 15, marginTop: 10 }}>
+                                        {/* <View style={{ width: '62%' }}> */}
+                                        <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular']]}  >
+                                            {translate('ExpectedYieldQtlPerAcre')}
+                                        </Text>
+                                        {/* </View> */}
+                                        <Text style={[{ color: dynamicStyles.textColor, marginLeft: 5, }, styles['font_size_14_regular']]}  >
+                                            {translate('dots')}
+                                        </Text>
+                                        <Text style={[{ color: ExpectedYieldQtlPerAcre ? dynamicStyles.textColor : 'rgba(180, 180, 180, 1)' }, { marginLeft: 10, }, styles['font_size_20_bold']]}  >
+                                            {ExpectedYieldQtlPerAcre ? ExpectedYieldQtlPerAcre : 0}
+                                        </Text>
+                                    </View>
+                                    {/* <CustomTextInput
                                     style={[styles['margin_top_20'], styles['centerItems']]}
                                     labelName={translate('ExpectedYieldQtlPerAcre')}
                                     IsRequired={false}
@@ -2531,77 +2530,76 @@ const YieldCalculator = ({ route }) => {
                                     }}
                                     onEndEditing={event => { }}
                                 /> */}
-                                    </View>}
-                                {
-                                    showDropDowns &&
-                                    <CustomListViewModal
-                                        dropDownType={dropDownType}
-                                        listItems={dropDownData}
-                                        selectedItem={selectedDropDownItem}
-                                        onSelectedCropCal={(item) => onSelectItem(item, setSelectedCrop)}
-                                        onSelectedSoilType={(item) => onSelectItem(item, setSelectedSoil)}
-                                        onSelectedPlantingType={(item) => onSelectItem(item, setVarietyOrPlantingSystem)}
-                                        onSelectedRowSpacing={(item) => onSelectItem(item, setRowSpacing)}
-                                        onSelectedPlantSpacing={(item) => onSelectItem(item, setPlantSpacing)}
-                                        onSelectedAreaToPlanted={(item) => onSelectItem(item, setAreaToPlanted)}
-                                        onSelectedAvgBollsPerPlant={(item) => onSelectItem(item, setAvgBollsPerPlant)}
-                                        onSelectedsetAvgBollWt={(item) => onSelectItem(item, setAvgBollWt)}
-                                        onSelectedGrainYield={(item) => onSelectItem(item, setGrainYield)}
-                                        onSelectedProductiveTillers={(item) => onSelectItem(item, setProductiveTillers)}
-                                        onSelectedAvgGrainsPannicle={(item) => onSelectItem(item, setAvgGrainsPannicle)}
+                                </View>}
+                            {
+                                showDropDowns &&
+                                <CustomListViewModal
+                                    dropDownType={dropDownType}
+                                    listItems={dropDownData}
+                                    selectedItem={selectedDropDownItem}
+                                    onSelectedCropCal={(item) => onSelectItem(item, setSelectedCrop)}
+                                    onSelectedSoilType={(item) => onSelectItem(item, setSelectedSoil)}
+                                    onSelectedPlantingType={(item) => onSelectItem(item, setVarietyOrPlantingSystem)}
+                                    onSelectedRowSpacing={(item) => onSelectItem(item, setRowSpacing)}
+                                    onSelectedPlantSpacing={(item) => onSelectItem(item, setPlantSpacing)}
+                                    onSelectedAreaToPlanted={(item) => onSelectItem(item, setAreaToPlanted)}
+                                    onSelectedAvgBollsPerPlant={(item) => onSelectItem(item, setAvgBollsPerPlant)}
+                                    onSelectedsetAvgBollWt={(item) => onSelectItem(item, setAvgBollWt)}
+                                    onSelectedGrainYield={(item) => onSelectItem(item, setGrainYield)}
+                                    onSelectedProductiveTillers={(item) => onSelectItem(item, setProductiveTillers)}
+                                    onSelectedAvgGrainsPannicle={(item) => onSelectItem(item, setAvgGrainsPannicle)}
 
-                                        closeModal={() => setShowDropDowns(false)}
-                                    />
-                                }
-                                <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_semibold'], styles['top_5'], { marginBottom: 2.5, marginLeft: 15, marginTop: 20 }]}  >
-                                    {yieldNote}
-                                </Text>
-                                <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], { marginBottom: 2.5, marginLeft: 15, marginTop: 5, width: "90%", textAlign: "left" }]}  >
-                                    {yieldNoteDesc}
-                                </Text>
-                            </View>
+                                    closeModal={() => setShowDropDowns(false)}
+                                />
+                            }
+                            <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_semibold'], styles['top_5'], { marginBottom: 2.5, marginLeft: 15, marginTop: 20 }]}  >
+                                {yieldNote}
+                            </Text>
+                            <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], { marginBottom: 2.5, marginLeft: 15, marginTop: 5, width: "90%", textAlign: "left" }]}  >
+                                {yieldNoteDesc}
+                            </Text>
                         </View>
-                    </ViewShot>
-                    {loading && <CustomLoader loading={loading} message={loadingMessage} loaderImage={loaderImage} />}
-                    {/* {successLoading && <CustomSuccessLoader loading={successLoading} message={successLoadingMessage} />} */}
-                    {/* {errorLoading && <CustomErrorLoader loading={errorLoading} message={errorLoadingMessage} />} */}
-                </ScrollView>
-                {<View style={styleSheetStyles.container}>
-                    <TouchableOpacity disabled={selectedCrop === ''} onPress={() => {
-                        resetValues()
-                        setSelectedCrop('')
-                    }} style={[styleSheetStyles.button, styleSheetStyles.clearButton, { borderColor: selectedCrop === '' ? Colors.lightGray : dynamicStyles.iconPrimaryColor }]}>
-                        <Text style={[styles['font_size_14_semibold'], { color: selectedCrop === '' ? Colors.lightGray : dynamicStyles.iconPrimaryColor }]}>{translate('Clear')}</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => { saveAPI() }} disabled={!showStatus()} style={[styleSheetStyles.button, styleSheetStyles.saveButton, { borderColor: Colors.lightGray, backgroundColor: !showStatus() ? Colors.lightGray : dynamicStyles.primaryColor, }]}>
-                        <Text style={[styles['font_size_14_semibold'], { color: !showStatus() ? Colors.white : dynamicStyles.secondaryColor }]}>{translate('Save')}</Text>
-                    </TouchableOpacity>
-                </View>}
-                {!isProcessing && <View style={{ bottom: 10 }}>
-                    <CustomButton shouldDisable={!showStatus()} title={translate('Share')} onPress={() => { takeScreenshot() }}
-                        addIcon={showStatus()}
-                        buttonBg={!showStatus() ? Colors.lightGray : dynamicStyles.primaryColor}
-                        titleTextColor={!showStatus() ? Colors.white : dynamicStyles.secondaryColor}
-                        btnWidth={'90%'}
-                        textAlign='center' />
-                </View>}
-                {
-                    showAlert &&
-                    <CustomAlert
-                        onPressClose={() => { handleCancelAlert() }}
-                        title={alertTitle}
-                        showHeader={showAlertHeader}
-                        showHeaderText={showAlertHeaderText}
-                        message={alertMessage}
-                        onPressOkButton={() => { handleCancelAlert() }}
-                        onPressNoButton={() => { handleCancelAlert() }}
-                        showYesButton={showAlertYesButton}
-                        showNoButton={showAlertNoButton}
-                        yesButtonText={showAlertyesButtonText}
-                        noButtonText={showAlertNoButtonText} />
-                }
-            </View>
-        </SafeAreaView>
+                    </View>
+                </ViewShot>
+                {loading && <CustomLoader loading={loading} message={loadingMessage} loaderImage={loaderImage} />}
+                {/* {successLoading && <CustomSuccessLoader loading={successLoading} message={successLoadingMessage} />} */}
+                {/* {errorLoading && <CustomErrorLoader loading={errorLoading} message={errorLoadingMessage} />} */}
+            </ScrollView>
+            {<View style={styleSheetStyles.container}>
+                <TouchableOpacity disabled={selectedCrop === ''} onPress={() => {
+                    resetValues()
+                    setSelectedCrop('')
+                }} style={[styleSheetStyles.button, styleSheetStyles.clearButton, { borderColor: selectedCrop === '' ? Colors.lightGray : dynamicStyles.iconPrimaryColor }]}>
+                    <Text style={[styles['font_size_14_semibold'], { color: selectedCrop === '' ? Colors.lightGray : dynamicStyles.iconPrimaryColor }]}>{translate('Clear')}</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => { saveAPI() }} disabled={!showStatus()} style={[styleSheetStyles.button, styleSheetStyles.saveButton, { borderColor: Colors.lightGray, backgroundColor: !showStatus() ? Colors.lightGray : dynamicStyles.primaryColor, }]}>
+                    <Text style={[styles['font_size_14_semibold'], { color: !showStatus() ? Colors.white : dynamicStyles.secondaryColor }]}>{translate('Save')}</Text>
+                </TouchableOpacity>
+            </View>}
+            {!isProcessing && <View style={{ bottom: 10 }}>
+                <CustomButton shouldDisable={!showStatus()} title={translate('Share')} onPress={() => { takeScreenshot() }}
+                    addIcon={showStatus()}
+                    buttonBg={!showStatus() ? Colors.lightGray : dynamicStyles.primaryColor}
+                    titleTextColor={!showStatus() ? Colors.white : dynamicStyles.secondaryColor}
+                    btnWidth={'90%'}
+                    textAlign='center' />
+            </View>}
+            {
+                showAlert &&
+                <CustomAlert
+                    onPressClose={() => { handleCancelAlert() }}
+                    title={alertTitle}
+                    showHeader={showAlertHeader}
+                    showHeaderText={showAlertHeaderText}
+                    message={alertMessage}
+                    onPressOkButton={() => { handleCancelAlert() }}
+                    onPressNoButton={() => { handleCancelAlert() }}
+                    showYesButton={showAlertYesButton}
+                    showNoButton={showAlertNoButton}
+                    yesButtonText={showAlertyesButtonText}
+                    noButtonText={showAlertNoButtonText} />
+            }
+        </View>
     );
 };
 

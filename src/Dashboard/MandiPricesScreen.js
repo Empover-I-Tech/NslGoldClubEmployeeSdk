@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import CustomListViewModal from '../Modals/CustomListViewModal';
 import { getCompanyStyles } from '../redux/store/slices/CompanyStyleSlice';
-import { GetApiHeaders, GetRequest, PostRequest } from '../NetworkUtils/NetworkUtils';
+import { GetApiHeaders, getNetworkStatus, GetRequest, PostRequest } from '../NetworkUtils/NetworkUtils';
 import { HTTP_OK, configs } from '../helpers/URLConstants';
 import CustomLoader from '../Components/CustomLoader';
 import { debounce } from 'lodash';
@@ -105,13 +105,17 @@ const MandiPricesScreen = () => {
 
     useEffect(() => {
         const initialize = async () => {
+            const network = await getNetworkStatus();
+            if (!network) {
+                SimpleToast.show(translate('no_internet_conneccted'));
+                return;
+            }
             setLoading(true);
             setLoadingMessage(translate('please_wait_getting_data'));
             try {
                 await Promise.all([
                     fetchStateMasters(),
                     fetchDistrictMasters(),
-                    // fetchGraphData(),
                 ]);
                 if (district) {
                     await fetchMandiPrices(true, 1);
@@ -162,8 +166,12 @@ const MandiPricesScreen = () => {
     }
 
     const fetchStateMasters = async () => {
+        const network = await getNetworkStatus();
+        if (!network) {
+            SimpleToast.show(translate('no_internet_conneccted'));
+            return;
+        }
         try {
-            //configs.BASE_URL
             var stateUrl = configs.SUBEEJ_BASE_URL + configs.MANDRIPRICES.getAllStates;
             var getHeaders = await GetApiHeaders()
             var response = await GetRequest(stateUrl, getHeaders);
@@ -185,8 +193,12 @@ const MandiPricesScreen = () => {
     }
 
     const fetchDistrictMasters = async () => {
+        const network = await getNetworkStatus();
+        if (!network) {
+            SimpleToast.show(translate('no_internet_conneccted'));
+            return;
+        }
         try {
-            //configs.BASE_URL
             var stateUrl = configs.SUBEEJ_BASE_URL + configs.MANDRIPRICES.getDistricts;
             var getHeaders = await GetApiHeaders()
             var response = await GetRequest(stateUrl, getHeaders);
@@ -220,6 +232,11 @@ const MandiPricesScreen = () => {
     }
 
     const fetchMandiPrices = async (resetData, pageNoReset = 1) => {
+        const network = await getNetworkStatus();
+        if (!network) {
+            SimpleToast.show(translate('no_internet_conneccted'));
+            return;
+        }
         try {
             // isFetching.current = true;
             setIsFetching(true)
@@ -279,6 +296,11 @@ const MandiPricesScreen = () => {
         }
     };
     let fetchGraphData = async (item) => {
+        const network = await getNetworkStatus();
+        if (!network) {
+            SimpleToast.show(translate('no_internet_conneccted'));
+            return;
+        }
         try {
             const payload = {
                 "state": state || '',
@@ -606,67 +628,66 @@ const MandiPricesScreen = () => {
     };
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: dynamicStyles.primaryColor }} edges={['top']}>
-            <View style={[styles['full_screen'], styles['bg_white']]}>
 
-                {/* <View style={{ flex: 1, backgroundColor: '#f5f5f5' }}> */}
-                {Platform.OS === 'android' && (
-                    <StatusBar backgroundColor={popup ? "#000000d6" : dynamicStyles.primaryColor} barStyle={popup ? 'light-content' : 'dark-content'} />
-                )}
-                <View style={[{ backgroundColor: dynamicStyles.primaryColor }, { paddingStart: 20, paddingEnd: 20, paddingBottom: 20, borderBottomStartRadius: 10, borderBottomEndRadius: 10, paddingTop: Platform.OS == 'ios' ? 20 : 20 }]}>
-                    <TouchableOpacity style={[styles['flex_direction_row']]} onPress={() => navigation.goBack()}>
-                        <Image style={[{ tintColor: dynamicStyles.secondaryColor }, { height: 15, width: 20, top: 5 }]} source={require('../assets/images/previous.png')}></Image>
-                        <Text style={[styles['margin_left_10'], { color: dynamicStyles.secondaryColor }, styles['font_size_18_bold'], Platform.OS === 'ios' && { minHeight: 25 }]}>{translate('MandiPrices')}</Text>
-                    </TouchableOpacity>
-                </View>
+        <View style={[styles['full_screen'], styles['bg_white']]}>
+            {/* <View style={{ flex: 1, backgroundColor: '#f5f5f5' }}> */}
+            {Platform.OS === 'android' && (
+                <StatusBar backgroundColor={popup ? "#000000d6" : dynamicStyles.primaryColor} barStyle={popup ? 'light-content' : 'dark-content'} />
+            )}
+            <View style={[{ backgroundColor: dynamicStyles.primaryColor }, { borderBottomStartRadius: 10, borderBottomEndRadius: 10, padding: 15 }]}>
+                <TouchableOpacity style={[styles['flex_direction_row'], { alignItems: 'center' }]} onPress={() => navigation.goBack()}>
+                    <Image style={[{ tintColor: dynamicStyles.secondaryColor }, { height: 15, width: 20 }]} source={require('../assets/images/previous.png')}></Image>
+                    <Text style={[styles['margin_left_10'], { color: dynamicStyles.secondaryColor }, styles['font_size_18_bold'], Platform.OS === 'ios' && { minHeight: 25 }]}>{translate('MandiPrices')}</Text>
+                </TouchableOpacity>
+            </View>
 
-                <View style={{ flex: 1 }}>
-                    <View style={{}}>
+            <View style={{ flex: 1 }}>
+                <View style={{}}>
+                    <View style={{
+                        elevation: 1,
+                        width: "100%", backgroundColor: "white", marginBottom: 10, borderBottomLeftRadius: 20, borderBottomRightRadius: 20
+                    }}>
+
                         <View style={{
-                            elevation: 1,
-                            width: "100%", backgroundColor: "white", marginBottom: 10, borderBottomLeftRadius: 20, borderBottomRightRadius: 20
+                            alignItems: "center",
+                            // justifyContent: "space-between",
+                            width: "100%",
+                            flexDirection: "row",
+                            marginBottom: 20
                         }}>
+                            <View style={[styles['margin_top_5'], styles['centerItems'], { width: '45%', marginLeft: 15 }]}>
+                                <CustomInputDropDown
+                                    width={[styles['width_150%']]}
+                                    defaultValue={state != undefined && state != translate('select') ? state : translate('select')}
+                                    labelName={translate('SelectState')}
+                                    IsRequired={false}
+                                    placeholder={translate('state')}
+                                    onEndEditing={async event => {
+                                        // calculateTotalOrderValue()
+                                    }}
+                                    onFocus={() => {
+                                        changeDropDownData(statesList, strings.state, state)
+                                    }}
+                                />
+                            </View>
 
-                            <View style={{
-                                alignItems: "center",
-                                // justifyContent: "space-between",
-                                width: "100%",
-                                flexDirection: "row",
-                                marginBottom: 20
-                            }}>
-                                <View style={[styles['margin_top_5'], styles['centerItems'], { width: '45%', marginLeft: 15 }]}>
-                                    <CustomInputDropDown
-                                        width={[styles['width_150%']]}
-                                        defaultValue={state != undefined && state != translate('select') ? state : translate('select')}
-                                        labelName={translate('SelectState')}
-                                        IsRequired={false}
-                                        placeholder={translate('state')}
-                                        onEndEditing={async event => {
-                                            // calculateTotalOrderValue()
-                                        }}
-                                        onFocus={() => {
-                                            changeDropDownData(statesList, strings.state, state)
-                                        }}
-                                    />
-                                </View>
-
-                                <View style={[styles['margin_top_5'], styles['centerItems'], { width: '45%', marginLeft: 15 }]}>
-                                    <CustomInputDropDown
-                                        width={[styles['width_100%']]}
-                                        defaultValue={district != undefined && district != translate('select') ? district : translate('select')}
-                                        labelName={translate('SelectDistrict')}
-                                        IsRequired={false}
-                                        placeholder={translate('district')}
-                                        onEndEditing={async event => {
-                                            // calculateTotalOrderValue()
-                                        }}
-                                        onFocus={() => {
-                                            changeDropDownData(districtsList, strings.district, district)
-                                        }}
-                                    />
-                                </View>
-                                {/* States DropDown */}
-                                {/* <TouchableOpacity 
+                            <View style={[styles['margin_top_5'], styles['centerItems'], { width: '45%', marginLeft: 15 }]}>
+                                <CustomInputDropDown
+                                    width={[styles['width_100%']]}
+                                    defaultValue={district != undefined && district != translate('select') ? district : translate('select')}
+                                    labelName={translate('SelectDistrict')}
+                                    IsRequired={false}
+                                    placeholder={translate('district')}
+                                    onEndEditing={async event => {
+                                        // calculateTotalOrderValue()
+                                    }}
+                                    onFocus={() => {
+                                        changeDropDownData(districtsList, strings.district, district)
+                                    }}
+                                />
+                            </View>
+                            {/* States DropDown */}
+                            {/* <TouchableOpacity 
 
                             style={{
                                 alignItems: "center",
@@ -714,478 +735,478 @@ const MandiPricesScreen = () => {
                                 <Image source={require('../../src/assets/images/dropdownArrow.png')} style={{ height: 12, width: 12, resizeMode: "contain", marginLeft: "auto" }} />
 
                             </TouchableOpacity> */}
-                            </View>
-                            {
-                                showDropDowns &&
-                                <CustomListViewModal
-                                    dropDownType={dropDownType}
-                                    listItems={dropDownData}
-                                    selectedItem={selectedDropDownItem}
-                                    onSelectedState={(item) => onSelectedState(item)}
-                                    onSelectedDistrict={(item) => onSelectedDistrict(item)}
-
-                                    closeModal={() => setShowDropDowns(false)}
-                                />
-                            }
                         </View>
-
-                        {/* Search Functionality */}
-                        <View style={{ alignItems: "center", justifyContent: "center" }}>
-                            <View style={{
-                                flexDirection: "row",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                width: "90%",
-                                borderColor: '#ccc',
-                                borderWidth: 1,
-                                borderRadius: 8,
-                                backgroundColor: "white",
-                                // paddingHorizontal: 3,
-                                // elevation: 3
-                            }}>
-                                <TextInput
-                                    placeholder={placeholderText}
-                                    value={searchQuery}
-                                    onChangeText={text => setSearchQuery(text)}
-                                    placeholderTextColor={'rgba(93,93,93,0.5)'}
-                                    style={[styles['font_size_12_regular'], {
-                                        height: 40,
-                                        backgroundColor: "white",
-                                        color: dynamicStyles.textColor,
-                                        width: "90%",
-                                        alignSelf: "center",
-                                    }]}
-                                />
-                                {/* <TouchableOpacity> */}
-                                <Image style={{ height: 20, width: 20, resizeMode: "contain" }} source={require('../../src/assets/images/searchh.png')} />
-                                {/* </TouchableOpacity> */}
-                            </View>
-                        </View>
-
-                        {/* No Data Found */}
                         {
-                            searchQuery.length > 0 && filteredData.length === 0 && apiCalledOrNot
-                                ? (
-                                    <View style={{
-                                        alignItems: "center",
-                                        justifyContent: "center",
-                                        marginTop: 20
-                                    }}>
-                                        <Text style={[styles['font_size_16_bold'], {
-                                            color: "red"
-                                        }]}>
-                                            {translate('mandiNodata')}
-                                        </Text>
-                                    </View>
-                                ) : (
-                                    <>
-                                        {(
-                                            <View style={{ width: '100%', marginTop: 15 }}>
-                                                {
-                                                    loading && pageNo === 1
-                                                        ? (
-                                                            // <View style={{
-                                                            //     alignItems: "center",
-                                                            //     justifyContent: "center",
-                                                            //     marginTop: 20,
-                                                            //     height: responsiveHeight(60),
-                                                            // }}>
-                                                            //     <ActivityIndicator size="large" color="gray" />
+                            showDropDowns &&
+                            <CustomListViewModal
+                                dropDownType={dropDownType}
+                                listItems={dropDownData}
+                                selectedItem={selectedDropDownItem}
+                                onSelectedState={(item) => onSelectedState(item)}
+                                onSelectedDistrict={(item) => onSelectedDistrict(item)}
 
-                                                            // </View>
-                                                            <CustomLoader loading={loading} message={loadingMessage} loaderImage={loaderImage} />
-                                                        ) : (
-                                                            <FlatList
-                                                                style={{ marginBottom: 150 }}
-                                                                data={filteredData}
-                                                                scrollEnabled={filteredData.length > 0}
-                                                                initialNumToRender={3}
-                                                                nestedScrollEnable={true}
-                                                                removeClippedSubviews={true}
-                                                                maxToRenderPerBatch={30}
-                                                                windowSize={5}
-                                                                renderItem={renderMandiPrices}
-                                                                ListEmptyComponent={
-                                                                    (filteredData.length === 0 && apiCalledOrNot) && <View style={{
-                                                                        alignItems: "center",
-                                                                        justifyContent: "center",
-                                                                        marginTop: 20,
-                                                                        height: responsiveHeight(60)
-                                                                    }}>
-                                                                        <Text style={[styles['font_size_16_bold'], {
-                                                                            color: "red"
-                                                                        }]}>
-                                                                            {translate('mandiNodata')}
-                                                                        </Text>
-                                                                    </View>
-                                                                }
-                                                                onEndReached={handleLoadMore}
-                                                                onEndReachedThreshold={0.5}
-                                                                keyExtractor={(item, index) => `${item?.id || index}`}
-                                                                contentContainerStyle={{ paddingBottom: 220 }}
-                                                                ListFooterComponent={
-                                                                    (loading && pageNo > 1 && filteredData.length > 0) ? (
-                                                                        // (loading && pageNo > 1) ? ( before change
-                                                                        <ActivityIndicator size="small" color="gray" />
-                                                                    ) :
-                                                                        //  !hasMoreData && filteredData.length>0 ? (
-                                                                        //     <Text style={{ textAlign: 'center', color: 'gray' }}>{translate('No_More_Data')}</Text>
-                                                                        // ) :
-                                                                        null
-                                                                }
-                                                            />
-                                                        )}
-                                            </View>
-                                        )}
+                                closeModal={() => setShowDropDowns(false)}
+                            />
+                        }
+                    </View>
+
+                    {/* Search Functionality */}
+                    <View style={{ alignItems: "center", justifyContent: "center" }}>
+                        <View style={{
+                            flexDirection: "row",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            width: "90%",
+                            borderColor: '#ccc',
+                            borderWidth: 1,
+                            borderRadius: 8,
+                            backgroundColor: "white",
+                            // paddingHorizontal: 3,
+                            // elevation: 3
+                        }}>
+                            <TextInput
+                                placeholder={placeholderText}
+                                value={searchQuery}
+                                onChangeText={text => setSearchQuery(text)}
+                                placeholderTextColor={'rgba(93,93,93,0.5)'}
+                                style={[styles['font_size_12_regular'], {
+                                    height: 40,
+                                    backgroundColor: "white",
+                                    color: dynamicStyles.textColor,
+                                    width: "90%",
+                                    alignSelf: "center",
+                                }]}
+                            />
+                            {/* <TouchableOpacity> */}
+                            <Image style={{ height: 20, width: 20, resizeMode: "contain" }} source={require('../../src/assets/images/searchh.png')} />
+                            {/* </TouchableOpacity> */}
+                        </View>
+                    </View>
+
+                    {/* No Data Found */}
+                    {
+                        searchQuery.length > 0 && filteredData.length === 0 && apiCalledOrNot
+                            ? (
+                                <View style={{
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    marginTop: 20
+                                }}>
+                                    <Text style={[styles['font_size_16_bold'], {
+                                        color: "red"
+                                    }]}>
+                                        {translate('mandiNodata')}
+                                    </Text>
+                                </View>
+                            ) : (
+                                <>
+                                    {(
+                                        <View style={{ width: '100%', marginTop: 15 }}>
+                                            {
+                                                loading && pageNo === 1
+                                                    ? (
+                                                        // <View style={{
+                                                        //     alignItems: "center",
+                                                        //     justifyContent: "center",
+                                                        //     marginTop: 20,
+                                                        //     height: responsiveHeight(60),
+                                                        // }}>
+                                                        //     <ActivityIndicator size="large" color="gray" />
+
+                                                        // </View>
+                                                        <CustomLoader loading={loading} message={loadingMessage} loaderImage={loaderImage} />
+                                                    ) : (
+                                                        <FlatList
+                                                            style={{ marginBottom: 150 }}
+                                                            data={filteredData}
+                                                            scrollEnabled={filteredData.length > 0}
+                                                            initialNumToRender={3}
+                                                            nestedScrollEnable={true}
+                                                            removeClippedSubviews={true}
+                                                            maxToRenderPerBatch={30}
+                                                            windowSize={5}
+                                                            renderItem={renderMandiPrices}
+                                                            ListEmptyComponent={
+                                                                (filteredData.length === 0 && apiCalledOrNot) && <View style={{
+                                                                    alignItems: "center",
+                                                                    justifyContent: "center",
+                                                                    marginTop: 20,
+                                                                    height: responsiveHeight(60)
+                                                                }}>
+                                                                    <Text style={[styles['font_size_16_bold'], {
+                                                                        color: "red"
+                                                                    }]}>
+                                                                        {translate('mandiNodata')}
+                                                                    </Text>
+                                                                </View>
+                                                            }
+                                                            onEndReached={handleLoadMore}
+                                                            onEndReachedThreshold={0.5}
+                                                            keyExtractor={(item, index) => `${item?.id || index}`}
+                                                            contentContainerStyle={{ paddingBottom: 220 }}
+                                                            ListFooterComponent={
+                                                                (loading && pageNo > 1 && filteredData.length > 0) ? (
+                                                                    // (loading && pageNo > 1) ? ( before change
+                                                                    <ActivityIndicator size="small" color="gray" />
+                                                                ) :
+                                                                    //  !hasMoreData && filteredData.length>0 ? (
+                                                                    //     <Text style={{ textAlign: 'center', color: 'gray' }}>{translate('No_More_Data')}</Text>
+                                                                    // ) :
+                                                                    null
+                                                            }
+                                                        />
+                                                    )}
+                                        </View>
+                                    )}
 
 
-                                        {
-                                            popup &&
-                                            <Modal
-                                                animationType="fade"
-                                                transparent={true}
-                                                visible={popup}
-                                                onRequestClose={() => {
-                                                    setPopUp(!popup);
-                                                    setSelectedCrop(null);
-                                                    setSelectedFilter(FILTERS[0]);
-                                                }}>
+                                    {
+                                        popup &&
+                                        <Modal
+                                            animationType="fade"
+                                            transparent={true}
+                                            visible={popup}
+                                            onRequestClose={() => {
+                                                setPopUp(!popup);
+                                                setSelectedCrop(null);
+                                                setSelectedFilter(FILTERS[0]);
+                                            }}>
 
-                                                <View style={styleSheetStyles.centeredView}>
-                                                    <ViewShot ref={viewShotRef} style={styles.viewShot} captureMode="always" options={{ format: 'jpg', quality: 0.9 }}>
-                                                        <View style={styleSheetStyles.modalView}>
+                                            <View style={styleSheetStyles.centeredView}>
+                                                <ViewShot ref={viewShotRef} style={styles.viewShot} captureMode="always" options={{ format: 'jpg', quality: 0.9 }}>
+                                                    <View style={styleSheetStyles.modalView}>
 
-                                                            {/* ---------- Header ---------- */}
-                                                            <View style={{
-                                                                flexDirection: "row",
-                                                                alignItems: "center",
-                                                                justifyContent: "space-between",
-                                                                width: "100%"
-                                                            }}>
-                                                                <Text
-                                                                    ellipsizeMode='tail'
-                                                                    numberOfLines={2}
-                                                                    style={[styleSheetStyles.modalText, styles['font_size_18_semibold']]}
-                                                                >
-                                                                    {selectedCrop?.name}
-                                                                </Text>
+                                                        {/* ---------- Header ---------- */}
+                                                        <View style={{
+                                                            flexDirection: "row",
+                                                            alignItems: "center",
+                                                            justifyContent: "space-between",
+                                                            width: "100%"
+                                                        }}>
+                                                            <Text
+                                                                ellipsizeMode='tail'
+                                                                numberOfLines={2}
+                                                                style={[styleSheetStyles.modalText, styles['font_size_18_semibold']]}
+                                                            >
+                                                                {selectedCrop?.name}
+                                                            </Text>
 
-                                                                <TouchableOpacity
-                                                                    onPress={() => {
-                                                                        setPopUp(!popup);
-                                                                        setSelectedCrop(null);
-                                                                        setSelectedFilter(FILTERS[0]);
+                                                            <TouchableOpacity
+                                                                onPress={() => {
+                                                                    setPopUp(!popup);
+                                                                    setSelectedCrop(null);
+                                                                    setSelectedFilter(FILTERS[0]);
+                                                                }}
+                                                            >
+                                                                <Image
+                                                                    source={require('../../src/assets/images/crossMark.png')}
+                                                                    style={{
+                                                                        tintColor: dynamicStyles.iconPrimaryColor,
+                                                                        height: 20,
+                                                                        width: 20,
+                                                                        resizeMode: "contain"
                                                                     }}
-                                                                >
+                                                                />
+                                                            </TouchableOpacity>
+                                                        </View>
+
+                                                        {/* ---------- Crop Image ---------- */}
+                                                        <View
+                                                            style={{
+                                                                borderWidth: 4,
+                                                                borderColor: "rgba(237, 50, 55, 0.28)",
+                                                                borderRadius: 9,
+                                                                backgroundColor: "rgba(237, 50, 55, 0.28)",
+                                                                marginTop: 10
+                                                            }}>
+                                                            <Image
+                                                                source={{ uri: selectedCrop?.image }}
+                                                                accessibilityLabel={selectedCrop?.name}
+                                                                style={{
+                                                                    height: responsiveHeight(15),
+                                                                    width: 300,
+                                                                    resizeMode: "cover",
+                                                                    borderRadius: 10
+                                                                }}
+                                                            />
+                                                        </View>
+
+                                                        {/* ---------- Market Name & Share ---------- */}
+                                                        <View style={{
+                                                            flexDirection: "row",
+                                                            alignItems: "center",
+                                                            justifyContent: "space-between",
+                                                            width: "100%",
+                                                            marginTop: 5,
+                                                            paddingHorizontal: 10
+                                                        }}>
+                                                            <Text style={[styleSheetStyles.modalText, styles['font_size_18_semibold']]}>
+                                                                {selectedCrop?.marketName}
+                                                            </Text>
+
+                                                            {!isProcessing && <View style={{ flexDirection: "row", alignItems: "center" }}>
+                                                                <TouchableOpacity onPress={() => takeScreenshot()}>
                                                                     <Image
-                                                                        source={require('../../src/assets/images/crossMark.png')}
+                                                                        source={require('../../src/assets/images/share.png')}
                                                                         style={{
-                                                                            tintColor: dynamicStyles.iconPrimaryColor,
-                                                                            height: 20,
-                                                                            width: 20,
-                                                                            resizeMode: "contain"
+                                                                            height: 30,
+                                                                            width: 30,
+                                                                            resizeMode: "contain",
+                                                                            tintColor: dynamicStyles.iconPrimaryColor
                                                                         }}
                                                                     />
                                                                 </TouchableOpacity>
-                                                            </View>
+                                                            </View>}
+                                                        </View>
 
-                                                            {/* ---------- Crop Image ---------- */}
-                                                            <View
-                                                                style={{
-                                                                    borderWidth: 4,
-                                                                    borderColor: "rgba(237, 50, 55, 0.28)",
-                                                                    borderRadius: 9,
-                                                                    backgroundColor: "rgba(237, 50, 55, 0.28)",
-                                                                    marginTop: 10
-                                                                }}>
-                                                                <Image
-                                                                    source={{ uri: selectedCrop?.image }}
-                                                                    accessibilityLabel={selectedCrop?.name}
-                                                                    style={{
-                                                                        height: responsiveHeight(15),
-                                                                        width: 300,
-                                                                        resizeMode: "cover",
-                                                                        borderRadius: 10
-                                                                    }}
-                                                                />
-                                                            </View>
+                                                        {/* ---------- Location ---------- */}
+                                                        <Text
+                                                            style={[
+                                                                styles['font_size_16_regular'],
+                                                                {
+                                                                    textAlign: "left",
+                                                                    color: "rgba(137, 137, 137, 1)",
+                                                                    width: "100%",
+                                                                    flexDirection: "row",
+                                                                    alignItems: "center",
+                                                                    justifyContent: "space-between",
+                                                                    paddingHorizontal: 15
+                                                                }
+                                                            ]}
+                                                        >
+                                                            {selectedCrop?.location}
+                                                        </Text>
 
-                                                            {/* ---------- Market Name & Share ---------- */}
-                                                            <View style={{
-                                                                flexDirection: "row",
-                                                                alignItems: "center",
-                                                                justifyContent: "space-between",
-                                                                width: "100%",
-                                                                marginTop: 5,
-                                                                paddingHorizontal: 10
-                                                            }}>
-                                                                <Text style={[styleSheetStyles.modalText, styles['font_size_18_semibold']]}>
-                                                                    {selectedCrop?.marketName}
-                                                                </Text>
-
-                                                                {!isProcessing && <View style={{ flexDirection: "row", alignItems: "center" }}>
-                                                                    <TouchableOpacity onPress={() => takeScreenshot()}>
-                                                                        <Image
-                                                                            source={require('../../src/assets/images/share.png')}
-                                                                            style={{
-                                                                                height: 30,
-                                                                                width: 30,
-                                                                                resizeMode: "contain",
-                                                                                tintColor: dynamicStyles.iconPrimaryColor
-                                                                            }}
-                                                                        />
-                                                                    </TouchableOpacity>
-                                                                </View>}
-                                                            </View>
-
-                                                            {/* ---------- Location ---------- */}
-                                                            <Text
-                                                                style={[
-                                                                    styles['font_size_16_regular'],
-                                                                    {
-                                                                        textAlign: "left",
-                                                                        color: "rgba(137, 137, 137, 1)",
-                                                                        width: "100%",
-                                                                        flexDirection: "row",
-                                                                        alignItems: "center",
-                                                                        justifyContent: "space-between",
-                                                                        paddingHorizontal: 15
-                                                                    }
-                                                                ]}
-                                                            >
-                                                                {selectedCrop?.location}
-                                                            </Text>
-
-                                                            {/* ---------- ScrollView Content ---------- */}
-                                                            <ScrollView style={{ width: '100%', backgroundColor: Colors.white }} showsVerticalScrollIndicator={false}>
-                                                                <View style={[styleSheetStyles.center]}>
-                                                                    <View style={[
-                                                                        styleSheetStyles.marginTop_10,
-                                                                        styleSheetStyles.widthPct_90,
-                                                                        styleSheetStyles.bgF2F6F9,
-                                                                        styleSheetStyles.shadow
-                                                                    ]}>
-                                                                        <View style={[styleSheetStyles.padding_5]}>
-                                                                            {/* ---------- Top Info ---------- */}
-                                                                            <View style={styleSheetStyles.row}>
-                                                                                <View style={[styleSheetStyles.widthPct_33, styleSheetStyles.padding_5]}>
-                                                                                    <Text style={[styles['font_size_11_regular'], styleSheetStyles.textAlignCenter, { color: dynamicStyles.textColor }]}>
-                                                                                        Quantity
+                                                        {/* ---------- ScrollView Content ---------- */}
+                                                        <ScrollView style={{ width: '100%', backgroundColor: Colors.white }} showsVerticalScrollIndicator={false}>
+                                                            <View style={[styleSheetStyles.center]}>
+                                                                <View style={[
+                                                                    styleSheetStyles.marginTop_10,
+                                                                    styleSheetStyles.widthPct_90,
+                                                                    styleSheetStyles.bgF2F6F9,
+                                                                    styleSheetStyles.shadow
+                                                                ]}>
+                                                                    <View style={[styleSheetStyles.padding_5]}>
+                                                                        {/* ---------- Top Info ---------- */}
+                                                                        <View style={styleSheetStyles.row}>
+                                                                            <View style={[styleSheetStyles.widthPct_33, styleSheetStyles.padding_5]}>
+                                                                                <Text style={[styles['font_size_11_regular'], styleSheetStyles.textAlignCenter, { color: dynamicStyles.textColor }]}>
+                                                                                    Quantity
+                                                                                </Text>
+                                                                                <Text style={[styles['font_size_10_bold'], styleSheetStyles.textAlignCenter, { color: dynamicStyles.textColor }]} numberOfLines={1}>
+                                                                                    {'1'}{' '}
+                                                                                    <Text style={[styles['font_size_8_bold'], styleSheetStyles.textAlignCenter, { color: 'rgba(185, 187, 186, 1)' }]}>
+                                                                                        {translate('Quintal')}
                                                                                     </Text>
-                                                                                    <Text style={[styles['font_size_10_bold'], styleSheetStyles.textAlignCenter, { color: dynamicStyles.textColor }]} numberOfLines={1}>
-                                                                                        {'1'}{' '}
-                                                                                        <Text style={[styles['font_size_8_bold'], styleSheetStyles.textAlignCenter, { color: 'rgba(185, 187, 186, 1)' }]}>
-                                                                                            {translate('Quintal')}
-                                                                                        </Text>
-                                                                                    </Text>
-                                                                                </View>
+                                                                                </Text>
+                                                                            </View>
 
-                                                                                <View style={styleSheetStyles.divider} />
+                                                                            <View style={styleSheetStyles.divider} />
 
-                                                                                <View style={[styleSheetStyles.widthPct_33, styleSheetStyles.padding_5]}>
-                                                                                    <Text style={[styles['font_size_11_regular'], styleSheetStyles.textAlignCenter, { color: dynamicStyles.textColor }]}>
-                                                                                        Rate
+                                                                            <View style={[styleSheetStyles.widthPct_33, styleSheetStyles.padding_5]}>
+                                                                                <Text style={[styles['font_size_11_regular'], styleSheetStyles.textAlignCenter, { color: dynamicStyles.textColor }]}>
+                                                                                    Rate
+                                                                                </Text>
+                                                                                <Text style={[styles['font_size_10_bold'], styleSheetStyles.textAlignCenter, { color: dynamicStyles.textColor }]} numberOfLines={1}>
+                                                                                    {selectedCrop?.maxPrice}{' '}
+                                                                                    <Text style={[styles['font_size_8_bold'], styleSheetStyles.textAlignCenter, { color: 'rgba(185, 187, 186, 1)' }]}>
+                                                                                        {translate('Quintal')}
                                                                                     </Text>
-                                                                                    <Text style={[styles['font_size_10_bold'], styleSheetStyles.textAlignCenter, { color: dynamicStyles.textColor }]} numberOfLines={1}>
+                                                                                </Text>
+                                                                            </View>
+
+                                                                            <View style={styleSheetStyles.divider} />
+
+                                                                            <View style={[styleSheetStyles.widthPct_33, styleSheetStyles.padding_5]}>
+                                                                                <Text style={[styles['font_size_11_regular'], styleSheetStyles.textAlignCenter, { color: dynamicStyles.textColor }]}>
+                                                                                    Market Price
+                                                                                </Text>
+                                                                                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                                                                                    <Image
+                                                                                        source={require('../../src/assets/images/dropdownArrow.png')}
+                                                                                        style={{
+                                                                                            height: 10,
+                                                                                            width: 10,
+                                                                                            resizeMode: "contain",
+                                                                                            marginRight: 2.5,
+                                                                                            tintColor: "rgba(9, 176, 43, 1)",
+                                                                                            marginTop: -2,
+                                                                                            transform: [{ rotate: '180deg' }]
+                                                                                        }}
+                                                                                    />
+                                                                                    <Text style={[styles['font_size_10_bold'], styleSheetStyles.textColorGreen, styleSheetStyles.textAlignCenter]} numberOfLines={1}>
                                                                                         {selectedCrop?.maxPrice}{' '}
                                                                                         <Text style={[styles['font_size_8_bold'], styleSheetStyles.textAlignCenter, { color: 'rgba(185, 187, 186, 1)' }]}>
                                                                                             {translate('Quintal')}
                                                                                         </Text>
                                                                                     </Text>
                                                                                 </View>
-
-                                                                                <View style={styleSheetStyles.divider} />
-
-                                                                                <View style={[styleSheetStyles.widthPct_33, styleSheetStyles.padding_5]}>
-                                                                                    <Text style={[styles['font_size_11_regular'], styleSheetStyles.textAlignCenter, { color: dynamicStyles.textColor }]}>
-                                                                                        Market Price
-                                                                                    </Text>
-                                                                                    <View style={{ flexDirection: "row", alignItems: "center" }}>
-                                                                                        <Image
-                                                                                            source={require('../../src/assets/images/dropdownArrow.png')}
-                                                                                            style={{
-                                                                                                height: 10,
-                                                                                                width: 10,
-                                                                                                resizeMode: "contain",
-                                                                                                marginRight: 2.5,
-                                                                                                tintColor: "rgba(9, 176, 43, 1)",
-                                                                                                marginTop: -2,
-                                                                                                transform: [{ rotate: '180deg' }]
-                                                                                            }}
-                                                                                        />
-                                                                                        <Text style={[styles['font_size_10_bold'], styleSheetStyles.textColorGreen, styleSheetStyles.textAlignCenter]} numberOfLines={1}>
-                                                                                            {selectedCrop?.maxPrice}{' '}
-                                                                                            <Text style={[styles['font_size_8_bold'], styleSheetStyles.textAlignCenter, { color: 'rgba(185, 187, 186, 1)' }]}>
-                                                                                                {translate('Quintal')}
-                                                                                            </Text>
-                                                                                        </Text>
-                                                                                    </View>
-                                                                                </View>
                                                                             </View>
+                                                                        </View>
 
-                                                                            <View style={styleSheetStyles.dividerMy2} />
+                                                                        <View style={styleSheetStyles.dividerMy2} />
 
-                                                                            {/* ---------- Details Row ---------- */}
-                                                                            <View style={styleSheetStyles.row}>
-                                                                                <View style={[styleSheetStyles.widthPct_33, styleSheetStyles.padding_5]}>
-                                                                                    <Text style={[styles['font_size_11_regular'], styleSheetStyles.textAlignCenter, { color: dynamicStyles.textColor }]}>Commodity</Text>
-                                                                                    <Text style={[styles['font_size_10_bold'], styleSheetStyles.textAlignCenter, { color: dynamicStyles.textColor }]} numberOfLines={1}>
-                                                                                        {selectedCrop?.commodity || '-'}
-                                                                                    </Text>
-                                                                                </View>
-                                                                                <View style={styleSheetStyles.divider} />
-                                                                                <View style={[styleSheetStyles.widthPct_33, styleSheetStyles.padding_5]}>
-                                                                                    <Text style={[styles['font_size_11_regular'], styleSheetStyles.textAlignCenter, { color: dynamicStyles.textColor }]}>Variety</Text>
-                                                                                    <Text style={[styles['font_size_10_bold'], styleSheetStyles.textAlignCenter, { color: dynamicStyles.textColor }]} numberOfLines={1}>
-                                                                                        {selectedCrop?.variety || '-'}
-                                                                                    </Text>
-                                                                                </View>
-                                                                                <View style={styleSheetStyles.divider} />
-                                                                                <View style={[styleSheetStyles.widthPct_33, styleSheetStyles.padding_5]}>
-                                                                                    <Text style={[styles['font_size_11_regular'], styleSheetStyles.textAlignCenter, { color: dynamicStyles.textColor }]}>Arrival Date</Text>
-                                                                                    <Text style={[styles['font_size_10_bold'], styleSheetStyles.textAlignCenter, { color: dynamicStyles.textColor }]} numberOfLines={1}>
-                                                                                        {moment(selectedCrop?.lastUpdated, "DD/MM/YYYY").format('DD-MM-YYYY')}
-                                                                                    </Text>
-                                                                                </View>
+                                                                        {/* ---------- Details Row ---------- */}
+                                                                        <View style={styleSheetStyles.row}>
+                                                                            <View style={[styleSheetStyles.widthPct_33, styleSheetStyles.padding_5]}>
+                                                                                <Text style={[styles['font_size_11_regular'], styleSheetStyles.textAlignCenter, { color: dynamicStyles.textColor }]}>Commodity</Text>
+                                                                                <Text style={[styles['font_size_10_bold'], styleSheetStyles.textAlignCenter, { color: dynamicStyles.textColor }]} numberOfLines={1}>
+                                                                                    {selectedCrop?.commodity || '-'}
+                                                                                </Text>
+                                                                            </View>
+                                                                            <View style={styleSheetStyles.divider} />
+                                                                            <View style={[styleSheetStyles.widthPct_33, styleSheetStyles.padding_5]}>
+                                                                                <Text style={[styles['font_size_11_regular'], styleSheetStyles.textAlignCenter, { color: dynamicStyles.textColor }]}>Variety</Text>
+                                                                                <Text style={[styles['font_size_10_bold'], styleSheetStyles.textAlignCenter, { color: dynamicStyles.textColor }]} numberOfLines={1}>
+                                                                                    {selectedCrop?.variety || '-'}
+                                                                                </Text>
+                                                                            </View>
+                                                                            <View style={styleSheetStyles.divider} />
+                                                                            <View style={[styleSheetStyles.widthPct_33, styleSheetStyles.padding_5]}>
+                                                                                <Text style={[styles['font_size_11_regular'], styleSheetStyles.textAlignCenter, { color: dynamicStyles.textColor }]}>Arrival Date</Text>
+                                                                                <Text style={[styles['font_size_10_bold'], styleSheetStyles.textAlignCenter, { color: dynamicStyles.textColor }]} numberOfLines={1}>
+                                                                                    {moment(selectedCrop?.lastUpdated, "DD/MM/YYYY").format('DD-MM-YYYY')}
+                                                                                </Text>
                                                                             </View>
                                                                         </View>
                                                                     </View>
                                                                 </View>
+                                                            </View>
 
-                                                                <View style={[styleSheetStyles.dividerMy2, { marginVertical: 0, marginTop: responsiveHeight(2), marginBottom: responsiveHeight(1) }]} />
+                                                            <View style={[styleSheetStyles.dividerMy2, { marginVertical: 0, marginTop: responsiveHeight(2), marginBottom: responsiveHeight(1) }]} />
 
-                                                                {/* ---------- Filter Tabs ---------- */}
-                                                                <FlatList
-                                                                    data={FILTERS}
-                                                                    horizontal
-                                                                    contentContainerStyle={{
-                                                                        marginVertical: 5,
-                                                                        width: "100%",
-                                                                        alignSelf: "center",
-                                                                        justifyContent: "center",
-                                                                        alignItems: "center"
-                                                                    }}
-                                                                    keyExtractor={(item) => item}
-                                                                    renderItem={({ item }) => (
-                                                                        <TouchableOpacity onPress={() => setSelectedFilter(item)} style={styleSheetStyles.tab}>
-                                                                            <Text
-                                                                                style={[
-                                                                                    styles['font_size_16_regular'],
-                                                                                    { color: "rgba(137, 137, 137, 0.7)" },
-                                                                                    selectedFilter === item && [styleSheetStyles.selectedText, styles['font_size_16_bold']]
-                                                                                ]}
-                                                                            >
-                                                                                {item}
-                                                                            </Text>
-                                                                        </TouchableOpacity>
-                                                                    )}
-                                                                    showsHorizontalScrollIndicator={false}
-                                                                />
-
-                                                                {/* ---------- Chart Section ---------- */}
-                                                                {graphData !== null && graphData?.labels?.length > 0 ? (
-                                                                    <ScrollView
-                                                                        horizontal={graphData?.labels?.length > 6}
-                                                                        showsHorizontalScrollIndicator={false}
-                                                                        contentContainerStyle={{ paddingHorizontal: 10 }}
-                                                                    >
-                                                                        <View style={[styleSheetStyles.container, { alignItems: 'center' }]}>
-                                                                            <LineChart
-                                                                                data={{
-                                                                                    labels: graphData?.labels?.slice().reverse(),
-                                                                                    datasets: [
-                                                                                        {
-                                                                                            data: graphData?.maxPrices?.slice().reverse(),
-                                                                                            color: () => 'rgba(17, 172, 53, 1)',
-                                                                                            strokeWidth: 2,
-                                                                                        },
-                                                                                        {
-                                                                                            data: graphData?.minPrices?.slice().reverse(),
-                                                                                            color: () => 'rgba(216, 193, 27, 1)',
-                                                                                            strokeWidth: 2,
-                                                                                        },
-                                                                                    ],
-                                                                                }}
-                                                                                width={Math.max(responsiveWidth(85), graphData?.labels?.length * 60)}
-                                                                                height={responsiveHeight(26)}
-                                                                                yAxisLabel="₹"
-                                                                                yAxisSuffix=""
-                                                                                chartConfig={{
-                                                                                    backgroundGradientFrom: '#fff',
-                                                                                    backgroundGradientTo: '#fff',
-                                                                                    decimalPlaces: 0,
-                                                                                    color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-                                                                                    labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-                                                                                    propsForDots: {
-                                                                                        r: '5',
-                                                                                        strokeWidth: '2',
-                                                                                    },
-                                                                                }}
-                                                                                style={styleSheetStyles.chart}
-                                                                            />
-                                                                            <View style={styleSheetStyles.legendContainer}>
-                                                                                <View style={[styleSheetStyles.legendItem, { backgroundColor: 'rgba(17, 172, 53, 1)' }]} />
-                                                                                <Text style={[styleSheetStyles.legendText, styles['font_size_11_regular']]}>{translate('MaximumPrice')}</Text>
-                                                                                <View style={[styleSheetStyles.legendItem, { backgroundColor: 'rgba(216, 193, 27, 1)' }]} />
-                                                                                <Text style={[styleSheetStyles.legendText, styles['font_size_11_regular']]}>{translate('MinimumPrice')}</Text>
-                                                                            </View>
-                                                                        </View>
-                                                                    </ScrollView>
-                                                                ) : (
-                                                                    <View style={[{ height: responsiveHeight(10), alignItems: 'center', justifyContent: "center" }]}>
-                                                                        <Text style={[{ color: dynamicStyles.textColor }, styles['centerItems'], styles['font_size_16_regular']]}>
-                                                                            {translate('no_data_available')}
+                                                            {/* ---------- Filter Tabs ---------- */}
+                                                            <FlatList
+                                                                data={FILTERS}
+                                                                horizontal
+                                                                contentContainerStyle={{
+                                                                    marginVertical: 5,
+                                                                    width: "100%",
+                                                                    alignSelf: "center",
+                                                                    justifyContent: "center",
+                                                                    alignItems: "center"
+                                                                }}
+                                                                keyExtractor={(item) => item}
+                                                                renderItem={({ item }) => (
+                                                                    <TouchableOpacity onPress={() => setSelectedFilter(item)} style={styleSheetStyles.tab}>
+                                                                        <Text
+                                                                            style={[
+                                                                                styles['font_size_16_regular'],
+                                                                                { color: "rgba(137, 137, 137, 0.7)" },
+                                                                                selectedFilter === item && [styleSheetStyles.selectedText, styles['font_size_16_bold']]
+                                                                            ]}
+                                                                        >
+                                                                            {item}
                                                                         </Text>
-                                                                    </View>
+                                                                    </TouchableOpacity>
                                                                 )}
-                                                            </ScrollView>
-                                                        </View>
-                                                    </ViewShot>
-                                                </View>
-                                            </Modal>
-                                        }
+                                                                showsHorizontalScrollIndicator={false}
+                                                            />
 
-                                        {/* Render Crops Data */}
-                                        {!mandiSelected && (
-                                            <View style={{ marginBottom: 200 }}>
-                                                {loading && pageNo === 1 ? (
-                                                    // <ActivityIndicator size="large" color="gray" />
-                                                    <></>
-                                                ) : (
-                                                    <FlatList
-                                                        data={filteredData}
-                                                        keyExtractor={(item, index) => `${item.name || index}`}
-                                                        renderItem={renderCropsData}
-                                                        // onEndReachedThreshold={0.2}
-                                                        onEndReachedThreshold={0.5}
-                                                        onEndReached={handleLoadMore}
-                                                        showsVerticalScrollIndicator={false}
-                                                        ListFooterComponent={
-                                                            (loading && pageNo > 1) ? (
-                                                                <ActivityIndicator size="small" color="gray" />
-                                                            )
-                                                                // : !hasMoreData && filteredData.length>0 ? (
-                                                                //     <Text style={{ textAlign: 'center', color: 'gray' }}>{translate('No_More_Data')}</Text>
-                                                                // )
-                                                                : null
-                                                        }
-                                                        contentContainerStyle={{ paddingBottom: 90 }}
-                                                        style={{
-                                                            width: '95%',
-                                                            alignSelf: 'center',
-                                                            marginBottom: 90
-                                                        }}
-                                                    />
-                                                )}
+                                                            {/* ---------- Chart Section ---------- */}
+                                                            {graphData !== null && graphData?.labels?.length > 0 ? (
+                                                                <ScrollView
+                                                                    horizontal={graphData?.labels?.length > 6}
+                                                                    showsHorizontalScrollIndicator={false}
+                                                                    contentContainerStyle={{ paddingHorizontal: 10 }}
+                                                                >
+                                                                    <View style={[styleSheetStyles.container, { alignItems: 'center' }]}>
+                                                                        <LineChart
+                                                                            data={{
+                                                                                labels: graphData?.labels?.slice().reverse(),
+                                                                                datasets: [
+                                                                                    {
+                                                                                        data: graphData?.maxPrices?.slice().reverse(),
+                                                                                        color: () => 'rgba(17, 172, 53, 1)',
+                                                                                        strokeWidth: 2,
+                                                                                    },
+                                                                                    {
+                                                                                        data: graphData?.minPrices?.slice().reverse(),
+                                                                                        color: () => 'rgba(216, 193, 27, 1)',
+                                                                                        strokeWidth: 2,
+                                                                                    },
+                                                                                ],
+                                                                            }}
+                                                                            width={Math.max(responsiveWidth(85), graphData?.labels?.length * 60)}
+                                                                            height={responsiveHeight(26)}
+                                                                            yAxisLabel="₹"
+                                                                            yAxisSuffix=""
+                                                                            chartConfig={{
+                                                                                backgroundGradientFrom: '#fff',
+                                                                                backgroundGradientTo: '#fff',
+                                                                                decimalPlaces: 0,
+                                                                                color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+                                                                                labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+                                                                                propsForDots: {
+                                                                                    r: '5',
+                                                                                    strokeWidth: '2',
+                                                                                },
+                                                                            }}
+                                                                            style={styleSheetStyles.chart}
+                                                                        />
+                                                                        <View style={styleSheetStyles.legendContainer}>
+                                                                            <View style={[styleSheetStyles.legendItem, { backgroundColor: 'rgba(17, 172, 53, 1)' }]} />
+                                                                            <Text style={[styleSheetStyles.legendText, styles['font_size_11_regular']]}>{translate('MaximumPrice')}</Text>
+                                                                            <View style={[styleSheetStyles.legendItem, { backgroundColor: 'rgba(216, 193, 27, 1)' }]} />
+                                                                            <Text style={[styleSheetStyles.legendText, styles['font_size_11_regular']]}>{translate('MinimumPrice')}</Text>
+                                                                        </View>
+                                                                    </View>
+                                                                </ScrollView>
+                                                            ) : (
+                                                                <View style={[{ height: responsiveHeight(10), alignItems: 'center', justifyContent: "center" }]}>
+                                                                    <Text style={[{ color: dynamicStyles.textColor }, styles['centerItems'], styles['font_size_16_regular']]}>
+                                                                        {translate('no_data_available')}
+                                                                    </Text>
+                                                                </View>
+                                                            )}
+                                                        </ScrollView>
+                                                    </View>
+                                                </ViewShot>
                                             </View>
+                                        </Modal>
+                                    }
 
-                                        )}
-                                        {mainLoader && <CustomLoader loading={loading} message={loadingMessage} loaderImage={loaderImage} />}
-                                    </>
-                                )}
-                    </View>
+                                    {/* Render Crops Data */}
+                                    {!mandiSelected && (
+                                        <View style={{ marginBottom: 200 }}>
+                                            {loading && pageNo === 1 ? (
+                                                // <ActivityIndicator size="large" color="gray" />
+                                                <></>
+                                            ) : (
+                                                <FlatList
+                                                    data={filteredData}
+                                                    keyExtractor={(item, index) => `${item.name || index}`}
+                                                    renderItem={renderCropsData}
+                                                    // onEndReachedThreshold={0.2}
+                                                    onEndReachedThreshold={0.5}
+                                                    onEndReached={handleLoadMore}
+                                                    showsVerticalScrollIndicator={false}
+                                                    ListFooterComponent={
+                                                        (loading && pageNo > 1) ? (
+                                                            <ActivityIndicator size="small" color="gray" />
+                                                        )
+                                                            // : !hasMoreData && filteredData.length>0 ? (
+                                                            //     <Text style={{ textAlign: 'center', color: 'gray' }}>{translate('No_More_Data')}</Text>
+                                                            // )
+                                                            : null
+                                                    }
+                                                    contentContainerStyle={{ paddingBottom: 90 }}
+                                                    style={{
+                                                        width: '95%',
+                                                        alignSelf: 'center',
+                                                        marginBottom: 90
+                                                    }}
+                                                />
+                                            )}
+                                        </View>
+
+                                    )}
+                                    {mainLoader && <CustomLoader loading={loading} message={loadingMessage} loaderImage={loaderImage} />}
+                                </>
+                            )}
                 </View>
             </View>
+
             {
                 showAlert &&
                 <CustomAlert
@@ -1201,7 +1222,7 @@ const MandiPricesScreen = () => {
                     yesButtonText={showAlertyesButtonText}
                     noButtonText={showAlertNoButtonText} />
             }
-        </SafeAreaView>
+        </View>
     );
 }
 

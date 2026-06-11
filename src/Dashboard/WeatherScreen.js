@@ -194,7 +194,7 @@ const WeatherScreen = ({ route }) => {
           console.log("Location permission granted");
           const gpsEnabled = await checkIfGpsEnabled();
           if (gpsEnabled) {
-            navigation.navigate('Location', { primaryColor: dynamicStyles.primaryColor, secondaryColor: dynamicStyles.secondaryColor, textColor: dynamicStyles.textColor, screen: "WeatherScreen", address: localAddress, latitude: localLatitude !== null ? localLatitude : latitude, longitude: localLongitude !== null ? localLongitude : longitude, zoom: mapZoomingLevel })
+            navigation.navigate('Location', { primaryColor: dynamicStyles.primaryColor, secondaryColor: dynamicStyles.secondaryColor, textColor: dynamicStyles.textColor, screen: "WeatherScreen", address: localAddress, latitude: localLatitude !== null ? localLatitude : latitude, longitude: localLongitude !== null ? localLongitude : longitude, zoom: mapZoomingLevel, isComingFrom: (route?.params?.enablePestForecast === true) ? true : false })
           }
         } else {
           console.log("Location permission denied");
@@ -205,7 +205,7 @@ const WeatherScreen = ({ route }) => {
         const permission = status.trim();
         if (permission === RESULTS.GRANTED || permission === RESULTS.LIMITED) {
           console.log("iOS location permission granted");
-          navigation.navigate('Location', { primaryColor: dynamicStyles.primaryColor, secondaryColor: dynamicStyles.secondaryColor, textColor: dynamicStyles.textColor, screen: "WeatherScreen", address: localAddress, latitude: localLatitude !== null ? localLatitude : latitude, longitude: localLongitude !== null ? localLongitude : longitude, zoom: mapZoomingLevel })
+          navigation.navigate('Location', { primaryColor: dynamicStyles.primaryColor, secondaryColor: dynamicStyles.secondaryColor, textColor: dynamicStyles.textColor, screen: "WeatherScreen", address: localAddress, latitude: localLatitude !== null ? localLatitude : latitude, longitude: localLongitude !== null ? localLongitude : longitude, zoom: mapZoomingLevel, isComingFrom: (route?.params?.enablePestForecast === true) ? true : false  })
         } else {
           console.log("iOS location permission denied");
           showPermissionDeniedAlert();

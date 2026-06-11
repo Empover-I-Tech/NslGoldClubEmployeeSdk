@@ -207,6 +207,9 @@ export async function PostRequest(url, headers, inputObject) {
                 } else if (responseJson?.statusCode == 601) {
                     forceLogoutUser();
                     return responseJson;
+                } else if(responseJson?.message === "User Does Not Exist"){
+                    forceLogoutUser();
+                    return responseJson;
                 }
                 return responseJson;
 

@@ -48,6 +48,7 @@ const Location = ({ route }) => {
     const [address, setAddress] = useState(route?.params?.address || '');
     const [isMap, setIsMap] = useState(!address);
     const [screen, setScreen] = useState(route?.params?.screen);
+    const [isComingFrom, setIsComingFrom] = useState(route?.params?.isComingFrom)
     const [pinDance, setPinDance] = useState(false);
     const [loading, setLoading] = useState(false);
     const cameraRef = useRef(null);
@@ -204,7 +205,8 @@ const Location = ({ route }) => {
                         longitudes: locallongitudes,
                         address: place.formatted_address,
                         zoom: zoomLevel,
-                        locationWHoleData: place
+                        locationWHoleData: place,
+                        enablePestForecast: isComingFrom
                     });
                 }
             } else {

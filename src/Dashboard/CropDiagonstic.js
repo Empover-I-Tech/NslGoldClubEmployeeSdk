@@ -315,41 +315,168 @@ const CropDiagonstic = ({ route }) => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: dynamicStyles.primaryColor }} edges={['top']}>
-      <View style={[styles['flex_1'], { backgroundColor: 'rgba(249, 249, 249, 1)' }]}>
-        {Platform.OS === 'android' && <StatusBar backgroundColor={dynamicStyles.primaryColor} barStyle='dark-content' />}
-        <View style={[{ backgroundColor: dynamicStyles.primaryColor }, { paddingStart: 20, paddingEnd: 20, paddingBottom: 20, borderBottomStartRadius: 10, borderBottomEndRadius: 10, paddingTop: Platform.OS == 'ios' ? 20 : 20 }]}>
-          <TouchableOpacity style={[styles['flex_direction_row']]} onPress={() => navigation.goBack()}>
-            <Image style={[{ tintColor: dynamicStyles.secondaryColor }, { height: 15, width: 20, top: 5 }]} source={require('../assets/images/previous.png')}></Image>
-            <Text style={[styles['margin_left_10'], { color: dynamicStyles.secondaryColor }, styles['font_size_18_bold'], Platform.OS === 'ios' && { minHeight: 25 }]}>{translate('Crop_Diagnostic_Tool')}</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={[{ backgroundColor: dynamicStyles?.highLightedColor }, styleSheetStyles.tabMain]}>
-          <TouchableOpacity activeOpacity={0.5} onPress={() => setSelectedFilter(translate('Crop_Diagnostic'))} style={[selectedFilter === translate('Crop_Diagnostic') && { backgroundColor: dynamicStyles.primaryColor }, styleSheetStyles.tabBtn]}>
-            <Text style={[selectedFilter === translate('Crop_Diagnostic') ? { color: dynamicStyles.secondaryColor } : { color: dynamicStyles.textColor }, styles['font_size_14_semibold'], Platform.OS === 'ios' && { lineHeight: 25 }]}>{translate('Crop_Diagnostic')}</Text></TouchableOpacity>
-          <TouchableOpacity activeOpacity={0.5} onPress={() => setSelectedFilter(translate('history'))} style={[selectedFilter === translate('history') && { backgroundColor: dynamicStyles.primaryColor }, styleSheetStyles.tabBtn]}>
-            <Text style={[selectedFilter === translate('history') ? { color: dynamicStyles.secondaryColor } : { color: dynamicStyles.textColor }, styles['font_size_14_semibold']]}>{translate('history')}</Text></TouchableOpacity>
-        </View>
+    <View style={[styles['flex_1'], { backgroundColor: 'rgba(249, 249, 249, 1)' }]}>
+      {Platform.OS === 'android' && <StatusBar backgroundColor={dynamicStyles.primaryColor} barStyle='dark-content' />}
+      <View style={[{ backgroundColor: dynamicStyles.primaryColor }, { borderBottomStartRadius: 10, borderBottomEndRadius: 10, padding: 15 }]}>
+        <TouchableOpacity style={[styles['flex_direction_row'], { alignItems: 'center' }]} onPress={() => navigation.goBack()}>
+          <Image style={[{ tintColor: dynamicStyles.secondaryColor }, { height: 15, width: 20 }]} source={require('../assets/images/previous.png')}></Image>
+          <Text style={[styles['margin_left_10'], { color: dynamicStyles.secondaryColor }, styles['font_size_18_bold'], Platform.OS === 'ios' && { minHeight: 25 }]}>{translate('Crop_Diagnostic_Tool')}</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={[{ backgroundColor: dynamicStyles?.highLightedColor }, styleSheetStyles.tabMain]}>
+        <TouchableOpacity activeOpacity={0.5} onPress={() => setSelectedFilter(translate('Crop_Diagnostic'))} style={[selectedFilter === translate('Crop_Diagnostic') && { backgroundColor: dynamicStyles.primaryColor }, styleSheetStyles.tabBtn]}>
+          <Text style={[selectedFilter === translate('Crop_Diagnostic') ? { color: dynamicStyles.secondaryColor } : { color: dynamicStyles.textColor }, styles['font_size_14_semibold'], Platform.OS === 'ios' && { lineHeight: 25 }]}>{translate('Crop_Diagnostic')}</Text></TouchableOpacity>
+        <TouchableOpacity activeOpacity={0.5} onPress={() => setSelectedFilter(translate('history'))} style={[selectedFilter === translate('history') && { backgroundColor: dynamicStyles.primaryColor }, styleSheetStyles.tabBtn]}>
+          <Text style={[selectedFilter === translate('history') ? { color: dynamicStyles.secondaryColor } : { color: dynamicStyles.textColor }, styles['font_size_14_semibold']]}>{translate('history')}</Text></TouchableOpacity>
+      </View>
 
-        {
-          selectedFilter === translate('Crop_Diagnostic') &&
-          <View style={{ marginVertical: 10, height: '80%' }}>
+      {
+        selectedFilter === translate('Crop_Diagnostic') &&
+        <View style={{ marginVertical: 10, height: '80%' }}>
+          <FlatList
+            data={cropDiagDATA}
+            ListFooterComponent={<>
+              <View style={{ marginTop: responsiveHeight(3), bottom: responsiveHeight(1) }}>
+                <CustomButton
+                  onPress={() => {
+                    setShowSelectionModal(true)
+                  }}
+                  title={translate('Take_a_Picture')}
+                  buttonBg={dynamicStyles.primaryColor}
+                  btnWidth={'90%'}
+                  titleTextColor={dynamicStyles.secondaryColor}
+                  textAlign='center'
+                />
+              </View>
+              <View style={{ height: 50 }} /></>}
+            showsVerticalScrollIndicator={false}
+            ListEmptyComponent={<>
+              <View style={{
+                alignItems: "center",
+                justifyContent: "center",
+                marginTop: 20,
+                height: responsiveHeight(60)
+              }}>
+                <Text style={[styles['font_size_16_semibold'], {
+                  color: dynamicStyles?.primaryColor
+                }]}>
+                  {translate('NoDataFound')}
+                </Text>
+              </View>
+            </>}
+            renderItem={({ item }) => <View key={item.id} style={{
+              width: "90%", backgroundColor: "white", marginVertical: 10, alignSelf: "center", elevation: 1, borderRadius: 10, padding: 10, alignItems: "center", justifyContent: "center", paddingVertical: 15
+            }}>
+              <Image source={item.image} style={{ height: 60, width: 60, resizeMode: "contain", alignSelf: "center" }} />
+              <Text style={[{ color: item.textColor, alignSelf: "center", marginTop: 5 }, styles['font_size_12_semibold']]}>{item.name}</Text>
+            </View>}
+            keyExtractor={item => item.id}
+
+          />
+          <Modal
+            animationType="fade"
+            transparent={true}
+            visible={cameraRelatedPopUp}
+          // onRequestClose={onPressingOut}
+          >
+            <View
+              // testID="openAttachmentModal"
+              //   onPressOut={onPressingOut}
+              style={stylesheetStyes.overallContainer}
+            >
+              <TouchableWithoutFeedback>
+                {ImageData !== null
+                  ?
+                  <View style={[[stylesheetStyes.subContainer, {
+                  }]]}>
+                    <Image source={{ uri: ImageData?.uri }} style={{
+                      height: responsiveHeight(68),
+                      marginTop: 10,
+                      borderRadius: 15,
+                      width: responsiveWidth(85), resizeMode: "cover", alignSelf: "center",
+                    }} />
+                    <View style={[styleSheetStyles.container, {
+                      marginTop: 25
+                    }]}>
+                      <TouchableOpacity onPress={() => {
+                        if (fromGallery) {
+                          // setCameraRelatedPopUp(false)
+                          openImagePickerProfilePic()
+                        }
+                        else { openCameraProfilePic() }
+                      }} style={[styleSheetStyles.button, styleSheetStyles.clearButton, { borderColor: dynamicStyles.iconPrimaryColor }]}>
+                        <Text style={[styles['font_size_14_semibold'], { color: dynamicStyles.iconPrimaryColor }]}>{fromGallery ? translate("ReSelect") : translate('Re-Take')}</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        disabled={btnProceedDisabled}
+                        onPress={() => {
+                          submitCrop()
+                        }} style={[styleSheetStyles.button, styleSheetStyles.saveButton, { borderColor: Colors.lightGray, backgroundColor: dynamicStyles.primaryColor, }]}>
+                        <Text style={[styles['font_size_14_semibold'], { color: dynamicStyles.secondaryColor }]}>{translate('proceed')}</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                  : <View style={[stylesheetStyes.subContainer]}>
+                    <TouchableOpacity
+                      onPress={() => {
+                        storeData(true)
+                      }}
+                      style={{ position: "absolute", right: 15, top: 20 }}>
+                      <Text style={[{ color: dynamicStyles.primaryColor }, styles['font_size_10_semibold']]}>{translate('Dont_show_this_again')}</Text>
+                    </TouchableOpacity>
+                    <Image style={{ height: 200, width: 200, resizeMode: "contain", alignSelf: "center", marginTop: responsiveHeight(10) }} source={require('../assets/images/cameraPopup.png')} />
+                    <Text style={[{ color: dynamicStyles.primaryColor, alignSelf: "center", marginTop: responsiveHeight(5) }, styles['font_size_13_semibold']]}>{CarouselDATA[carouselIndex].name}</Text>
+                    <Text style={[styles['font_size_11_regular'], { color: dynamicStyles.textColor, alignSelf: "center", textAlign: "center", width: "92%", marginTop: 5 }]}>{CarouselDATA[carouselIndex].desc}</Text>
+                    <View style={{ alignSelf: "center", flexDirection: "row", alignItems: "center", position: "absolute", bottom: responsiveHeight(18) }}>
+                      <View style={[carouselIndex === 0 ? { height: 10, width: 10, backgroundColor: dynamicStyles.primaryColor, borderRadius: 60, marginRight: 2.5 } : { height: 10, width: 10, borderColor: dynamicStyles.primaryColor, borderRadius: 60, borderWidth: 1, marginRight: 2.5 }]} />
+                      <View style={[carouselIndex === 1 ? { height: 10, width: 10, backgroundColor: dynamicStyles.primaryColor, borderRadius: 60 } : { height: 10, width: 10, borderColor: dynamicStyles.primaryColor, borderRadius: 60, borderWidth: 1 }]} />
+                    </View>
+                    <View style={[styleSheetStyles.container, {
+                      marginTop: "auto"
+                    }]}>
+                      <TouchableOpacity onPress={() => {
+                        setCarouselIndex(1)
+                        openCameraProfilePic()
+                      }} style={[styleSheetStyles.button, styleSheetStyles.clearButton, { borderColor: dynamicStyles.iconPrimaryColor }]}>
+                        <Text style={[styles['font_size_14_semibold'], { color: dynamicStyles.iconPrimaryColor }]}>{translate('skip')}</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity onPress={() => {
+                        if (carouselIndex === 0) {
+                          setCarouselIndex(carouselIndex + 1)
+                        } else {
+                          openCameraProfilePic()
+                        }
+                      }} style={[styleSheetStyles.button, styleSheetStyles.saveButton, { borderColor: Colors.lightGray, backgroundColor: dynamicStyles.primaryColor, marginLeft: 10 }]}>
+                        <Text style={[styles['font_size_14_semibold'], { color: dynamicStyles.secondaryColor }]}>{translate('Next')}</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>}
+              </TouchableWithoutFeedback>
+            </View>
+          </Modal>
+        </View>
+      }
+
+      <CustomGalleryPopup
+        showOrNot={showSelectionModal}
+        onPressingOut={() => setShowSelectionModal(false)}
+        onPressingCamera={async () => {
+          if (await checkData()) {
+            openCameraProfilePic()
+          } else {
+            setCameraRelatedPopUp(true), setShowSelectionModal(false), setImageData(null), setCarouselIndex(0)
+          }
+        }}
+        onPressingGallery={() => { setImageData(null), openImagePickerProfilePic() }}
+      />
+
+      {
+        selectedFilter === translate('history') &&
+        <View style={{ marginVertical: 10, height: '80%' }}>
+          {diseases.length > 0 ? (
             <FlatList
-              data={cropDiagDATA}
-              ListFooterComponent={<>
-                <View style={{ marginTop: responsiveHeight(3), bottom: responsiveHeight(1) }}>
-                  <CustomButton
-                    onPress={() => {
-                      setShowSelectionModal(true)
-                    }}
-                    title={translate('Take_a_Picture')}
-                    buttonBg={dynamicStyles.primaryColor}
-                    btnWidth={'90%'}
-                    titleTextColor={dynamicStyles.secondaryColor}
-                    textAlign='center'
-                  />
-                </View>
-                <View style={{ height: 50 }} /></>}
+              data={diseases}
+              ListFooterComponent={<View style={{ height: 50 }} />}
               showsVerticalScrollIndicator={false}
               ListEmptyComponent={<>
                 <View style={{
@@ -365,178 +492,49 @@ const CropDiagonstic = ({ route }) => {
                   </Text>
                 </View>
               </>}
-              renderItem={({ item }) => <View key={item.id} style={{
-                width: "90%", backgroundColor: "white", marginVertical: 10, alignSelf: "center", elevation: 1, borderRadius: 10, padding: 10, alignItems: "center", justifyContent: "center", paddingVertical: 15
+              renderItem={({ item }) => <View style={{
+                width: "90%", backgroundColor: "white", marginVertical: 10, alignSelf: "center", elevation: 1, borderRadius: 10, padding: 10
               }}>
-                <Image source={item.image} style={{ height: 60, width: 60, resizeMode: "contain", alignSelf: "center" }} />
-                <Text style={[{ color: item.textColor, alignSelf: "center", marginTop: 5 }, styles['font_size_12_semibold']]}>{item.name}</Text>
+                {console.log('itemsInrender', item)}
+                <View style={{ flex: 1, borderWidth: 2, borderColor: "rgba(0, 0, 0, 0.05)", borderRadius: 10 }}>
+                  <View style={{ flexDirection: "row", alignItems: "center", backgroundColor: dynamicStyles.highLightedColor, height: 35, paddingHorizontal: 10 }}>
+                    <Image tintColor={dynamicStyles.primaryColor} source={require('../assets/images/diseaseDetected.png')} style={{ height: 20, width: 20, resizeMode: "contain" }} />
+                    <Text style={[styles['font_size_14_semibold'], { color: dynamicStyles.primaryColor, marginLeft: 10, }]}>{item?.cropDiseaseTitle ? item?.cropDiseaseTitle : translate('No_Disease_Detected')}</Text>
+                  </View>
+                  <View style={{ padding: 10, flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
+                    <View style={{ flexDirection: "row", alignItems: "center" }}>
+                      <Image source={item?.imageUrl ? { uri: item.imageUrl } : require('../assets/images/image_not_exist.png')} style={{ height: 65, width: 65, resizeMode: "contain", borderRadius: 60 }} />
+                      <View>
+                        {item?.diseaseName && <Text style={[{ color: dynamicStyles.textColor, marginLeft: 10 }, styles['font_size_12_semibold']]}>{item?.diseaseName}</Text>}
+                        {item?.cropName && <Text style={[{ color: dynamicStyles.textColor, marginLeft: 10 }, styles['font_size_10_regular']]}>{item?.cropName}</Text>}
+                        {item?.createdOn && <Text style={[styles['font_size_10_semibold'], { color: 'rgba(85, 85, 85, 1)', marginLeft: 10 }]}>{item?.createdOn?.split('T')[0] || ''}</Text>}
+                      </View>
+                    </View>
+                    {/* <CustomCircularProgress
+                      percentage={item.confidence} radius={30} strokeWidth={6} percentageText={item.confidence} level={item.status} hideStatus={true}
+                    /> */}
+                  </View>
+                  <TouchableOpacity style={{ maxWidth: "40%", alignItems: "center", justifyContent: "center", padding: 8, margin: 8, borderWidth: 1, borderColor: dynamicStyles.primaryColor, borderRadius: 5 }} onPress={() => navigation.navigate("CropDesiesDetection", { data: item })}>
+                    <Text style={{ color: dynamicStyles.primaryColor }}>{translate("View_Details")}</Text>
+                  </TouchableOpacity>
+                </View>
               </View>}
               keyExtractor={item => item.id}
 
             />
-            <Modal
-              animationType="fade"
-              transparent={true}
-              visible={cameraRelatedPopUp}
-            // onRequestClose={onPressingOut}
-            >
-              <View
-                // testID="openAttachmentModal"
-                //   onPressOut={onPressingOut}
-                style={stylesheetStyes.overallContainer}
-              >
-                <TouchableWithoutFeedback>
-                  {ImageData !== null
-                    ?
-                    <View style={[[stylesheetStyes.subContainer, {
-                    }]]}>
-                      <Image source={{ uri: ImageData?.uri }} style={{
-                        height: responsiveHeight(68),
-                        marginTop: 10,
-                        borderRadius: 15,
-                        width: responsiveWidth(85), resizeMode: "cover", alignSelf: "center",
-                      }} />
-                      <View style={[styleSheetStyles.container, {
-                        marginTop: 25
-                      }]}>
-                        <TouchableOpacity onPress={() => {
-                          if (fromGallery) {
-                            // setCameraRelatedPopUp(false)
-                            openImagePickerProfilePic()
-                          }
-                          else { openCameraProfilePic() }
-                        }} style={[styleSheetStyles.button, styleSheetStyles.clearButton, { borderColor: dynamicStyles.iconPrimaryColor }]}>
-                          <Text style={[styles['font_size_14_semibold'], { color: dynamicStyles.iconPrimaryColor }]}>{fromGallery ? translate("ReSelect") : translate('Re-Take')}</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                          disabled={btnProceedDisabled}
-                          onPress={() => {
-                            submitCrop()
-                          }} style={[styleSheetStyles.button, styleSheetStyles.saveButton, { borderColor: Colors.lightGray, backgroundColor: dynamicStyles.primaryColor, }]}>
-                          <Text style={[styles['font_size_14_semibold'], { color: dynamicStyles.secondaryColor }]}>{translate('proceed')}</Text>
-                        </TouchableOpacity>
-                      </View>
-                    </View>
-                    : <View style={[stylesheetStyes.subContainer]}>
-                      <TouchableOpacity
-                        onPress={() => {
-                          storeData(true)
-                        }}
-                        style={{ position: "absolute", right: 15, top: 20 }}>
-                        <Text style={[{ color: dynamicStyles.primaryColor }, styles['font_size_10_semibold']]}>{translate('Dont_show_this_again')}</Text>
-                      </TouchableOpacity>
-                      <Image style={{ height: 200, width: 200, resizeMode: "contain", alignSelf: "center", marginTop: responsiveHeight(10) }} source={require('../assets/images/cameraPopup.png')} />
-                      <Text style={[{ color: dynamicStyles.primaryColor, alignSelf: "center", marginTop: responsiveHeight(5) }, styles['font_size_13_semibold']]}>{CarouselDATA[carouselIndex].name}</Text>
-                      <Text style={[styles['font_size_11_regular'], { color: dynamicStyles.textColor, alignSelf: "center", textAlign: "center", width: "92%", marginTop: 5 }]}>{CarouselDATA[carouselIndex].desc}</Text>
-                      <View style={{ alignSelf: "center", flexDirection: "row", alignItems: "center", position: "absolute", bottom: responsiveHeight(18) }}>
-                        <View style={[carouselIndex === 0 ? { height: 10, width: 10, backgroundColor: dynamicStyles.primaryColor, borderRadius: 60, marginRight: 2.5 } : { height: 10, width: 10, borderColor: dynamicStyles.primaryColor, borderRadius: 60, borderWidth: 1, marginRight: 2.5 }]} />
-                        <View style={[carouselIndex === 1 ? { height: 10, width: 10, backgroundColor: dynamicStyles.primaryColor, borderRadius: 60 } : { height: 10, width: 10, borderColor: dynamicStyles.primaryColor, borderRadius: 60, borderWidth: 1 }]} />
-                      </View>
-                      <View style={[styleSheetStyles.container, {
-                        marginTop: "auto"
-                      }]}>
-                        <TouchableOpacity onPress={() => {
-                          setCarouselIndex(1)
-                          openCameraProfilePic()
-                        }} style={[styleSheetStyles.button, styleSheetStyles.clearButton, { borderColor: dynamicStyles.iconPrimaryColor }]}>
-                          <Text style={[styles['font_size_14_semibold'], { color: dynamicStyles.iconPrimaryColor }]}>{translate('skip')}</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => {
-                          if (carouselIndex === 0) {
-                            setCarouselIndex(carouselIndex + 1)
-                          } else {
-                            openCameraProfilePic()
-                          }
-                        }} style={[styleSheetStyles.button, styleSheetStyles.saveButton, { borderColor: Colors.lightGray, backgroundColor: dynamicStyles.primaryColor, marginLeft: 10 }]}>
-                          <Text style={[styles['font_size_14_semibold'], { color: dynamicStyles.secondaryColor }]}>{translate('Next')}</Text>
-                        </TouchableOpacity>
-                      </View>
-                    </View>}
-                </TouchableWithoutFeedback>
-              </View>
-            </Modal>
-          </View>
-        }
+          ) : (
+            <View style={{ alignSelf: 'center', justifyContent: 'center', flex: 1 }}>
+              <Text style={[{ color: 'red', marginLeft: 10 }, styles['font_size_14_semibold']]}>{translate('NoDataFound')}</Text>
+            </View>
+          )}
+        </View>
+      }
 
-        <CustomGalleryPopup
-          showOrNot={showSelectionModal}
-          onPressingOut={() => setShowSelectionModal(false)}
-          onPressingCamera={async () => {
-            if (await checkData()) {
-              openCameraProfilePic()
-            } else {
-              setCameraRelatedPopUp(true), setShowSelectionModal(false), setImageData(null), setCarouselIndex(0)
-            }
-          }}
-          onPressingGallery={() => { setImageData(null), openImagePickerProfilePic() }}
-        />
-
-        {
-          selectedFilter === translate('history') &&
-          <View style={{ marginVertical: 10, height: '80%' }}>
-            {diseases.length > 0 ? (
-              <FlatList
-                data={diseases}
-                ListFooterComponent={<View style={{ height: 50 }} />}
-                showsVerticalScrollIndicator={false}
-                ListEmptyComponent={<>
-                  <View style={{
-                    alignItems: "center",
-                    justifyContent: "center",
-                    marginTop: 20,
-                    height: responsiveHeight(60)
-                  }}>
-                    <Text style={[styles['font_size_16_semibold'], {
-                      color: dynamicStyles?.primaryColor
-                    }]}>
-                      {translate('NoDataFound')}
-                    </Text>
-                  </View>
-                </>}
-                renderItem={({ item }) => <View style={{
-                  width: "90%", backgroundColor: "white", marginVertical: 10, alignSelf: "center", elevation: 1, borderRadius: 10, padding: 10
-                }}>
-                  {console.log('itemsInrender', item)}
-                  <View style={{ flex: 1, borderWidth: 2, borderColor: "rgba(0, 0, 0, 0.05)", borderRadius: 10 }}>
-                    <View style={{ flexDirection: "row", alignItems: "center", backgroundColor: dynamicStyles.highLightedColor, height: 35, paddingHorizontal: 10 }}>
-                      <Image tintColor={dynamicStyles.primaryColor} source={require('../assets/images/diseaseDetected.png')} style={{ height: 20, width: 20, resizeMode: "contain" }} />
-                      <Text style={[styles['font_size_14_semibold'], { color: dynamicStyles.primaryColor, marginLeft: 10, }]}>{item?.cropDiseaseTitle ? item?.cropDiseaseTitle : translate('No_Disease_Detected')}</Text>
-                    </View>
-                    <View style={{ padding: 10, flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
-                      <View style={{ flexDirection: "row", alignItems: "center" }}>
-                        <Image source={item?.imageUrl ? { uri: item.imageUrl } : require('../assets/images/image_not_exist.png')} style={{ height: 65, width: 65, resizeMode: "contain", borderRadius: 60 }} />
-                        <View>
-                          {item?.diseaseName && <Text style={[{ color: dynamicStyles.textColor, marginLeft: 10 }, styles['font_size_12_semibold']]}>{item?.diseaseName}</Text>}
-                          {item?.cropName && <Text style={[{ color: dynamicStyles.textColor, marginLeft: 10 }, styles['font_size_10_regular']]}>{item?.cropName}</Text>}
-                          {item?.createdOn && <Text style={[styles['font_size_10_semibold'], { color: 'rgba(85, 85, 85, 1)', marginLeft: 10 }]}>{item?.createdOn?.split('T')[0] || ''}</Text>}
-                        </View>
-                      </View>
-                      {/* <CustomCircularProgress
-                      percentage={item.confidence} radius={30} strokeWidth={6} percentageText={item.confidence} level={item.status} hideStatus={true}
-                    /> */}
-                    </View>
-                    <TouchableOpacity style={{ maxWidth: "40%", alignItems: "center", justifyContent: "center", padding: 8, margin: 8, borderWidth: 1, borderColor: dynamicStyles.primaryColor, borderRadius: 5 }} onPress={() => navigation.navigate("CropDesiesDetection", { data: item })}>
-                      <Text style={{ color: dynamicStyles.primaryColor }}>{translate("View_Details")}</Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>}
-                keyExtractor={item => item.id}
-
-              />
-            ) : (
-              <View style={{ alignSelf: 'center', justifyContent: 'center', flex: 1 }}>
-                <Text style={[{ color: 'red', marginLeft: 10 }, styles['font_size_14_semibold']]}>{translate('NoDataFound')}</Text>
-              </View>
-            )}
-          </View>
-        }
-
-        {cropLoading && <CustomLoader loading={loading} message={loadingMessage} loaderImage={loaderImage} fromCropDiag={cropLoading} />}
-        {loading && !cropLoading && <CustomLoader loading={loading} message={loadingMessage} loaderImage={loaderImage} fromCropDiag={false} />}
-        {successLoading && <CustomSuccessLoader loading={successLoading} message={successLoadingMessage} />}
-        {errorLoading && <CustomErrorLoader loading={errorLoading} message={errorLoadingMessage} />}
-      </View>
-    </SafeAreaView>
+      {cropLoading && <CustomLoader loading={loading} message={loadingMessage} loaderImage={loaderImage} fromCropDiag={cropLoading} />}
+      {loading && !cropLoading && <CustomLoader loading={loading} message={loadingMessage} loaderImage={loaderImage} fromCropDiag={false} />}
+      {successLoading && <CustomSuccessLoader loading={successLoading} message={successLoadingMessage} />}
+      {errorLoading && <CustomErrorLoader loading={errorLoading} message={errorLoadingMessage} />}
+    </View>
   );
 };
 

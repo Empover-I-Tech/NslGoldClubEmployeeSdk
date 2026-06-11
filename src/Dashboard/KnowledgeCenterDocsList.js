@@ -179,70 +179,64 @@ const KnowledgeCenterDocsList = ({ route }) => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: dynamicStyles.primaryColor }} edges={['top']}>
+    <View style={{ flex: 1, backgroundColor: '#f9f9f9' }}>
       {Platform.OS === 'android' && (
         <StatusBar backgroundColor={dynamicStyles.primaryColor} barStyle="dark-content" />
       )}
+      {/* Header */}
+      <View style={{
+        backgroundColor: dynamicStyles.primaryColor,
+        width: "100%",
+        borderBottomStartRadius: 10,
+        borderBottomEndRadius: 10,
+        padding: 15
 
-      <View style={{ flex: 1, backgroundColor: '#f9f9f9' }}>
-
-        {/* Header */}
-        <View style={{
-          backgroundColor: dynamicStyles.primaryColor,
-          width: "100%", paddingStart: 20,
-          paddingEnd: 20,
-          paddingBottom: 20,
-          borderBottomStartRadius: 10,
-          borderBottomEndRadius: 10,
-          paddingTop: 20
-
-        }}>
-          <TouchableOpacity style={{ flexDirection: 'row', }} onPress={() => navigation.goBack()}>
-            <Image
-              style={{ tintColor: dynamicStyles.secondaryColor, height: 15, width: 20, top: 5 }}
-              source={require('../assets/images/previous.png')}
-            />
-            <Text style={{
-              color: dynamicStyles.secondaryColor, marginLeft: 10, fontSize: 18, fontWeight: 'bold',
-              flexShrink: 1,
-              flexWrap: 'wrap',
-              lineHeight: Platform.OS == 'android' ? 30 : 25,
-              minWidth: 200
-            }}
-              adjustsFontSizeToFit>
-              {headerTitle}
-            </Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* ✅ Single Scrollable List */}
-        <FlatList
-          data={listOfBooksFilter}
-          keyExtractor={(item, index) => index.toString()}
-          numColumns={2}
-          renderItem={({ item, index }) => renderGridItem(item, index)}
-          contentContainerStyle={{
-            paddingBottom: 100,
-            alignSelf: 'center',
-            marginTop: 10,
-          }} // space above bottom button
-          ListEmptyComponent={
-            <View style={{ height: responsiveHeight(70), alignItems: "center", justifyContent: "center" }}>
-              <Text style={{ color: dynamicStyles.textColor, fontSize: 13, fontWeight: '700' }}>
-                {translate('no_data_available')}
-              </Text>
-            </View>
-          }
-        />
-
-        <MediaModal
-          visible={mediaVisible}
-          link={mediaLink}
-          onClose={() => setMediaVisible(false)}
-          loaderColor={dynamicStyles.primaryColor}
-        />
+      }}>
+        <TouchableOpacity style={{ flexDirection: 'row', alignItems:'center' }} onPress={() => navigation.goBack()}>
+          <Image
+            style={{ tintColor: dynamicStyles.secondaryColor, height: 15, width: 20}}
+            source={require('../assets/images/previous.png')}
+          />
+          <Text style={{
+            color: dynamicStyles.secondaryColor, marginLeft: 10, fontSize: 18, fontWeight: 'bold',
+            flexShrink: 1,
+            flexWrap: 'wrap',
+            lineHeight: Platform.OS == 'android' ? 30 : 25,
+            minWidth: 200
+          }}
+            adjustsFontSizeToFit>
+            {headerTitle}
+          </Text>
+        </TouchableOpacity>
       </View>
-    </SafeAreaView>
+
+      {/* ✅ Single Scrollable List */}
+      <FlatList
+        data={listOfBooksFilter}
+        keyExtractor={(item, index) => index.toString()}
+        numColumns={2}
+        renderItem={({ item, index }) => renderGridItem(item, index)}
+        contentContainerStyle={{
+          paddingBottom: 100,
+          alignSelf: 'center',
+          marginTop: 10,
+        }} // space above bottom button
+        ListEmptyComponent={
+          <View style={{ height: responsiveHeight(70), alignItems: "center", justifyContent: "center" }}>
+            <Text style={{ color: dynamicStyles.textColor, fontSize: 13, fontWeight: '700' }}>
+              {translate('no_data_available')}
+            </Text>
+          </View>
+        }
+      />
+
+      <MediaModal
+        visible={mediaVisible}
+        link={mediaLink}
+        onClose={() => setMediaVisible(false)}
+        loaderColor={dynamicStyles.primaryColor}
+      />
+    </View>
   );
 };
 

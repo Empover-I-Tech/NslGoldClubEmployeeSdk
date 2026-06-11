@@ -328,230 +328,230 @@ const Agronomy = () => {
 
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: dynamicStyles.primaryColor }} edges={['top']}>
-            <View style={[stylesheetstyles.flexFull, stylesheetstyles.gray300bg]}>
-                {Platform.OS === 'android' && <StatusBar backgroundColor={dynamicStyles.primaryColor} barStyle='dark-content' />}
-                <View style={[{ backgroundColor: dynamicStyles.primaryColor }, { paddingStart: 20, paddingEnd: 20, paddingBottom: 20, borderBottomStartRadius: 10, borderBottomEndRadius: 10, paddingTop: Platform.OS == 'ios' ? 20 : 20 }]}>
-                    <TouchableOpacity style={[styles['flex_direction_row']]} onPress={() => navigation.goBack()}>
-                        <Image style={[{ tintColor: dynamicStyles.secondaryColor }, { height: 15, width: 20, top: 5 }]} source={require('../assets/images/previous.png')}></Image>
-                        <Text style={[styles['margin_left_10'], { color: dynamicStyles.secondaryColor }, styles['font_size_18_bold'], Platform.OS === 'ios' && { minHeight: 25 }]}>{translate('Agronomy')}</Text>
-                    </TouchableOpacity>
-                </View>
-                <View style={stylesheetstyles.shadoww}>
-                    <CustomInputDropDown
-                        width={[styles['width_100%'], styles['margin_top_10'], styles['centerItems']]}
-                        defaultValue={selectedCrop != undefined && selectedCrop != translate('select') ? selectedCrop : translate('select')}
-                        labelName={translate('crop')}
-                        IsRequired={false}
-                        placeholder={translate('select')}
-                        onEndEditing={async event => { }}
-                        onFocus={() => {
-                            changeDropDownData(cropMastersFilter.sort((a, b) => a.displayOrder - b.displayOrder), strings.crop, selectedCrop)
-                        }}
-                    />
-                    <CustomInputDropDown
-                        width={[styles['width_100%'], styles['margin_top_5'], styles['centerItems']]}
-                        defaultValue={selectedSeason != undefined && selectedSeason != translate('select') ? selectedSeason : translate('select')}
-                        labelName={translate('season')}
-                        IsRequired={false}
-                        placeholder={translate('select')}
-                        onEndEditing={async event => { }}
-                        onFocus={() => {
-                            let filtredSeason = seasonsList?.filter((season) => {
-                                return season?.crop == selectedCrop
-                            })
-                            changeDropDownData(filtredSeason.sort((a, b) => a.displayOrder - b.displayOrder), strings.season, selectedSeason)
-                        }}
-                    />
-                    <CustomButton
-                        shouldDisable={getStatus()}
-                        onPress={handleSubmit}
-                        title={translate('submit')}
-                        margin={{ marginTop: 12, marginBottom: 4 }}
-                        buttonBg={
-                            getStatus() ? '#E5E5E5' :
-                                dynamicStyles.primaryColor}
-                        btnWidth={"100%"}
-                        titleTextColor={
-                            getStatus() ? 'white' :
-                                dynamicStyles.secondaryColor} />
-                </View>
-                {taskData && daysList != null && daysList.length > 0 && <>
-                    <View style={AgronomyStyles.calendarContainer}>
-                        <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_18_semibold']]}>
-                            {translate('Time_Line_stages')}
-                        </Text>
+               
+        <View style={[stylesheetstyles.flexFull, stylesheetstyles.gray300bg]}>
+            {Platform.OS === 'android' && <StatusBar backgroundColor={dynamicStyles.primaryColor} barStyle='dark-content' />}
+            <View style={[{ backgroundColor: dynamicStyles.primaryColor }, { borderBottomStartRadius: 10, borderBottomEndRadius: 10, padding: 15 }]}>
+                <TouchableOpacity style={[styles['flex_direction_row'], {alignItems:'center'}]} onPress={() => navigation.goBack()}>
+                    <Image style={[{ tintColor: dynamicStyles.secondaryColor }, { height: 15, width: 20 }]} source={require('../assets/images/previous.png')}></Image>
+                    <Text style={[styles['margin_left_10'], { color: dynamicStyles.secondaryColor }, styles['font_size_18_bold'], Platform.OS === 'ios' && { minHeight: 25 }]}>{translate('Agronomy')}</Text>
+                </TouchableOpacity>
+            </View>
+            <View style={stylesheetstyles.shadoww}>
+                <CustomInputDropDown
+                    width={[styles['width_100%'], styles['margin_top_10'], styles['centerItems']]}
+                    defaultValue={selectedCrop != undefined && selectedCrop != translate('select') ? selectedCrop : translate('select')}
+                    labelName={translate('crop')}
+                    IsRequired={false}
+                    placeholder={translate('select')}
+                    onEndEditing={async event => { }}
+                    onFocus={() => {
+                        changeDropDownData(cropMastersFilter.sort((a, b) => a.displayOrder - b.displayOrder), strings.crop, selectedCrop)
+                    }}
+                />
+                <CustomInputDropDown
+                    width={[styles['width_100%'], styles['margin_top_5'], styles['centerItems']]}
+                    defaultValue={selectedSeason != undefined && selectedSeason != translate('select') ? selectedSeason : translate('select')}
+                    labelName={translate('season')}
+                    IsRequired={false}
+                    placeholder={translate('select')}
+                    onEndEditing={async event => { }}
+                    onFocus={() => {
+                        let filtredSeason = seasonsList?.filter((season) => {
+                            return season?.crop == selectedCrop
+                        })
+                        changeDropDownData(filtredSeason.sort((a, b) => a.displayOrder - b.displayOrder), strings.season, selectedSeason)
+                    }}
+                />
+                <CustomButton
+                    shouldDisable={getStatus()}
+                    onPress={handleSubmit}
+                    title={translate('submit')}
+                    margin={{ marginTop: 12, marginBottom: 4 }}
+                    buttonBg={
+                        getStatus() ? '#E5E5E5' :
+                            dynamicStyles.primaryColor}
+                    btnWidth={"100%"}
+                    titleTextColor={
+                        getStatus() ? 'white' :
+                            dynamicStyles.secondaryColor} />
+            </View>
+            {taskData && daysList != null && daysList.length > 0 && <>
+                <View style={AgronomyStyles.calendarContainer}>
+                    <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_18_semibold']]}>
+                        {translate('Time_Line_stages')}
+                    </Text>
 
-                        <View style={[AgronomyStyles.monthSelector]}>
-                            {/* Left Arrow */}
-                            <TouchableOpacity
-                                style={{
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    backgroundColor: dynamicStyles.highLightedColor,
-                                    padding: 10,
-                                    borderRadius: 50,
-                                    marginRight: 8,
-                                }}
-                                activeOpacity={0.8}
-                                onPress={() => {
-                                    if (!daysList?.length) return;
-                                    const currentIndex = daysList.findIndex(
-                                        x => x.timeLineCat === selectedDayListItem.timeLineCat
-                                    );
-                                    const prevIndex = currentIndex > 0 ? currentIndex - 1 : daysList.length - 1;
-                                    setSelectedDayListItem(daysList[prevIndex]);
-                                }}
-                            >
-                                <Image
-                                    source={require("../assets/images/leftArw.png")}
-                                    style={{ height: 16, width: 16, tintColor: dynamicStyles.primaryColor }}
-                                    resizeMode="contain"
-                                />
-                            </TouchableOpacity>
+                    <View style={[AgronomyStyles.monthSelector]}>
+                        {/* Left Arrow */}
+                        <TouchableOpacity
+                            style={{
+                                alignItems: "center",
+                                justifyContent: "center",
+                                backgroundColor: dynamicStyles.highLightedColor,
+                                padding: 10,
+                                borderRadius: 50,
+                                marginRight: 8,
+                            }}
+                            activeOpacity={0.8}
+                            onPress={() => {
+                                if (!daysList?.length) return;
+                                const currentIndex = daysList.findIndex(
+                                    x => x.timeLineCat === selectedDayListItem.timeLineCat
+                                );
+                                const prevIndex = currentIndex > 0 ? currentIndex - 1 : daysList.length - 1;
+                                setSelectedDayListItem(daysList[prevIndex]);
+                            }}
+                        >
+                            <Image
+                                source={require("../assets/images/leftArw.png")}
+                                style={{ height: 16, width: 16, tintColor: dynamicStyles.primaryColor }}
+                                resizeMode="contain"
+                            />
+                        </TouchableOpacity>
 
-                            {/* Timeline FlatList */}
-                            <View style={{ flex: 1, paddingBottom: 8 }} onLayout={e => setFlatListWidth(e.nativeEvent.layout.width)}>
-                                {daysList?.length > 0 && (
-                                    <FlatList
-                                        ref={monthListRef}
-                                        horizontal
-                                        data={daysList}
-                                        keyExtractor={(item, index) => item?.timeLineCat?.toString() || index.toString()}
-                                        showsHorizontalScrollIndicator={false}
-                                        contentContainerStyle={{
-                                            alignItems: "center",
-                                            // paddingHorizontal: flatListWidth / 2 - ITEM_FULL_WIDTH / 2,
-                                        }}
-                                        initialNumToRender={Math.min(10, daysList.length)}
-                                        getItemLayout={(_, index) => ({
-                                            length: ITEM_FULL_WIDTH,
-                                            offset: ITEM_FULL_WIDTH * index,
-                                            index,
-                                        })}
-                                        renderItem={({ item, index }) => {
-                                            const isSelected = selectedDayListItem?.timeLineCat === item?.timeLineCat;
-                                            return (
-                                                <TouchableOpacity
-                                                    activeOpacity={0.8}
-                                                    onPress={() => setSelectedDayListItem(item)}
+                        {/* Timeline FlatList */}
+                        <View style={{ flex: 1, paddingBottom: 8 }} onLayout={e => setFlatListWidth(e.nativeEvent.layout.width)}>
+                            {daysList?.length > 0 && (
+                                <FlatList
+                                    ref={monthListRef}
+                                    horizontal
+                                    data={daysList}
+                                    keyExtractor={(item, index) => item?.timeLineCat?.toString() || index.toString()}
+                                    showsHorizontalScrollIndicator={false}
+                                    contentContainerStyle={{
+                                        alignItems: "center",
+                                        // paddingHorizontal: flatListWidth / 2 - ITEM_FULL_WIDTH / 2,
+                                    }}
+                                    initialNumToRender={Math.min(10, daysList.length)}
+                                    getItemLayout={(_, index) => ({
+                                        length: ITEM_FULL_WIDTH,
+                                        offset: ITEM_FULL_WIDTH * index,
+                                        index,
+                                    })}
+                                    renderItem={({ item, index }) => {
+                                        const isSelected = selectedDayListItem?.timeLineCat === item?.timeLineCat;
+                                        return (
+                                            <TouchableOpacity
+                                                activeOpacity={0.8}
+                                                onPress={() => setSelectedDayListItem(item)}
+                                            >
+                                                <View
+                                                    style={{
+                                                        width: ITEM_WIDTH,
+                                                        alignItems: "center",
+                                                        justifyContent: "center",
+                                                        marginHorizontal: ITEM_MARGIN,
+                                                    }}
                                                 >
                                                     <View
                                                         style={{
-                                                            width: ITEM_WIDTH,
-                                                            alignItems: "center",
-                                                            justifyContent: "center",
-                                                            marginHorizontal: ITEM_MARGIN,
+                                                            width: 8,
+                                                            height: 8,
+                                                            borderRadius: 4,
+                                                            backgroundColor: hasTasksForMonth(item, taskData)
+                                                                ? dynamicStyles.primaryColor
+                                                                : "transparent",
+                                                            // marginBottom: 6,
                                                         }}
+                                                    />
+                                                    <Text
+                                                        style={[
+                                                            AgronomyStyles.month,
+                                                            { fontSize: 13, fontWeight: "600" },
+                                                            {
+                                                                color: isSelected
+                                                                    ? dynamicStyles.primaryColor
+                                                                    : dynamicStyles.textColor,
+                                                                textAlign: "center",
+                                                            },
+                                                        ]}
+                                                        onLayout={e => setTextWidth(e.nativeEvent.layout.width)}
                                                     >
+                                                        {item?.timeLineCat}
+                                                    </Text>
+                                                    {isSelected && (
                                                         <View
                                                             style={{
-                                                                width: 8,
-                                                                height: 8,
-                                                                borderRadius: 4,
-                                                                backgroundColor: hasTasksForMonth(item, taskData)
-                                                                    ? dynamicStyles.primaryColor
-                                                                    : "transparent",
-                                                                // marginBottom: 6,
+                                                                width: textWidth || "40%",
+                                                                height: 2,
+                                                                borderRadius: 1,
+                                                                backgroundColor: dynamicStyles.primaryColor,
+                                                                marginTop: 4,
                                                             }}
                                                         />
-                                                        <Text
-                                                            style={[
-                                                                AgronomyStyles.month,
-                                                                { fontSize: 13, fontWeight: "600" },
-                                                                {
-                                                                    color: isSelected
-                                                                        ? dynamicStyles.primaryColor
-                                                                        : dynamicStyles.textColor,
-                                                                    textAlign: "center",
-                                                                },
-                                                            ]}
-                                                            onLayout={e => setTextWidth(e.nativeEvent.layout.width)}
-                                                        >
-                                                            {item?.timeLineCat}
-                                                        </Text>
-                                                        {isSelected && (
-                                                            <View
-                                                                style={{
-                                                                    width: textWidth || "40%",
-                                                                    height: 2,
-                                                                    borderRadius: 1,
-                                                                    backgroundColor: dynamicStyles.primaryColor,
-                                                                    marginTop: 4,
-                                                                }}
-                                                            />
-                                                        )}
-                                                    </View>
-                                                </TouchableOpacity>
-                                            );
-                                        }}
-                                    />
-                                )}
-                            </View>
-
-                            {/* Right Arrow */}
-                            <TouchableOpacity
-                                style={{
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    backgroundColor: dynamicStyles.highLightedColor,
-                                    padding: 10,
-                                    borderRadius: 50,
-                                    marginLeft: 8,
-                                }}
-                                activeOpacity={0.8}
-                                onPress={() => {
-                                    if (!daysList?.length) return;
-                                    const currentIndex = daysList.findIndex(
-                                        x => x.timeLineCat === selectedDayListItem.timeLineCat
-                                    );
-                                    const nextIndex = currentIndex < daysList.length - 1 ? currentIndex + 1 : 0;
-                                    setSelectedDayListItem(daysList[nextIndex]);
-                                }}
-                            >
-                                <Image
-                                    source={require("../assets/images/rightArw.png")}
-                                    style={{ height: 16, width: 16, tintColor: dynamicStyles.primaryColor }}
-                                    resizeMode="contain"
+                                                    )}
+                                                </View>
+                                            </TouchableOpacity>
+                                        );
+                                    }}
                                 />
-                            </TouchableOpacity>
+                            )}
                         </View>
 
-
+                        {/* Right Arrow */}
+                        <TouchableOpacity
+                            style={{
+                                alignItems: "center",
+                                justifyContent: "center",
+                                backgroundColor: dynamicStyles.highLightedColor,
+                                padding: 10,
+                                borderRadius: 50,
+                                marginLeft: 8,
+                            }}
+                            activeOpacity={0.8}
+                            onPress={() => {
+                                if (!daysList?.length) return;
+                                const currentIndex = daysList.findIndex(
+                                    x => x.timeLineCat === selectedDayListItem.timeLineCat
+                                );
+                                const nextIndex = currentIndex < daysList.length - 1 ? currentIndex + 1 : 0;
+                                setSelectedDayListItem(daysList[nextIndex]);
+                            }}
+                        >
+                            <Image
+                                source={require("../assets/images/rightArw.png")}
+                                style={{ height: 16, width: 16, tintColor: dynamicStyles.primaryColor }}
+                                resizeMode="contain"
+                            />
+                        </TouchableOpacity>
                     </View>
 
 
-                    <ScrollView contentContainerStyle={{ padding: 16 }}>
-                        {Object.entries(taskGroups).length === 0 ? (
-                            <Text style={[{ alignSelf: "center", color: "rgba(0, 0, 0, 0.3)", marginTop: 10 }, styles['font_size_14_semibold']]}>{translate('no_data_available')}</Text>
-                        ) : (
-                            Object.entries(taskGroups).map(([range, tasks]) => (
-                                <View key={range} style={{ marginBottom: 10, backgroundColor: "#fff", padding: 10, borderRadius: 10, elevation: 2, }}>
-                                    <View style={{ flexDirection: "row", alignItems: 'center' }}>
-                                        <View style={{ height: '100%', width: "1%", borderRightWidth: 1, borderColor: dynamicStyles.primaryColor }} />
-                                        <View style={{ marginLeft: 15, }}>
-                                            {range && <Text style={[{ marginBottom: 8, color: dynamicStyles.textColor }, styles['font_size_12_bold']]}>
-                                                {range}
-                                            </Text>}
-                                            {tasks.map((task, index) => (
-                                                <View key={index} style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
-                                                    {tasks.length > 1 && (
-                                                        <Text style={[{ width: 12, color: dynamicStyles.textColor }, styles['font_size_12_regular']]}>{`${index + 1}.`}</Text>
-                                                    )}
-                                                    <Text style={[{ paddingRight: 18, color: dynamicStyles.textColor }, styles['font_size_12_regular']]}>
-                                                        {task.task}
-                                                    </Text>
-                                                </View>
-                                            ))}
+                </View>
 
-                                        </View>
+
+                <ScrollView contentContainerStyle={{ padding: 16 }}>
+                    {Object.entries(taskGroups).length === 0 ? (
+                        <Text style={[{ alignSelf: "center", color: "rgba(0, 0, 0, 0.3)", marginTop: 10 }, styles['font_size_14_semibold']]}>{translate('no_data_available')}</Text>
+                    ) : (
+                        Object.entries(taskGroups).map(([range, tasks]) => (
+                            <View key={range} style={{ marginBottom: 10, backgroundColor: "#fff", padding: 10, borderRadius: 10, elevation: 2, }}>
+                                <View style={{ flexDirection: "row", alignItems: 'center' }}>
+                                    <View style={{ height: '100%', width: "1%", borderRightWidth: 1, borderColor: dynamicStyles.primaryColor }} />
+                                    <View style={{ marginLeft: 15, }}>
+                                        {range && <Text style={[{ marginBottom: 8, color: dynamicStyles.textColor }, styles['font_size_12_bold']]}>
+                                            {range}
+                                        </Text>}
+                                        {tasks.map((task, index) => (
+                                            <View key={index} style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
+                                                {tasks.length > 1 && (
+                                                    <Text style={[{ width: 12, color: dynamicStyles.textColor }, styles['font_size_12_regular']]}>{`${index + 1}.`}</Text>
+                                                )}
+                                                <Text style={[{ paddingRight: 18, color: dynamicStyles.textColor }, styles['font_size_12_regular']]}>
+                                                    {task.task}
+                                                </Text>
+                                            </View>
+                                        ))}
+
                                     </View>
                                 </View>
-                            ))
-                        )}
-                    </ScrollView>
-                </>}
-            </View>
+                            </View>
+                        ))
+                    )}
+                </ScrollView>
+            </>}
+
             {
                 showDropDowns &&
                 <CustomListViewModal
@@ -579,7 +579,7 @@ const Agronomy = () => {
 
             }
             {loading && <CustomLoader loading={loading} message={loadingMessage} loaderImage={loaderImage} />}
-        </SafeAreaView>
+        </View>
     )
 }
 
