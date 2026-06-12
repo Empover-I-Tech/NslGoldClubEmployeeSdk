@@ -57,8 +57,14 @@ const RetailerServicesModal = ({
         </View>
 
         <Text
-          style={[styles.itemText, { color: item.fontColor || '#333', flexShrink: 1, lineHeight: 22 }]}
-          numberOfLines={2}
+          style={{
+            fontSize: 11,
+            textAlign: 'center',
+            color: item.fontColor || '#333',
+            padding: 4,
+            flex: 1,
+            includeFontPadding: true,
+          }}
         >
           {translate(item?.translatedTitle)}
         </Text>
@@ -200,7 +206,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     marginBottom: 8,
     color: '#000',
-    lineHeight : 22
+    lineHeight: 22
   },
 
   itemContainer: {
@@ -221,11 +227,6 @@ const styles = StyleSheet.create({
   icon: {
     width: 40,
     height: 40,
-  resizeMode: 'contain'
-  },
-
-  itemText: {
-    fontSize: 11,
-    textAlign: 'center'
+    resizeMode: 'contain'
   }
 });

@@ -1453,46 +1453,46 @@ function Dashboard({ route }) {
       console.error(err)
     }
   }
-  const requestGalleryPermission = async () => {
-    try {
-      if (Platform.OS == 'ios') {
-        let status = await check(PERMISSIONS.IOS.CAMERA)
-        if (status == "blocked" || status == "denied") {
-          showAlertWithMessage(translate('alert'), true, true, translate('camera_permission_ios'), true, true, translate('enable'), translate('cancel'))
-          return;
-        }
-        openImagePickerProfilePic();
-      } else {
-        const androidVersion = DeviceInfo.getSystemVersion();
+  // const requestGalleryPermission = async () => {
+  //   try {
+  //     if (Platform.OS == 'ios') {
+  //       let status = await check(PERMISSIONS.IOS.CAMERA)
+  //       if (status == "blocked" || status == "denied") {
+  //         showAlertWithMessage(translate('alert'), true, true, translate('camera_permission_ios'), true, true, translate('enable'), translate('cancel'))
+  //         return;
+  //       }
+  //       openImagePickerProfilePic();
+  //     } else {
+  //       const androidVersion = DeviceInfo.getSystemVersion();
 
-        if (androidVersion >= 13) {
+  //       if (androidVersion >= 13) {
 
-          const permissionsToRequest = [
-            PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES
-          ];
+  //         const permissionsToRequest = [
+  //           PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES
+  //         ];
 
-          let grantedPermissions = await requestMultiplePermissions(permissionsToRequest)
+  //         let grantedPermissions = await requestMultiplePermissions(permissionsToRequest)
 
-          if (grantedPermissions[permissionsToRequest[0]] != "granted") {
-            return
-          }
-        } else {
+  //         if (grantedPermissions[permissionsToRequest[0]] != "granted") {
+  //           return
+  //         }
+  //       } else {
 
-          const permissionsToRequest = [
-            PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-            PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-          ];
-          let grantedPermissions = await requestMultiplePermissions(permissionsToRequest)
-          if (grantedPermissions[permissionsToRequest[0]] != "granted" || grantedPermissions[permissionsToRequest[1]] != "granted") {
-            return
-          }
-        }
-        openImagePickerProfilePic();
-      }
-    } catch (error) {
-      console.error('Error requesting camera permission:', error);
-    }
-  }
+  //         const permissionsToRequest = [
+  //           PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+  //           PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+  //         ];
+  //         let grantedPermissions = await requestMultiplePermissions(permissionsToRequest)
+  //         if (grantedPermissions[permissionsToRequest[0]] != "granted" || grantedPermissions[permissionsToRequest[1]] != "granted") {
+  //           return
+  //         }
+  //       }
+  //       openImagePickerProfilePic();
+  //     }
+  //   } catch (error) {
+  //     console.error('Error requesting camera permission:', error);
+  //   }
+  // }
 
   const showUploadedImage = () => {
     return (

@@ -1657,18 +1657,6 @@ function MyAccount({ route }) {
           onSelectedVillage={(item) => onSelectedVillage(item)}
           closeModal={() => setShowDropDowns(false)} />}
 
-      {/* {uploadImageAlert && (
-        <CustomUploadDocumentAlert
-          onPressClose={handleCancelAlert}
-          documentTitle={"GST"}
-          documentName={documentName}
-          selectedImageUri={documentUri}
-          onPressUploadButton={handleUploadButtonAction}
-          documentButtonText={translate('upload')}
-          documentObject={handleDocumentObj}
-          moduleName='ds'
-        />
-      )} */}
       {!role && !loading && networkStatus && <CustomLoader loading={true} message={translate('please_wait_getting_data')} loaderImage={loaderImage} />}
       {loading && <CustomLoader loading={loading} message={loadingMessage} loaderImage={loaderImage} />}
       {successLoading && <CustomSuccessLoader loading={successLoading} message={successLoadingMessage} />}

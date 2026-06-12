@@ -2,11 +2,11 @@ export const ANDROID_STORE_LINK = "https://play.google.com/store/apps/details?id
 export const IOS_STORE_LINK = "https://apps.apple.com/us/app/nsl-gold-club/id6748138634";
 
 export const FIREBASE_LOG = true;
-// export const APP_ENV_PROD = true; // Live
+// export let APP_ENV_PROD = true; // Live
 export let APP_ENV_PROD = false; // UAT
- 
+
 //This is for SDK Purpose
-export const setEnvironment = (buildType) => { 
+export const setEnvironment = (buildType) => {
     APP_ENV_PROD = buildType === 'PROD';
 
     console.log('================================');
@@ -130,6 +130,7 @@ export const configs = {
 
 
 
+
     // BASE_URL: APP_ENV_PROD ? 'https://nvmretailpro.com:8443/rest/nsl/' : 'http://3.110.159.82:8080/vyapar_mitra/rest/nsl/',
     // TERMS_CONDIOTNS_URL: APP_ENV_PROD ? "https://nvmretailpro.com/Terms-conditions.html" : "http://nvmuat.empover.com:8080/Terms-conditions.html",
     // PRIVACY_POLICY_URL: "http://nvmuat.empover.com:8080/Privacy-Policy.html",
@@ -145,7 +146,7 @@ export const configs = {
     AUTH: {
         SEND_OTP: 'sendOTP',
         VERIFY_OTP: 'validateOTP_v1',
-        VALIDATE_SDK_LOGIN : 'validateGCSDKAuthentication',
+        VALIDATE_SDK_LOGIN: 'validateGCSDKAuthentication',
         RESEND_OTP: 'reSendOTP',
         SIGNUP: 'addRetailer_v1',
         FORCE_UPDATE: 'Login/ForceUpdate',
@@ -308,7 +309,7 @@ export const configs = {
     KNOWLEDGECENTREADVCANCED: {
         // getAdvancedKnowledgeCenterDataByCompany: "getAdvancedKnowledgeCenterDataByCompany_v1",
         getAdvancedKnowledgeCenterDataByCompany: "getCropsListForAdvancedKnowledgeCenter",
-        getAdvancedKnowledgeCenterDataByCompany_DOC : "getAdvancedKnowledgeCenterDataByCompany_v2"
+        getAdvancedKnowledgeCenterDataByCompany_DOC: "getAdvancedKnowledgeCenterDataByCompany_v2"
     },
     EMPLOYEEDASHBOARD: {
         DASHBOARD_SUMMARY_API: 'getDashboardForCropInsightsAndSummery',

@@ -62,7 +62,7 @@ const CustomBorderInputDropDown = (props) => {
             style={[
                 styles['centerItems'],
                 props.width !== undefined ? props.width : styles['width_93%'],
-                { left: -3, minHeight:50 }
+                { left: -3, minHeight:55 }
             ]}>
             <View style={[styles['margin_bottom_5']]}>
                 {props.labelName !== undefined && (

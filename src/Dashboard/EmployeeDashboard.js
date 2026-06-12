@@ -968,7 +968,7 @@ function EmployeeDashboard({ route }) {
       else if (item.title == strings.Tool) {
         navigation.navigate('PlanningTool')
       }
-      else if ((item.title == strings.redemHistory) || (item.title == strings.redemHistory_title)) {
+      else if ((item.title == strings.redemHistory) || (item.title == strings.redemHistory_title) || (item?.title == strings.redemptions_history)) {
         navigation.navigate('EmployeeRedemptionsHistory', { roleid: (await retrieveData(ROLEID)) })
       }
     } else {

@@ -45,20 +45,14 @@ const CustomGalleryPopup = ({ showOrNot, onPressingOut, onPressingGallery, onPre
       if (Platform.OS === 'android') {
         const sdkVersion = Platform.Version;
 
-        // Request camera permission
         const cameraResult = await PermissionsAndroid.request(
           PermissionsAndroid.PERMISSIONS.CAMERA
         );
 
         let storageResult = PermissionsAndroid.RESULTS.GRANTED;
 
-        // For Android 13+ request READ_MEDIA_IMAGES
-        if (sdkVersion >= 33) {
-          storageResult = await PermissionsAndroid.request(
-            PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES
-          );
-        } else if (sdkVersion >= 23) {
-          // For Android 6 to 12, request WRITE_EXTERNAL_STORAGE
+        // Only Android 6-9 need storage permission
+        if (sdkVersion >= 23 && sdkVersion < 29) {
           storageResult = await PermissionsAndroid.request(
             PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
           );
@@ -68,22 +62,20 @@ const CustomGalleryPopup = ({ showOrNot, onPressingOut, onPressingGallery, onPre
           cameraResult === PermissionsAndroid.RESULTS.GRANTED &&
           storageResult === PermissionsAndroid.RESULTS.GRANTED
         ) {
-          onPressingCamera(); // Call camera function
+          onPressingCamera();
         } else if (
           cameraResult === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN ||
           storageResult === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN
         ) {
-          showPermissionAlert('camera'); // Suggest open settings
+          showPermissionAlert('camera');
         } else {
-          showPermissionAlert('camera'); // Simple permission denied alert
+          showPermissionAlert('camera');
         }
       } else if (Platform.OS === 'ios') {
         const status = await request(PERMISSIONS.IOS.CAMERA);
 
         if (status === RESULTS.GRANTED) {
           onPressingCamera();
-        } else if (status === RESULTS.BLOCKED) {
-          showPermissionAlert('camera');
         } else {
           showPermissionAlert('camera');
         }
@@ -97,16 +89,17 @@ const CustomGalleryPopup = ({ showOrNot, onPressingOut, onPressingGallery, onPre
   const requestGalleryPermission = async () => {
     try {
       if (Platform.OS === 'android') {
-        let permission = Platform.Version >= 33
-          ? PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES
-          : PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE;
+        onPressingGallery();
+        // let permission = Platform.Version >= 33
+        //   ? PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES
+        //   : PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE;
 
-        const result = await PermissionsAndroid.request(permission);
-        if (result === PermissionsAndroid.RESULTS.GRANTED) {
-          onPressingGallery();
-        } else {
-          showPermissionAlert('gallery');
-        }
+        // const result = await PermissionsAndroid.request(permission);
+        // if (result === PermissionsAndroid.RESULTS.GRANTED) {
+        //   onPressingGallery();
+        // } else {
+        //   showPermissionAlert('gallery');
+        // }
       } else if (Platform.OS === 'ios') {
         const status = await request(PERMISSIONS.IOS.PHOTO_LIBRARY);
         if (status === RESULTS.GRANTED || status === RESULTS.LIMITED) {

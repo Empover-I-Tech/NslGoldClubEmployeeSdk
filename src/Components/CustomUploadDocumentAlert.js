@@ -72,13 +72,14 @@ const CustomUploadDocumentAlert = ({ onPressClose, documentTitle, documentButton
         if (Platform.OS == 'android') {
             const androidVersion = await DeviceInfo.getSystemVersion();
             if (androidVersion >= 13) {
-                var result = await PermissionsAndroid.requestMultiple([PermissionsAndroid.PERMISSIONS.CAMERA, PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES]);
-                if (result['android.permission.CAMERA'] && result['android.permission.READ_MEDIA_IMAGES']) {
-                    // pickItemToUpload()
-                    setSelectionModal(true)
-                } else {
-                    requestPermissions()
-                }
+                 setSelectionModal(true)
+                // var result = await PermissionsAndroid.requestMultiple([PermissionsAndroid.PERMISSIONS.CAMERA, PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES]);
+                // if (result['android.permission.CAMERA'] && result['android.permission.READ_MEDIA_IMAGES']) {
+                //     // pickItemToUpload()
+                //     setSelectionModal(true)
+                // } else {
+                //     requestPermissions()
+                // }
             } else {
                 var result = await PermissionsAndroid.requestMultiple([PermissionsAndroid.PERMISSIONS.CAMERA, PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE, PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE]);
                 if (result['android.permission.CAMERA'] && result['android.permission.READ_EXTERNAL_STORAGE'] && result['android.permission.WRITE_EXTERNAL_STORAGE'] === 'granted') {
@@ -166,37 +167,37 @@ const CustomUploadDocumentAlert = ({ onPressClose, documentTitle, documentButton
             let storagePermission;
             const androidVersion = DeviceInfo.getSystemVersion();
 
-            if (androidVersion >= 13) {
+            // if (androidVersion >= 13) {
 
-                const permissionsToRequest = [
-                    PermissionsAndroid.PERMISSIONS.CAMERA,
-                    PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES
-                ];
+            //     const permissionsToRequest = [
+            //         PermissionsAndroid.PERMISSIONS.CAMERA,
+            //         // PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES
+            //     ];
 
-                let grantedPermissions = await requestMultiplePermissions(permissionsToRequest)
-                console.log("grantedPermissions---1", JSON.stringify(grantedPermissions))
-                console.log("grantedPermissions---1", JSON.stringify(grantedPermissions[permissionsToRequest[0]]))
-                console.log("grantedPermissions---2", JSON.stringify(grantedPermissions[permissionsToRequest[1]]))
+            //     let grantedPermissions = await requestMultiplePermissions(permissionsToRequest)
+            //     console.log("grantedPermissions---1", JSON.stringify(grantedPermissions))
+            //     console.log("grantedPermissions---1", JSON.stringify(grantedPermissions[permissionsToRequest[0]]))
+            //     console.log("grantedPermissions---2", JSON.stringify(grantedPermissions[permissionsToRequest[1]]))
 
-                if (grantedPermissions[permissionsToRequest[0]] != "granted" || grantedPermissions[permissionsToRequest[1]] != "granted") {
-                    return
-                }
-            } else {
+            //     if (grantedPermissions[permissionsToRequest[0]] != "granted" || grantedPermissions[permissionsToRequest[1]] != "granted") {
+            //         return
+            //     }
+            // } else {
 
-                const permissionsToRequest = [
-                    PermissionsAndroid.PERMISSIONS.CAMERA,
-                    PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-                    PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
-                ];
-                let grantedPermissions = await requestMultiplePermissions(permissionsToRequest)
-                console.log("grantedPermissions---1", JSON.stringify(grantedPermissions))
-                console.log("grantedPermissions---1", JSON.stringify(grantedPermissions[permissionsToRequest[0]]))
-                console.log("grantedPermissions---2", JSON.stringify(grantedPermissions[permissionsToRequest[1]]))
-                if (grantedPermissions[permissionsToRequest[0]] != "granted" || grantedPermissions[permissionsToRequest[1]] != "granted"
-                    || grantedPermissions[permissionsToRequest[2]] != "granted") {
-                    return
-                }
-            }
+            //     const permissionsToRequest = [
+            //         PermissionsAndroid.PERMISSIONS.CAMERA,
+            //         PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+            //         PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
+            //     ];
+            //     let grantedPermissions = await requestMultiplePermissions(permissionsToRequest)
+            //     console.log("grantedPermissions---1", JSON.stringify(grantedPermissions))
+            //     console.log("grantedPermissions---1", JSON.stringify(grantedPermissions[permissionsToRequest[0]]))
+            //     console.log("grantedPermissions---2", JSON.stringify(grantedPermissions[permissionsToRequest[1]]))
+            //     if (grantedPermissions[permissionsToRequest[0]] != "granted" || grantedPermissions[permissionsToRequest[1]] != "granted"
+            //         || grantedPermissions[permissionsToRequest[2]] != "granted") {
+            //         return
+            //     }
+            // }
         }
 
         var image = await ImageCropPicker.openCamera({
@@ -230,15 +231,15 @@ const CustomUploadDocumentAlert = ({ onPressClose, documentTitle, documentButton
 
                 const permissionsToRequest = [
                     PermissionsAndroid.PERMISSIONS.CAMERA,
-                    PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES
+                    // PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES
                 ];
 
                 let grantedPermissions = await requestMultiplePermissions(permissionsToRequest)
                 console.log("grantedPermissions---1", JSON.stringify(grantedPermissions))
                 console.log("grantedPermissions---1", JSON.stringify(grantedPermissions[permissionsToRequest[0]]))
-                console.log("grantedPermissions---2", JSON.stringify(grantedPermissions[permissionsToRequest[1]]))
+                // console.log("grantedPermissions---2", JSON.stringify(grantedPermissions[permissionsToRequest[1]]))
 
-                if (grantedPermissions[permissionsToRequest[0]] != "granted" || grantedPermissions[permissionsToRequest[1]] != "granted") {
+                if (grantedPermissions[permissionsToRequest[0]] != "granted") {
                     return
                 }
             } else {

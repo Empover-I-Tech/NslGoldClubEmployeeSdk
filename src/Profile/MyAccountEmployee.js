@@ -1397,18 +1397,6 @@ function MyAccountEmployee() {
                     onSelectedGender={(item) => { setSelectedGender(item.name); setShowDropDowns(false); }}
                     closeModal={() => setShowDropDowns(false)} />}
 
-            {/* {uploadImageAlert && (
-        <CustomUploadDocumentAlert
-          onPressClose={handleCancelAlert}
-          documentTitle={"GST"}
-          documentName={documentName}
-          selectedImageUri={documentUri}
-          onPressUploadButton={handleUploadButtonAction}
-          documentButtonText={translate('upload')}
-          documentObject={handleDocumentObj}
-          moduleName='ds'
-        />
-      )} */}
 
             {loading && <CustomLoader loading={loading} message={loadingMessage} loaderImage={loaderImage} />}
             {successLoading && <CustomSuccessLoader loading={successLoading} message={successLoadingMessage} />}

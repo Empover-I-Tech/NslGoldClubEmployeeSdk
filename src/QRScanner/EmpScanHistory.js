@@ -760,6 +760,42 @@ function EmpScanHistory({ route }) {
         )
     }
 
+    const HeaderCell = ({
+        title,
+        showBorder = false,
+        backgroundColor = '#FFFFFF',
+    }) => {
+        return (
+            <View
+                style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    paddingHorizontal: 4,
+                    paddingVertical: 8,
+                    backgroundColor,
+                    borderRightWidth: showBorder ? 0.5 : 0,
+                    borderColor: '#B4B4B4',
+                }}
+            >
+                <Text
+                    style={[
+                        styles['text_color_black'],
+                        styles['text_align_center'],
+                        styles['font_size_13_semibold'],
+                        {
+                            flexShrink: 1,
+                            width: '100%',
+                            includeFontPadding: false, // Android
+                        },
+                    ]}
+                >
+                    {title}
+                </Text>
+            </View>
+        );
+    };
+
     const checkPagesDisplying = () => {
         if (showScanData) {
             setShowScanData(false)
@@ -1035,38 +1071,149 @@ function EmpScanHistory({ route }) {
 
                                     )}
 
-                            {showCropData && cropHistoryData?.length > 0 &&
-                                <View style={[{ height: 60, width: '100%', flexDirection: 'row', flexGrow: 1, justifyContent: 'space-between', borderTopWidth: 0.5, borderColor: '#B4B4B4', }]}>
-                                    <View style={[styles['centerItems'], { width: '22%', borderRightWidth: 0.5, height: '100%', borderColor: '#B4B4B4', padding: 2 }]}>
-                                        <Text style={[styles['text_color_black'], styles['text_align_center'], styles['font_size_13_semibold']]}>{translate('totalPoints')}</Text>
-                                    </View>
-                                    <View style={[styles['centerItems'], { width: '22%', borderRightWidth: 0.5, height: '100%', borderColor: '#B4B4B4' }]}>
-                                        <Text style={[styles['text_color_black'], styles['text_align_center'], styles['font_size_13_semibold']]}>{translate('bonus_points')}</Text>
-                                    </View>
-                                    <View style={[styles['centerItems'], { width: '22%', borderRightWidth: 0.5, height: '100%', borderColor: '#B4B4B4' }]}>
-                                        <Text style={[styles['text_color_black'], styles['text_align_center'], styles['font_size_13_semibold']]}>{translate('signUp_bonus_points')}</Text>
-                                    </View>
-                                    <View style={[styles['centerItems'], { width: '22%', padding: 2 }]}>
-                                        <Text style={[styles['text_color_black'], styles['text_align_center'], styles['font_size_13_semibold']]}>{translate('grand_total')}</Text>
-                                    </View>
-                                </View>}
+                            {showCropData && cropHistoryData?.length > 0 && (
+                                <View
+                                    style={{
+                                        minHeight: 70,
+                                        width: '100%',
+                                        flexDirection: 'row',
+                                        borderTopWidth: 0.5,
+                                        borderColor: '#B4B4B4',
+                                    }}
+                                >
+                                    <HeaderCell
+                                        title={translate('totalPoints')}
+                                        showBorder={true}
+                                    />
 
-                            {showCropData && cropHistoryData?.length > 0 &&
-                                <View style={[{ height: 50, width: '100%', flexDirection: 'row', flexGrow: 1, justifyContent: 'space-between', borderTopWidth: 0.5, borderColor: '#B4B4B4' }]}>
-                                    <View style={[styles['centerItems'], { width: '22%', borderRightWidth: 0.5, height: '100%', borderColor: '#B4B4B4' }]}>
-                                        <Text style={[styles['text_color_black'], styles['text_align_center'], styles['font_size_13_semibold']]}>{cropHistoryData != undefined ? cropHistoryData.reduce((acc, crop) => acc + crop.pointsEarned, 0) : 0}</Text>
+                                    <HeaderCell
+                                        title={translate('bonus_points')}
+                                        showBorder={true}
+                                    />
+
+                                    <HeaderCell
+                                        title={translate('signUp_bonus_points')}
+                                        showBorder={true}
+                                    />
+
+                                    <HeaderCell
+                                        title={translate('grand_total')}
+                                        showBorder={false}
+                                    />
+                                </View>
+                            )}
+
+                            {showCropData && cropHistoryData?.length > 0 && (
+                                <View
+                                    style={{
+                                        minHeight: 50,
+                                        width: '100%',
+                                        flexDirection: 'row',
+                                        borderTopWidth: 0.5,
+                                        borderColor: '#B4B4B4',
+                                    }}
+                                >
+                                    <View
+                                        style={[
+                                            styles['centerItems'],
+                                            {
+                                                flex: 1,
+                                                borderRightWidth: 0.5,
+                                                borderColor: '#B4B4B4',
+                                                paddingVertical: 8,
+                                            },
+                                        ]}
+                                    >
+                                        <Text
+                                            style={[
+                                                styles['text_color_black'],
+                                                styles['text_align_center'],
+                                                styles['font_size_13_semibold'],
+                                            ]}
+                                        >
+                                            {cropHistoryData
+                                                ? cropHistoryData.reduce(
+                                                    (acc, crop) => acc + crop.pointsEarned,
+                                                    0,
+                                                )
+                                                : 0}
+                                        </Text>
                                     </View>
-                                    <View style={[styles['centerItems'], { width: '22%', borderRightWidth: 0.5, height: '100%', borderColor: '#B4B4B4' }]}>
-                                        <Text style={[styles['text_color_black'], styles['text_align_center'], styles['font_size_13_semibold']]}>{bonusPoints}</Text>
+
+                                    <View
+                                        style={[
+                                            styles['centerItems'],
+                                            {
+                                                flex: 1,
+                                                borderRightWidth: 0.5,
+                                                borderColor: '#B4B4B4',
+                                                paddingVertical: 8,
+                                            },
+                                        ]}
+                                    >
+                                        <Text
+                                            style={[
+                                                styles['text_color_black'],
+                                                styles['text_align_center'],
+                                                styles['font_size_13_semibold'],
+                                            ]}
+                                        >
+                                            {bonusPoints}
+                                        </Text>
                                     </View>
-                                    <View style={[styles['centerItems'], { width: '22%', borderRightWidth: 0.5, height: '100%', borderColor: '#B4B4B4' }]}>
-                                        <Text style={[styles['text_color_black'], styles['text_align_center'], styles['font_size_13_semibold']]}>{signUpBonusPoints}</Text>
+
+                                    <View
+                                        style={[
+                                            styles['centerItems'],
+                                            {
+                                                flex: 1,
+                                                borderRightWidth: 0.5,
+                                                borderColor: '#B4B4B4',
+                                                paddingVertical: 8,
+                                            },
+                                        ]}
+                                    >
+                                        <Text
+                                            style={[
+                                                styles['text_color_black'],
+                                                styles['text_align_center'],
+                                                styles['font_size_13_semibold'],
+                                            ]}
+                                        >
+                                            {signUpBonusPoints}
+                                        </Text>
                                     </View>
-                                    <View style={[styles['centerItems'], { width: '22%' }]}>
-                                        <Text style={[styles['text_color_black'], styles['text_align_center'], styles['font_size_13_semibold']]}>{(Number.parseInt(signUpBonusPoints) + Number.parseInt(bonusPoints) + Number.parseInt(cropHistoryData != undefined ? cropHistoryData.reduce((acc, crop) => acc + crop.pointsEarned, 0) : 0) || 0).toString()}</Text>
+
+                                    <View
+                                        style={[
+                                            styles['centerItems'],
+                                            {
+                                                flex: 1,
+                                                paddingVertical: 8,
+                                            },
+                                        ]}
+                                    >
+                                        <Text
+                                            style={[
+                                                styles['text_color_black'],
+                                                styles['text_align_center'],
+                                                styles['font_size_13_semibold'],
+                                            ]}
+                                        >
+                                            {(
+                                                (parseInt(signUpBonusPoints || '0', 10) || 0) +
+                                                (parseInt(bonusPoints || '0', 10) || 0) +
+                                                (cropHistoryData
+                                                    ? cropHistoryData.reduce(
+                                                        (acc, crop) => acc + crop.pointsEarned,
+                                                        0,
+                                                    )
+                                                    : 0)
+                                            ).toString()}
+                                        </Text>
                                     </View>
                                 </View>
-                            }
+                            )}
 
                         </View>
                     </View>
