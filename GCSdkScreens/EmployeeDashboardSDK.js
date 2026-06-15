@@ -901,14 +901,6 @@ function EmployeeDashboardSDK({ route }) {
     setShowAlert(false)
   }
 
-  const profileButtonPress = async () => {
-    if (networkStatus) {
-      navigation.navigate('Profile', { ekycStatus: '' })
-    } else {
-      SimpleToast.show(translate('no_internet_conneccted'))
-    }
-  }
-
   const notificationBtnClicked = async () => {
     if (networkStatus) {
       navigation.navigate('Notifications')
@@ -968,17 +960,10 @@ function EmployeeDashboardSDK({ route }) {
         requestPermissionsProductScan()
       }
       else if (item.title == strings.scan_history) {
-        // navigation.navigate('EmployeeScanHistory', { roleid: (await retrieveData(ROLEID)) })
         navigation.navigate('EmpScanHistory', { roleid: (await retrieveData(ROLEID)) })
       }
       else if (item.title == strings.helpCenter || item?.title == strings.HelpDesk) {
         navigation.navigate('HelpDesk')
-      }
-      else if (item.title == strings.DipstickSurvey) {
-        navigation.navigate('DipstickSurvey')
-      }
-      else if (item.title == strings.Tool) {
-        navigation.navigate('PlanningTool')
       }
       else if ((item.title == strings.redemHistory) || (item.title == strings.redemHistory_title)) {
         navigation.navigate('EmployeeRedemptionsHistory', { roleid: (await retrieveData(ROLEID)) })
