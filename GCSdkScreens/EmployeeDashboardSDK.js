@@ -29,7 +29,6 @@ import { GetComplaintsApiCallGlobal, uploadAllComplaintsGlobal } from '../src/Pr
 import { GetFAQDATA } from '../src/Profile/FAQ';
 import { getDataOfScanHistory, getProgramsList } from '../src/QRScanner/ScanHistory';
 import { getMasterForProgramDetails } from '../src/Dashboard/ProgramDetails';
-import { getCompaniesListPlanningTool, getCropsListPlanningTool, getExistedRetailersDataPlanningTOol, getHybridsListPlanningTool, saveAPIPlanningTool } from '../src/Dashboard/PlanningTool';
 import { getYieldCalcMasters, SaveYieldCalcValues } from '../src/Dashboard/YieldCalculator';
 import { getFertilizerCalcRes, getMastersFertilizer } from '../src/Dashboard/FertilizerCalculator';
 import { getMastersSeedCalc, saveSavedSeedCalData } from '../src/Dashboard/SeedCalculator';
@@ -688,21 +687,6 @@ function EmployeeDashboardSDK({ route }) {
       } else {
         // masters call for yield calc
         getYieldCalcMasters()
-      }
-
-
-      // 4. planning tool
-      const offlineRetailerEntriesData = realm.objects('finalRetailerEntries');
-      getCropsListPlanningTool()
-      getHybridsListPlanningTool()
-      getCompaniesListPlanningTool()
-      if (offlineRetailerEntriesData.length !== 0) {
-        console.log('offline data exists so----------------------------- saving in online now', offlineRetailerEntriesData)
-        let dataOfRetailerEntriesData = JSON.parse(offlineRetailerEntriesData[0]?.finalRetailerEntriesData);
-        saveAPIPlanningTool(dataOfRetailerEntriesData, dispatch)
-      } else {
-        console.log('offline data  doesnt exists so calling get api')
-        getExistedRetailersDataPlanningTOol()
       }
 
 
