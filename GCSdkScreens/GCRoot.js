@@ -11,9 +11,9 @@ import {
 
 import GCNavigator from './GCNavigator';
 import SDKNetworkHandler from './SDKNetworkHandler';
-import { initLocalisation } from '../Localisation/Localisation';
-import store from '../redux/store/store';
-import { getCompanyStyles } from '../redux/store/slices/CompanyStyleSlice';
+import { initLocalisation } from '../src/Localisation/Localisation';
+import store from '../src/redux/store/store';
+import { getCompanyStyles } from '../src//redux/store/slices/CompanyStyleSlice';
 
 const RootContent = (props) => {
   const companyStyle = useSelector(getCompanyStyles);

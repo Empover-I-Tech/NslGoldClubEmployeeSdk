@@ -1,48 +1,48 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { View, Platform, StatusBar, Text, Image, AppState, Dimensions, Keyboard, TouchableOpacity, ScrollView, FlatList, ImageBackground, PermissionsAndroid, Modal, Linking, Alert, StyleSheet, ActivityIndicator } from 'react-native';
-import { strings } from '../strings/strings';
-import { Colors } from '../assets/Utils/Color';
-import { DEVICE_TOKEN, EDITDATA, MOBILE_NUMBER, NAVIGATE_TO_CLASS, POPUP_SHOWN_DATE, PROFILEIMAGE, ROLEID, TERMS_CONDITIONS, USERMENU, USER_ID, USER_NAME, checkIfGpsEnabled, compareVersions, getAppVersion, getBuildNumber, readFileToBase64, retrieveData, storeData, traverseAndReplaceUrls } from '../assets/Utils/Utils';
+import { strings } from '../src/strings/strings';
+import { Colors } from '../src/assets/Utils/Color';
+import { DEVICE_TOKEN, EDITDATA, MOBILE_NUMBER, NAVIGATE_TO_CLASS, POPUP_SHOWN_DATE, PROFILEIMAGE, ROLEID, TERMS_CONDITIONS, USERMENU, USER_ID, USER_NAME, checkIfGpsEnabled, compareVersions, getAppVersion, getBuildNumber, readFileToBase64, retrieveData, storeData, traverseAndReplaceUrls } from '../src/assets/Utils/Utils';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import CustomAlert from '../Components/CustomAlert';
-import CustomLoader from '../Components/CustomLoader';
-import { GetApiHeaders, GetRequest, PostRequest, getNetworkStatus } from '../NetworkUtils/NetworkUtils';
-import { APP_ENV_PROD, FIREBASE_VERSION_COLLECTION_NAME, FIREBASE_VERSION_DOC_ID, HTTP_FORBIDDEN, HTTP_OK, IOS_STORE_LINK, configs } from '../helpers/URLConstants';
+import CustomAlert from '../src/Components/CustomAlert';
+import CustomLoader from '../src/Components/CustomLoader';
+import { GetApiHeaders, GetRequest, PostRequest, getNetworkStatus } from '../src/NetworkUtils/NetworkUtils';
+import { APP_ENV_PROD, FIREBASE_VERSION_COLLECTION_NAME, FIREBASE_VERSION_DOC_ID, HTTP_FORBIDDEN, HTTP_OK, IOS_STORE_LINK, configs } from '../src/helpers/URLConstants';
 import SimpleToast from 'react-native-simple-toast';
 import { useDispatch, useSelector } from 'react-redux';
-import CustomCircularImageView from '../Components/CustomCircularImageView';
+import CustomCircularImageView from '../src/Components/CustomCircularImageView';
 import { PERMISSIONS, request } from 'react-native-permissions';
 import messaging from '@react-native-firebase/messaging';
 // import firestore from '@react-native-firebase/firestore';
-import { changeLanguage, translate } from '../Localisation/Localisation';
-import { getCompanyStyles } from '../redux/store/slices/CompanyStyleSlice';
+import { changeLanguage, translate } from '../src/Localisation/Localisation';
+import { getCompanyStyles } from '../src/redux/store/slices/CompanyStyleSlice';
 import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
-import { setLocation } from '../redux/store/slices/locationSlice';
+import { setLocation } from '../src/redux/store/slices/locationSlice';
 import Geolocation from 'react-native-geolocation-service';
-import { FontForWeight } from '../assets/fonts/fonts';
-import MediaModal from '../Modals/MediaModal';
+import { FontForWeight } from '../src/assets/fonts/fonts';
+import MediaModal from '../src/Modals/MediaModal';
 const { height, width } = Dimensions.get('window');
-import RetailerServicesModal from '../Components/RetailerServicesModal';
-import { getCropsListMasterProducts, getOfflineProductsData } from '../Products/Products';
-import { GetMastersComplaint } from '../Profile/Complaint';
-import { GetComplaintsApiCallGlobal, uploadAllComplaintsGlobal } from '../Profile/HelpDesk';
-import { GetFAQDATA } from '../Profile/FAQ';
-import { getDataOfScanHistory, getProgramsList } from '../QRScanner/ScanHistory';
-import { getMasterForProgramDetails } from '../Dashboard/ProgramDetails';
-import { getCompaniesListPlanningTool, getCropsListPlanningTool, getExistedRetailersDataPlanningTOol, getHybridsListPlanningTool, saveAPIPlanningTool } from '../Dashboard/PlanningTool';
-import { getYieldCalcMasters, SaveYieldCalcValues } from '../Dashboard/YieldCalculator';
-import { getFertilizerCalcRes, getMastersFertilizer } from '../Dashboard/FertilizerCalculator';
-import { getMastersSeedCalc, saveSavedSeedCalData } from '../Dashboard/SeedCalculator';
-import EmployeeActivityAlertModal from '../Modals/EmployeeActivityAlertModal';
-import CustomSuccessLoader from '../Components/CustomSuccessLoader';
-import { setNetworkConnectionStatus } from '../redux/store/slices/NetworkSlice';
-import realm from '../realmOffline/realmConfig';
-import { selectUser } from '../redux/store/slices/UserSlice';
+import RetailerServicesModal from '../src/Components/RetailerServicesModal';
+import { getCropsListMasterProducts, getOfflineProductsData } from '../src/Products/Products';
+import { GetMastersComplaint } from '../src/Profile/Complaint';
+import { GetComplaintsApiCallGlobal, uploadAllComplaintsGlobal } from '../src/Profile/HelpDesk';
+import { GetFAQDATA } from '../src/Profile/FAQ';
+import { getDataOfScanHistory, getProgramsList } from '../src/QRScanner/ScanHistory';
+import { getMasterForProgramDetails } from '../src/Dashboard/ProgramDetails';
+import { getCompaniesListPlanningTool, getCropsListPlanningTool, getExistedRetailersDataPlanningTOol, getHybridsListPlanningTool, saveAPIPlanningTool } from '../src/Dashboard/PlanningTool';
+import { getYieldCalcMasters, SaveYieldCalcValues } from '../src/Dashboard/YieldCalculator';
+import { getFertilizerCalcRes, getMastersFertilizer } from '../src/Dashboard/FertilizerCalculator';
+import { getMastersSeedCalc, saveSavedSeedCalData } from '../src/Dashboard/SeedCalculator';
+import EmployeeActivityAlertModal from '../src/Modals/EmployeeActivityAlertModal';
+import CustomSuccessLoader from '../src/Components/CustomSuccessLoader';
+import { setNetworkConnectionStatus } from '../src/redux/store/slices/NetworkSlice';
+import realm from '../src/realmOffline/realmConfig';
+import { selectUser } from '../src/redux/store/slices/UserSlice';
 
 function EmployeeDashboardSDK({ route }) {
 
   const networkStatus = useSelector(state => state.networkStatus.value)
-  const [loaderImage, setLoaderImage] = useState(require('../assets/images/neutralloader.gif'))
+  const [loaderImage, setLoaderImage] = useState(require('../src/assets/images/neutralloader.gif'))
   const getUserData = useSelector(selectUser);
   const companyStyle = useSelector(getCompanyStyles);
   const [dynamicStyles, setDynamicStyles] = useState({});
@@ -186,17 +186,17 @@ function EmployeeDashboardSDK({ route }) {
     {
       id: 1,
       title: translate('FertilizerCalculator'),
-      image: require('../../src/assets/images/fertilizerCalculator.png'),
+      image: require('../src/assets/images/fertilizerCalculator.png'),
     },
     {
       id: 2,
       title: translate('YieldCalculator'),
-      image: require('../../src/assets/images/yieldCalculator.png'),
+      image: require('../src/assets/images/yieldCalculator.png'),
     },
     {
       id: 3,
       title: translate('SeedPopulationCalculator'),
-      image: require('../../src/assets/images/seedPopulationCalculator.png'),
+      image: require('../src/assets/images/seedPopulationCalculator.png'),
     }
   ]
 
@@ -1114,11 +1114,11 @@ function EmployeeDashboardSDK({ route }) {
         }}
       >
         <ImageBackground style={[{ height: '100%', width: Dimensions.get('window').width, backgroundColor: dynamicStyles.primaryColor }]}>
-          <Image source={require('../../src/assets/images/leaaafImg.png')} style={stylesheetStyles.leafHome} />
-          <Image source={require('../../src/assets/images/leaffafhb.png')} style={stylesheetStyles.leftLeaf} />
+          <Image source={require('../src/assets/images/leaaafImg.png')} style={stylesheetStyles.leafHome} />
+          <Image source={require('../src/assets/images/leaffafhb.png')} style={stylesheetStyles.leftLeaf} />
           <View style={{ height: 145, width: 145, backgroundColor: "white", borderRadius: 100, alignItems: "center", justifyContent: "flex-end", alignSelf: "center", position: "absolute", top: -100, marginLeft: 25 }}>
             <Image source={
-              require('../assets/images/newAppIcon.png')
+              require('../src/assets/images/newAppIcon.png')
             } style={[{ height: 50, width: 50, marginTop: 60 }]} resizeMode='contain' />
           </View>
           <View style={[
@@ -1134,11 +1134,11 @@ function EmployeeDashboardSDK({ route }) {
                         ? userImage.toString().includes("https:") ||
                           userImage.toString().includes("http:")
                           ? { uri: userImage }
-                          : require("../assets/images/profileIcon.png")
+                          : require("../src/assets/images/profileIcon.png")
                         : {
                           uri: "file://" + userImage.toString().trim(),
                         }
-                      : require("../assets/images/profileIcon.png")
+                      : require("../src/assets/images/profileIcon.png")
                   }
                   size={30}
                   badgeIcon={null}
@@ -1172,7 +1172,7 @@ function EmployeeDashboardSDK({ route }) {
               }} onPress={() => {
                 networkStatus ? setRefreshButtonClicked(true) : SimpleToast.show(translate('no_internet_conneccted'))
               }}>
-                <Image style={[{ tintColor: dynamicStyles.secondaryColor }, { height: 30, width: 30, resizeMode: "contain" }]} source={require('../assets/images/dataRefresh.png')}></Image>
+                <Image style={[{ tintColor: dynamicStyles.secondaryColor }, { height: 30, width: 30, resizeMode: "contain" }]} source={require('../src/assets/images/dataRefresh.png')}></Image>
               </TouchableOpacity>
             </View>
 
@@ -1197,7 +1197,7 @@ function EmployeeDashboardSDK({ route }) {
                       height: 25,
                       tintColor: dynamicStyles.secondaryColor,
                     }}
-                    source={require('../assets/images/notification.png')}
+                    source={require('../src/assets/images/notification.png')}
                     resizeMode="contain"
                   />
 
@@ -1322,7 +1322,7 @@ function EmployeeDashboardSDK({ route }) {
           <Image source={{ uri: weatherInfo?.image }} style={stylesheetStyles.weatherIcon} />
           <View>
             <View style={stylesheetStyles.locationContainer}>
-              <Image source={require('../../src/assets/images/weatherScreen/locationImg.png')} style={stylesheetStyles.locationIcon} />
+              <Image source={require('../src/assets/images/weatherScreen/locationImg.png')} style={stylesheetStyles.locationIcon} />
               <Text numberOfLines={1} ellipsizeMode='tail'
                 style={[stylesheetStyles.locationText, { fontSize: 12, fontFamily: FontForWeight('SemiBold'), color: dynamicStyles.textColor }]}>
                 {(weatherInfo?.city) || '--'}
@@ -1476,7 +1476,7 @@ function EmployeeDashboardSDK({ route }) {
           style={stylesheetStyles.iconTouch}
           onPress={() => { }}>
           <Image source={
-            require('../assets/images/tabBar/tabOne.png')
+            require('../src/assets/images/tabBar/tabOne.png')
           } style={[stylesheetStyles.iconn, { tintColor: dynamicStyles.iconPrimaryColor }]} />
           <Text style={[stylesheetStyles.tabLabel, { fontSize: 10, fontFamily: FontForWeight('regular'), color: dynamicStyles.iconPrimaryColor }]}>
             {translate('Home')}
@@ -1491,7 +1491,7 @@ function EmployeeDashboardSDK({ route }) {
               backgroundColor: dynamicStyles.primaryColor,
             }]}>
             <Image source={
-              require('../assets/images/tabBar/scan.png')
+              require('../src/assets/images/tabBar/scan.png')
             } style={[stylesheetStyles.iconn, { tintColor: dynamicStyles.secondaryColor }]} />
           </TouchableOpacity>}
 
@@ -1500,7 +1500,7 @@ function EmployeeDashboardSDK({ route }) {
           style={stylesheetStyles.iconTouch}
           onPress={() => moreMenuList?.length > 0 ? setMoreModal(true) : SimpleToast.show(translate('no_data_available'))}>
           <Image source={
-            require('../assets/images/more_ic.png')
+            require('../src/assets/images/more_ic.png')
           } style={stylesheetStyles.iconn3} />
           <Text style={[stylesheetStyles.tabLabel, { fontSize: 10, fontFamily: FontForWeight('regular'), color: dynamicStyles.iconPrimaryColor }]}>
             {translate('more')}
@@ -1596,7 +1596,7 @@ function EmployeeDashboardSDK({ route }) {
                   setCalculatorOptions(!calculatorOptions)
                 }
                 }>
-                <Image source={require('../../src/assets/images/crossMark.png')} style={{ tintColor: dynamicStyles.iconPrimaryColor, height: 20, width: 20, resizeMode: "contain" }} />
+                <Image source={require('../src/assets/images/crossMark.png')} style={{ tintColor: dynamicStyles.iconPrimaryColor, height: 20, width: 20, resizeMode: "contain" }} />
               </TouchableOpacity>
             </View>
             <View style={{ alignItems: "center", justifyContent: "center", flexDirection: "row", alignSelf: "center", width: responsiveWidth(90) }}>
@@ -1762,7 +1762,7 @@ function EmployeeDashboardSDK({ route }) {
                                 tintColor: 'black',
                                 marginLeft: 8
                               }}
-                              source={require('../assets/images/grayDownArrow.png')}
+                              source={require('../src/assets/images/grayDownArrow.png')}
                             />
                           </View>
                         </TouchableOpacity>

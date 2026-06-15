@@ -1,17 +1,17 @@
 import { useEffect, useState } from 'react';
 import { Alert } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux';
-import { changeLanguage, translate } from '../Localisation/Localisation';
+import { changeLanguage, translate } from '../src/Localisation/Localisation';
 import { useNavigation } from '@react-navigation/native';
-import { configs, HTTP_OK, setEnvironment } from '../helpers/URLConstants';
-import { GetApiHeaders, getNetworkStatus, PostRequest } from '../NetworkUtils/NetworkUtils';
-import CustomLoader from '../Components/CustomLoader';
-import { setUser } from '../redux/store/slices/UserSlice';
-import { DEVICE_TOKEN, LOGINONCE, MOBILE_NUMBER, PROFILEIMAGE, ROLEID, ROLENAME, SELECTEDCOMPANY, USERMENU, USER_ID, USER_NAME, downloadFileToLocal, storeData, SDK_AUTH_ID, SDK_AUTH_TOKEN, NAVIGATE_TO_CLASS, FCM_TOKEN } from '../assets/Utils/Utils';
-import { updateCompanyStyles } from '../redux/store/slices/CompanyStyleSlice';
+import { configs, HTTP_OK, setEnvironment } from '../src/helpers/URLConstants';
+import { GetApiHeaders, getNetworkStatus, PostRequest } from '../src/NetworkUtils/NetworkUtils';
+import CustomLoader from '../src/Components/CustomLoader';
+import { setUser } from '../src/redux/store/slices/UserSlice';
+import { DEVICE_TOKEN, LOGINONCE, MOBILE_NUMBER, PROFILEIMAGE, ROLEID, ROLENAME, SELECTEDCOMPANY, USERMENU, USER_ID, USER_NAME, downloadFileToLocal, storeData, SDK_AUTH_ID, SDK_AUTH_TOKEN, NAVIGATE_TO_CLASS, FCM_TOKEN } from '../src/assets/Utils/Utils';
+import { updateCompanyStyles } from '../src/redux/store/slices/CompanyStyleSlice';
 import SimpleToast from 'react-native-simple-toast';
-import { Colors } from '../assets/Utils/Color';
-import { setLanguage } from '../redux/store/slices/LanguageSlice';
+import { Colors } from '../src/assets/Utils/Color';
+import { setLanguage } from '../src/redux/store/slices/LanguageSlice';
 
 
 const GCLoaderScreen = ({ route }) => {
@@ -22,7 +22,7 @@ const GCLoaderScreen = ({ route }) => {
     const languageCode = route?.params?.navigateItem?.languageCode
     const authId = route?.params?.navigateItem?.authId
     const authToken = route?.params?.navigateItem?.authToken
-    const [loaderImage, setLoaderImage] = useState(require('../assets/images/neutralloader.gif'))
+    const [loaderImage, setLoaderImage] = useState(require('../src/assets/images/neutralloader.gif'))
     const navigation = useNavigation()
     const [loadingCount, setLoadingCount] = useState(0);
     const [loadingMessage, setLoadingMessage] = useState('');
