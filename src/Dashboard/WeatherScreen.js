@@ -451,7 +451,7 @@ const WeatherScreen = ({ route }) => {
       {loading && <CustomLoader loading={loading} message={loadingMessage} loaderImage={loaderImage} />}
       {Platform.OS === 'android' && <StatusBar backgroundColor={dynamicStyles.primaryColor} barStyle='dark-content' />}
       <View style={[{ backgroundColor: dynamicStyles.primaryColor }, { width: "100%", paddingStart: 20, paddingEnd: 20, paddingBottom: 20, borderBottomStartRadius: 10, borderBottomEndRadius: 10, paddingTop: Platform.OS == 'ios' ? 60 : 20 }]}>
-        <TouchableOpacity style={[{ flexDirection: "row", alignItems: "center", maxWidth: "55%" }]} onPress={() => navigation.goBack()}>
+        <TouchableOpacity style={[{ flexDirection: "row", alignItems: "center", maxWidth: "55%" }]} onPress={() => navigation.popToTop()}>
           <Image style={[{ tintColor: dynamicStyles.secondaryColor }, { height: 15, width: 20, marginRight: 10 }]} source={require('../assets/images/previous.png')}></Image>
           <Text style={[{ color: dynamicStyles.secondaryColor }, styles['font_size_18_bold'], Platform.OS === 'ios' && { minHeight: 25 }]}>{title}</Text>
         </TouchableOpacity>
