@@ -20,6 +20,7 @@ import CustomCalanderSelection from "../Components/CustomCalanderSelection";
 import { translate } from "../Localisation/Localisation";
 import { createStyles } from "../assets/style/createStyles";
 import { getCompanyStyles } from "../redux/store/slices/CompanyStyleSlice";
+import CustomTextInputNew from "../Components/CustomTextInputNew";
 import CustomTextInput from "../Components/CustomTextInput";
 
 var styles = BuildStyleOverwrite(Styles);
@@ -264,13 +265,26 @@ function EmpScanHistory({ route }) {
             const input = {
                 userId: header?.userId,
                 programName: 0,
-                headQuaterId: headQuaterId?.toString() || '',
                 mobileNumber: mobileNumber?.toString() || '',
+
+                headQuaterId: headQuaterId?.toString() || '',
+                headQuaterName: getSelectedValue(headQuaterName),
+
                 stateId: stateSelectedId?.toString() || '',
+                stateName: getSelectedValue(stateSelectedName),
+
                 districtId: districtSelectedId?.toString() || '',
+                districtName: getSelectedValue(districtSelectedName),
+
                 subDistrictId: subDistrictSelectedId?.toString() || '',
+                subDistrictName: getSelectedValue(subDistrictSelectedName),
+
                 villageId: villageSelectedId?.toString() || '',
+                villageName: getSelectedValue(villageSelectedName),
+
                 retailerId: retailerSelectedId?.toString() || '',
+                retailerName: getSelectedValue(retailerSelected),
+
                 fromDate: fromDate ? moment(fromDate, "DD-MM-YYYY").format("YYYY-MM-DD") : "",
                 toDate: toDate ? moment(toDate, "DD-MM-YYYY").format("YYYY-MM-DD") : "",
             };
@@ -325,13 +339,26 @@ function EmpScanHistory({ route }) {
                     userId: header?.userId,
                     productName: "",
                     programName: "",
-                    headQuaterId: headQuaterId?.toString() || '',
                     mobileNumber: mobileNumber?.toString() || '',
+
+                    headQuaterId: headQuaterId?.toString() || '',
+                    headQuaterName: getSelectedValue(headQuaterName),
+
                     stateId: stateSelectedId?.toString() || '',
+                    stateName: getSelectedValue(stateSelectedName),
+
                     districtId: districtSelectedId?.toString() || '',
+                    districtName: getSelectedValue(districtSelectedName),
+
                     subDistrictId: subDistrictSelectedId?.toString() || '',
+                    subDistrictName: getSelectedValue(subDistrictSelectedName),
+
                     villageId: villageSelectedId?.toString() || '',
+                    villageName: getSelectedValue(villageSelectedName),
+
                     retailerId: retailerSelectedId?.toString() || '',
+                    retailerName: getSelectedValue(retailerSelected),
+
                     fromDate: fromDate ? moment(fromDate, "DD-MM-YYYY").format("YYYY-MM-DD") : "",
                     toDate: toDate ? moment(toDate, "DD-MM-YYYY").format("YYYY-MM-DD") : "",
                     cropName: item?.cropName,
@@ -356,6 +383,11 @@ function EmpScanHistory({ route }) {
         }
     }
 
+    const getSelectedValue = value =>
+        value?.toString().toLowerCase().includes('select')
+            ? ''
+            : (value?.toString() || '');
+
     async function getScannedHistory(item, page) {
 
         if (!networkStatus) return;
@@ -365,13 +397,26 @@ function EmpScanHistory({ route }) {
             var header = await GetApiHeaders();
             var input = {
                 userId: header?.userId,
-                headQuaterId: headQuaterId?.toString() || '',
                 mobileNumber: mobileNumber?.toString() || '',
+
+                headQuaterId: headQuaterId?.toString() || '',
+                headQuaterName: getSelectedValue(headQuaterName),
+
                 stateId: stateSelectedId?.toString() || '',
+                stateName: getSelectedValue(stateSelectedName),
+
                 districtId: districtSelectedId?.toString() || '',
+                districtName: getSelectedValue(districtSelectedName),
+
                 subDistrictId: subDistrictSelectedId?.toString() || '',
+                subDistrictName: getSelectedValue(subDistrictSelectedName),
+
                 villageId: villageSelectedId?.toString() || '',
+                villageName: getSelectedValue(villageSelectedName),
+
                 retailerId: retailerSelectedId?.toString() || '',
+                retailerName: getSelectedValue(retailerSelected),
+
                 fromDate: fromDate ? moment(fromDate, "DD-MM-YYYY").format("YYYY-MM-DD") : "",
                 toDate: toDate ? moment(toDate, "DD-MM-YYYY").format("YYYY-MM-DD") : "",
                 productName: item?.productName,

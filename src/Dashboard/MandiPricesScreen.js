@@ -15,16 +15,12 @@ import { selectUser } from '../redux/store/slices/UserSlice';
 import { LineChart } from 'react-native-chart-kit';
 import ViewShot from 'react-native-view-shot';
 import Share from 'react-native-share';
-
-
 import { ActivityIndicator, Platform, StyleSheet, Dimensions, TouchableOpacity, Button, View, Text, FlatList, Image, StatusBar, ScrollView, TextInput, Modal, Alert, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
-
 import moment from 'moment';
 import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 import CustomInputDropDown from '../Components/CustomInputDropDown';
 import { Colors } from '../assets/Utils/Color';
 import { translate } from '../Localisation/Localisation';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { getUpdateRetailerInfoData } from '../redux/store/slices/UpdatedReatilerInfoDataSlice';
 import CustomAlert from '../Components/CustomAlert';
 import SimpleToast from 'react-native-simple-toast';
@@ -232,12 +228,19 @@ const MandiPricesScreen = () => {
     }
 
     const fetchMandiPrices = async (resetData, pageNoReset = 1) => {
+       
         const network = await getNetworkStatus();
         if (!network) {
             SimpleToast.show(translate('no_internet_conneccted'));
             return;
         }
+
+
         try {
+            if (pageNoReset == 1) {
+                setLoading(true)
+                setLoadingMessage(translate('please_wait_getting_data'))
+            }
             // isFetching.current = true;
             setIsFetching(true)
             const payload = {
@@ -348,8 +351,6 @@ const MandiPricesScreen = () => {
         if (isNullOrEmpty(district)) {
             setPage(1);
             fetchMandiPrices(true, 1);
-            setLoading(true)
-            setLoadingMessage(translate('please_wait_getting_data'))
             setSearchQuery('')
         }
 
@@ -366,7 +367,7 @@ const MandiPricesScreen = () => {
             setIsFetching(true)
             let pageVar = pageNo + 1;
             setPage(pageVar);
-            setLoading(true)
+            // setLoading(true)
             if (state !== '' && district !== '') {
                 fetchMandiPrices(false, pageVar);
             }

@@ -154,8 +154,8 @@ const AdvancedKnowledgeCenter = () => {
       <View
         style={{
           alignItems: 'center',
-          width: `${100 / 5}%`, // 5 items per row
-          padding: 4    // vertical spacing
+          width: `${100 / 5}%`,
+          padding: 4,
         }}
       >
         <TouchableOpacity
@@ -174,16 +174,21 @@ const AdvancedKnowledgeCenter = () => {
         </TouchableOpacity>
 
         <Text
+          numberOfLines={2}
+          ellipsizeMode="tail"
           style={{
+            width: '100%',          // IMPORTANT
+            minWidth: 50,           // IMPORTANT
             fontSize: 12,
-            textAlign: "center",
-            marginTop: 4, // spacing below circle
+            textAlign: 'center',
+            marginTop: 4,
             fontWeight: isSelected ? 'bold' : 'normal',
-            color: isSelected ? dynamicStyles.primaryColor : dynamicStyles.textColor,
+            color: isSelected
+              ? dynamicStyles.primaryColor
+              : dynamicStyles.textColor,
           }}
-
         >
-          {item?.cropName.replace(/-/g, " ")}
+          {item?.cropName?.replace(/-/g, ' ')}
         </Text>
       </View>
     );
@@ -317,118 +322,116 @@ const AdvancedKnowledgeCenter = () => {
   }
 
   return (
-      <View style={{ flex: 1, backgroundColor: '#f9f9f9' }}>
-        {Platform.OS === 'android' && (
-          <StatusBar backgroundColor={dynamicStyles.primaryColor} barStyle="dark-content" />
-        )}
-        {/* Header */}
-        <View style={{
-          backgroundColor: dynamicStyles.primaryColor,
-          width: "100%", 
-          borderBottomStartRadius: 10,
-          borderBottomEndRadius: 10,
-          padding: 15
+    <View style={{ flex: 1, backgroundColor: '#f9f9f9' }}>
+      {Platform.OS === 'android' && (
+        <StatusBar backgroundColor={dynamicStyles.primaryColor} barStyle="dark-content" />
+      )}
+      {/* Header */}
+      <View style={{
+        backgroundColor: dynamicStyles.primaryColor,
+        width: "100%",
+        borderBottomStartRadius: 10,
+        borderBottomEndRadius: 10,
+        padding: 15
 
-        }}>
-          <TouchableOpacity style={{ flexDirection: 'row', alignItems:'center'}} onPress={() => navigation.goBack()}>
-            <Image
-              style={{ tintColor: dynamicStyles.secondaryColor, height: 15, width: 20,  }}
-              source={require('../assets/images/previous.png')}
-            />
-            <Text style={{
-              color: dynamicStyles.secondaryColor, marginLeft: 10, fontSize: 18, fontWeight: 'bold',
-              flexShrink: 1,
-              flexWrap: 'wrap',
-              lineHeight: Platform.OS == 'android' ? 30 : 25,
-              minWidth: 200
-            }}
-              adjustsFontSizeToFit>
-              {translate('KnowledgeCenter')}
-            </Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* ✅ Single Scrollable List */}
-        <FlatList
-          data={listOfBooksFilter}
-          keyExtractor={(item, index) => index.toString()}
-          numColumns={2}
-          renderItem={({ item, index }) => gridItem(item, index)}
-          contentContainerStyle={{
-            paddingBottom: 100,
-            alignSelf: 'center'
-          }} // space above bottom button
-          ListEmptyComponent={
-            <View style={{ height: responsiveHeight(70), alignItems: "center", justifyContent: "center" }}>
-              <Text style={{ color: dynamicStyles.textColor, fontSize: 13, fontWeight: '700' }}>
-                {translate('no_data_available')}
-              </Text>
-            </View>
-          }
-
-          // ✅ Crops grid is now the list header
-          ListHeaderComponent={
-            cropsList.length > 0 && (
-              <View style={{ width: '95%', marginTop: 15, }}>
-                {/* Header Row */}
-                <View style={styleSheetStyles.headerRow}>
-                  <Text style={styleSheetStyles.title}>{translate('Crops')}</Text>
-
-                  {cropsList.length > 5 && (
-                    <TouchableOpacity onPress={() => setShowAll(!showAll)}>
-                      <Text style={styleSheetStyles.viewAll}>
-                        {showAll ? translate('View_Less') : translate('View_All')}
-                      </Text>
-                    </TouchableOpacity>
-                  )}
-                </View>
-
-                {/* Crops Grid (Always scrollable naturally now) */}
-                <FlatList
-                  data={showAll ? cropsList : cropsList.slice(0, 5)}
-                  keyExtractor={(item, index) => index.toString()}
-                  renderItem={renderCropsListItem}
-                  numColumns={5}
-                  style={{ marginBottom: 20 }}
-                  scrollEnabled={false}
-                  contentContainerStyle={{
-
-                  }}
-                />
-              </View>
-            )
-          }
-        />
-
-        {/* ✅ Always stays at bottom correctly */}
-        {broucherUrlPath !== "" &&
-          <TouchableOpacity
-            onPress={() => { onpressBroucher() }}
-            style={{
-              height: 50,
-              width: '95%',
-              backgroundColor: dynamicStyles.primaryColor,
-              borderRadius: 10,
-              alignItems: "center",
-              justifyContent: "center",
-              position: "absolute",
-              bottom: 15,
-              alignSelf: "center"
-            }}
-          >
-            <Text style={{ color: dynamicStyles.secondaryColor, fontSize: 14, fontWeight: 'bold' }}>
-              {translate("view_nsl_broucher")}
-            </Text>
-          </TouchableOpacity>}
-
-        {loading && <CustomLoader loading={loading} message={loadingMessage} />}
-        <MediaModal
-          visible={mediaVisible}
-          link={mediaLink}
-          onClose={() => setMediaVisible(false)}
-          loaderColor={dynamicStyles.primaryColor}
-        />
+      }}>
+        <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => navigation.goBack()}>
+          <Image
+            style={{ tintColor: dynamicStyles.secondaryColor, height: 15, width: 20, }}
+            source={require('../assets/images/previous.png')}
+          />
+          <Text style={{
+            color: dynamicStyles.secondaryColor, marginLeft: 10, fontSize: 18, fontWeight: 'bold',
+            flexShrink: 1,
+            flexWrap: 'wrap',
+            lineHeight: Platform.OS == 'android' ? 30 : 25,
+            minWidth: 200
+          }}
+            adjustsFontSizeToFit>
+            {translate('KnowledgeCenter')}
+          </Text>
+        </TouchableOpacity>
       </View>
+
+      {/* ✅ Single Scrollable List */}
+      <FlatList
+        data={listOfBooksFilter}
+        keyExtractor={(item, index) => index.toString()}
+        numColumns={2}
+        renderItem={({ item, index }) => gridItem(item, index)}
+        contentContainerStyle={{
+          paddingBottom: 100,
+          alignSelf: 'center'
+        }} // space above bottom button
+        ListEmptyComponent={
+          <View style={{ height: responsiveHeight(70), alignItems: "center", justifyContent: "center" }}>
+            <Text style={{ color: dynamicStyles.textColor, fontSize: 13, fontWeight: '700' }}>
+              {translate('no_data_available')}
+            </Text>
+          </View>
+        }
+
+        // ✅ Crops grid is now the list header
+        ListHeaderComponent={
+          cropsList.length > 0 && (
+            <View style={{ width: '95%', marginTop: 15, }}>
+              {/* Header Row */}
+              <View style={styleSheetStyles.headerRow}>
+                <Text style={styleSheetStyles.title}>{translate('Crops')}</Text>
+
+                {cropsList.length > 5 && (
+                  <TouchableOpacity onPress={() => setShowAll(!showAll)}>
+                    <Text style={styleSheetStyles.viewAll}>
+                      {showAll ? translate('View_Less') : translate('View_All')}
+                    </Text>
+                  </TouchableOpacity>
+                )}
+              </View>
+
+              {/* Crops Grid (Always scrollable naturally now) */}
+              <FlatList
+                data={showAll ? cropsList : cropsList.slice(0, 5)}
+                renderItem={renderCropsListItem}
+                numColumns={5}
+                scrollEnabled={false}
+                columnWrapperStyle={{
+                  justifyContent: 'space-between',
+                }}
+              />
+            </View>
+          )
+        }
+      />
+
+      {/* ✅ Always stays at bottom correctly */}
+      {broucherUrlPath !== "" &&
+        <TouchableOpacity
+          onPress={() => { onpressBroucher() }}
+          style={{
+            height: 50,
+            width: '95%',
+            backgroundColor: dynamicStyles.primaryColor,
+            borderRadius: 10,
+            alignItems: "center",
+            justifyContent: "center",
+            position: "absolute",
+            bottom: 15,
+            alignSelf: "center"
+          }}
+        >
+          <Text style={{ color: dynamicStyles.secondaryColor, fontSize: 14, fontWeight: 'bold' }}>
+            {translate("view_nsl_broucher")}
+          </Text>
+        </TouchableOpacity>}
+
+      {loading && <CustomLoader loading={loading} message={loadingMessage} />}
+      <MediaModal
+        visible={mediaVisible}
+        link={mediaLink}
+        onClose={() => setMediaVisible(false)}
+        loaderColor={dynamicStyles.primaryColor}
+      />
+    </View>
   );
 };
 

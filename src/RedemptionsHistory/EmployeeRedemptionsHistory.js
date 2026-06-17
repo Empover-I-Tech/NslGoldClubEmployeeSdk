@@ -372,6 +372,9 @@ function EmployeeRedemptionsHistory({ route }) {
         }
     }
 
+    const getSelectedValue = value =>
+        value?.includes('Select') ? '' : value;
+
     const submitButtonPress = async (pageNo) => {
         setTimeout(() => {
             setLoading(true);
@@ -382,10 +385,19 @@ function EmployeeRedemptionsHistory({ route }) {
         const input = {
             userId: header?.userId,
             seasonId: seasonSelectedId,
+            seasonName: getSelectedValue(seasonSelected),
+
             zoneId: zoneSelectedId,
+            zoneName: getSelectedValue(zoneSelected),
+
             regionId: regionSelectedId,
+            regionName: getSelectedValue(regionSelected),
+
             territoryId: territorySelectedId,
+            territoryName: getSelectedValue(territorySelected),
+
             headQuarterId: headquarterSelectedId,
+            headQuarterName: getSelectedValue(headquarterSelected),
             mobileNumber: mobileNumber,
             // retailerId: retailerSelectedId,
             yearId: yearSelectedId,
@@ -474,78 +486,78 @@ function EmployeeRedemptionsHistory({ route }) {
         return result;
     }
 
-    async function getScannedHistory(item, page) {
-        if (networkStatus) {
-            try {
-                setLoading(true)
-                setLoadingMessage(translate('please_wait_getting_data'))
-                var header = await GetApiHeaders();
-                var input = {
-                    "userId": header?.userId,
-                    "seasonId": seasonSelectedId,
-                    "zoneId": zoneSelectedId,
-                    "regionId": regionSelectedId,
-                    "territoryId": territorySelectedId,
-                    "headQuarterId": headquarterSelectedId,
-                    "retailerId": retailerSelectedId,
-                    "yearId": yearSelectedId,
-                    "productName": item?.productName,
-                    "cropId": cropId,
-                    "itemsPerPage": 10,
-                    "page": page,
-                    "productId": item?.productId,
-                    "fromDate": fromDate != undefined && fromDate != "" ? moment(fromDate, "DD-MM-YYYY").format("YYYY-MM-DD") : "",
-                    "toDate": toDate != undefined && toDate != "" ? moment(toDate, "DD-MM-YYYY").format("YYYY-MM-DD") : "",
-                };
-                console.log("SAINATH_PROducts", JSON.stringify(apiResponse));
+    // async function getScannedHistory(item, page) {
+    //     if (networkStatus) {
+    //         try {
+    //             setLoading(true)
+    //             setLoadingMessage(translate('please_wait_getting_data'))
+    //             var header = await GetApiHeaders();
+    //             var input = {
+    //                 "userId": header?.userId,
+    //                 "seasonId": seasonSelectedId,
+    //                 "zoneId": zoneSelectedId,
+    //                 "regionId": regionSelectedId,
+    //                 "territoryId": territorySelectedId,
+    //                 "headQuarterId": headquarterSelectedId,
+    //                 "retailerId": retailerSelectedId,
+    //                 "yearId": yearSelectedId,
+    //                 "productName": item?.productName,
+    //                 "cropId": cropId,
+    //                 "itemsPerPage": 10,
+    //                 "page": page,
+    //                 "productId": item?.productId,
+    //                 "fromDate": fromDate != undefined && fromDate != "" ? moment(fromDate, "DD-MM-YYYY").format("YYYY-MM-DD") : "",
+    //                 "toDate": toDate != undefined && toDate != "" ? moment(toDate, "DD-MM-YYYY").format("YYYY-MM-DD") : "",
+    //             };
+    //             console.log("SAINATH_PROducts", JSON.stringify(apiResponse));
 
-                var url = configs.BASE_URL + configs.QRSCAN.SCAN_HIS_BY_PRODUCTS_EMPLOYEE;
+    //             var url = configs.BASE_URL + configs.QRSCAN.SCAN_HIS_BY_PRODUCTS_EMPLOYEE;
 
-                var apiResponse = await PostRequest(url, header, input);
-                setLoading(false)
-                setLoadingMessage("")
-                console.log("SAINATH_PROducts", JSON.stringify(apiResponse));
-                setNumberOfRecords(apiResponse?.response?.count)
-                setScanHistoryData(apiResponse?.response?.scanHistory)
-                setScanHistoryDataDummy(apiResponse?.response?.scanHistory)
-                setShowCropData(false)
-                setShowProductData(false)
-                setShowScanData(true)
-                setLoading(false)
-                setLoadingMessage('')
-                const total_pages = Math.ceil(apiResponse?.response?.count / records_per_page);
-                const pagesAr = await generateIntegerArray(total_pages)
-                setPagesArray(pagesAr)
-                setNumberOfPages(total_pages)
-                setKey(prevKey => prevKey + 1);
-            } catch (error) {
+    //             var apiResponse = await PostRequest(url, header, input);
+    //             setLoading(false)
+    //             setLoadingMessage("")
+    //             console.log("SAINATH_PROducts", JSON.stringify(apiResponse));
+    //             setNumberOfRecords(apiResponse?.response?.count)
+    //             setScanHistoryData(apiResponse?.response?.scanHistory)
+    //             setScanHistoryDataDummy(apiResponse?.response?.scanHistory)
+    //             setShowCropData(false)
+    //             setShowProductData(false)
+    //             setShowScanData(true)
+    //             setLoading(false)
+    //             setLoadingMessage('')
+    //             const total_pages = Math.ceil(apiResponse?.response?.count / records_per_page);
+    //             const pagesAr = await generateIntegerArray(total_pages)
+    //             setPagesArray(pagesAr)
+    //             setNumberOfPages(total_pages)
+    //             setKey(prevKey => prevKey + 1);
+    //         } catch (error) {
 
-            }
-        }
-    }
+    //         }
+    //     }
+    // }
 
-    function renderScanHistory(item, index) {
-        return (
-            <TouchableOpacity style={[{ height: 50, width: '100%', borderTopWidth: 0.5, borderColor: '#B4B4B4', flexDirection: 'row', flexGrow: 1, justifyContent: 'space-between' }]} key={index.toString()} onPress={() => {
-                setShowCouponDetails(true);
-                setItemClicked(item)
-            }}>
-                <View style={[styles['centerItems'], { width: '15%', borderRightWidth: 0.5, height: '100%', borderColor: '#B4B4B4' }]}>
-                    <Text style={[styles['text_color_black'], styles['text_align_center'], styles['font_size_13_semibold']]}>{(((selectedPageIndex + 1) - 1) * 10) + index + 1}</Text>
-                </View>
-                {!showScanData && <View style={[styles['centerItems'], { width: '25%', borderRightWidth: 0.5, height: '100%', borderColor: '#B4B4B4' }]}>
-                    <Text style={[styles['text_align_center'], styles['font_size_13_semibold'], { color: '#00881E' }]}>{item?.productName}</Text>
-                </View>}
-                <View style={[styles['centerItems'], { width: showScanData ? '50%' : '35%', borderRightWidth: 0.5, height: '100%', borderColor: '#B4B4B4' }]}>
-                    <Text style={[styles['text_color_black'], styles['text_align_center'], styles['font_size_13_semibold']]}>{item?.couponCode}</Text>
-                </View>
-                <View style={[styles['centerItems'], { width: '25%' }]}>
-                    {/* <Text style={[styles['text_color_black'], styles['text_align_center'], styles['font_size_13_semibold']]}>{item?.pointsEarned}</Text> */}
-                    <Text style={[(item?.creditOrDebit.toLowerCase() == translate('credit').toLowerCase() ? styles['text_color_green'] : styles['text_color_red']), styles['font_size_13_semibold'], styles['text_align_center']]}>{item.creditOrDebit.toLowerCase() == translate('credit').toLowerCase() ? " + " + item.pointsEarned : item.pointsEarned == 0 ? item.pointsEarned : " - " + item.pointsEarned}</Text>
-                </View>
-            </TouchableOpacity>
-        )
-    }
+    // function renderScanHistory(item, index) {
+    //     return (
+    //         <TouchableOpacity style={[{ height: 50, width: '100%', borderTopWidth: 0.5, borderColor: '#B4B4B4', flexDirection: 'row', flexGrow: 1, justifyContent: 'space-between' }]} key={index.toString()} onPress={() => {
+    //             setShowCouponDetails(true);
+    //             setItemClicked(item)
+    //         }}>
+    //             <View style={[styles['centerItems'], { width: '15%', borderRightWidth: 0.5, height: '100%', borderColor: '#B4B4B4' }]}>
+    //                 <Text style={[styles['text_color_black'], styles['text_align_center'], styles['font_size_13_semibold']]}>{(((selectedPageIndex + 1) - 1) * 10) + index + 1}</Text>
+    //             </View>
+    //             {!showScanData && <View style={[styles['centerItems'], { width: '25%', borderRightWidth: 0.5, height: '100%', borderColor: '#B4B4B4' }]}>
+    //                 <Text style={[styles['text_align_center'], styles['font_size_13_semibold'], { color: '#00881E' }]}>{item?.productName}</Text>
+    //             </View>}
+    //             <View style={[styles['centerItems'], { width: showScanData ? '50%' : '35%', borderRightWidth: 0.5, height: '100%', borderColor: '#B4B4B4' }]}>
+    //                 <Text style={[styles['text_color_black'], styles['text_align_center'], styles['font_size_13_semibold']]}>{item?.couponCode}</Text>
+    //             </View>
+    //             <View style={[styles['centerItems'], { width: '25%' }]}>
+    //                 {/* <Text style={[styles['text_color_black'], styles['text_align_center'], styles['font_size_13_semibold']]}>{item?.pointsEarned}</Text> */}
+    //                 <Text style={[(item?.creditOrDebit.toLowerCase() == translate('credit').toLowerCase() ? styles['text_color_green'] : styles['text_color_red']), styles['font_size_13_semibold'], styles['text_align_center']]}>{item.creditOrDebit.toLowerCase() == translate('credit').toLowerCase() ? " + " + item.pointsEarned : item.pointsEarned == 0 ? item.pointsEarned : " - " + item.pointsEarned}</Text>
+    //             </View>
+    //         </TouchableOpacity>
+    //     )
+    // }
 
     const changeDropDownData = (dropDownData, type, selectedItem) => {
         setShowDropDowns(true);
@@ -554,12 +566,12 @@ function EmployeeRedemptionsHistory({ route }) {
         setSelectedDropDownItem(selectedItem);
     }
 
-    const changeSearchDropDownData = (dropDownData, type, selectedItem) => {
-        setShowDropDownsSearch(true);
-        setdropDownDataSearch(dropDownData);
-        setDropDownTypeSearch(type);
-        setSelectedDropDownItemSearch(selectedItem);
-    }
+    // const changeSearchDropDownData = (dropDownData, type, selectedItem) => {
+    //     setShowDropDownsSearch(true);
+    //     setdropDownDataSearch(dropDownData);
+    //     setDropDownTypeSearch(type);
+    //     setSelectedDropDownItemSearch(selectedItem);
+    // }
 
     const onSelectedSeason = async (itemdata) => {
         if (itemdata != null) {
