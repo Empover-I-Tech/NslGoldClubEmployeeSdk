@@ -4,7 +4,8 @@ import {
   View, Platform, StatusBar, Text, Image, AppState,
   Dimensions, Keyboard, TouchableOpacity, FlatList, ScrollView, TextInput, Modal,
   Linking,
-  ActivityIndicator
+  ActivityIndicator,
+  Alert
 } from 'react-native';
 import { BuildStyleOverwrite } from '../assets/style/BuildStyle';
 import { Styles } from '../assets/style/styles';
@@ -51,7 +52,7 @@ export const getOfflineProductsData = async () => {
       var getURL = configs.BASE_URL + configs.PRODUCTS.PRODUCTS_MASTERSV1;
       var getHeaders = await GetApiHeaders();
       var APIResponse = await GetRequest(getURL, getHeaders);
-      console.log('products response is:', APIResponse)
+      console.log('products response is=====>:', APIResponse)
       if (APIResponse != undefined && APIResponse != null) {
         if (APIResponse.statusCode == HTTP_OK) {
           var productsResp = APIResponse.response.productList
@@ -78,9 +79,86 @@ export const getOfflineProductsData = async () => {
   } else { }
 }
 
+export const getCropsListPlanningTool = async () => {
+  // let realm = new Realm({ path: 'User.realm' });
+  var networkStatus = await getNetworkStatus()
+  if (networkStatus) {
+    try {
+      var getYeildCalcURL = configs.BASE_URL + configs.PLANNING_TOOL.getAllCropMasterWithCompany;
+      var getHeaders = await GetApiHeaders()
+      var APIResponse = await GetRequest(getYeildCalcURL, getHeaders);
+      if (APIResponse != undefined && APIResponse != null) {
+        if (APIResponse.statusCode == HTTP_OK) {
+          var masterResp = APIResponse.response
+          if (masterResp != undefined && masterResp != null) {
+            // insertCropMastersIntoRealm(masterResp?.cropsList)
+            try {
+              const res = JSON.stringify(masterResp?.cropsList);
+              realm.write(() => {
+                realm.delete(realm.objects('cropMasterPlanningTool'));
+                realm.create('cropMasterPlanningTool', {
+                  cropMasterPlanningToolData: res
+                });
+              });
+
+              console.log("planning tool Data inserted successfully into Realm");
+            } catch (error) {
+              console.error("Error inserting data into Realm: planning tool", error);
+            }
+          }
+        }
+        else { }
+
+      } else { }
+    }
+    catch (error) { }
+  } else { }
+}
+
+export const getCompaniesListPlanningTool = async () => {
+  // let realm = new Realm({ path: 'User.realm' });
+  // const getUserData = useSelector(selectUser);
+  const state = store.getState();
+  const getUserData = selectUser(state);
+  var networkStatus = await getNetworkStatus()
+  if (networkStatus) {
+    try {
+      var getYeildCalcURL = configs.BASE_URL + configs.PLANNING_TOOL.getAllCompaniesForDropDown;
+      var getHeaders = await GetApiHeaders()
+      var APIResponse = await GetRequest(getYeildCalcURL, getHeaders);
+      if (APIResponse != undefined && APIResponse != null) {
+        if (APIResponse.statusCode == HTTP_OK) {
+          var masterResp = APIResponse.response
+          if (masterResp != undefined && masterResp != null) {
+            let currentCompanyCode = getUserData?.companyCode;
+            // console.log(getUserData?.companyCode,"<<<<<<<<<<<<<<<<<<<<<<<<<getUserData?.companyCode")
+            let currentCompanyName = masterResp?.CompanyList?.find((item) => item.companyCode === currentCompanyCode).name
+            try {
+              const res = JSON.stringify(masterResp.CompanyList);
+              realm.write(() => {
+                realm.delete(realm.objects('companyCodeMasterPlanningTool'));
+                realm.create('companyCodeMasterPlanningTool', {
+                  companyCodeMasterPlanningToolData: res
+                });
+              });
+              console.log("companies list successfully into Realm using planning tool");
+            } catch (error) {
+              console.error("Error inserting data into Realm: planning tool", error);
+            }
+          }
+        }
+        else { }
+
+      } else { }
+    }
+    catch (error) { }
+  } else { }
+}
+
 export let getCropsListMasterProducts = async (companyCOde = '') => {
   // let realm = new Realm({ path: 'User.realm' });
   var networkStatus = await getNetworkStatus()
+
   const state = store.getState();
   const getUserData = selectUser(state);
   console.log("getUserData=====>", getUserData)
@@ -112,7 +190,7 @@ export let getCropsListMasterProducts = async (companyCOde = '') => {
             }
           }
         }
-        else { }
+
 
       } else { }
     }

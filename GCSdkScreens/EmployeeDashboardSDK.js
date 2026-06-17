@@ -23,11 +23,9 @@ import { FontForWeight } from '../src/assets/fonts/fonts';
 import MediaModal from '../src/Modals/MediaModal';
 const { height, width } = Dimensions.get('window');
 import RetailerServicesModal from '../src/Components/RetailerServicesModal';
-import { getCropsListMasterProducts, getOfflineProductsData } from '../src/Products/Products';
+import { getCompaniesListPlanningTool, getCropsListMasterProducts, getCropsListPlanningTool, getOfflineProductsData } from '../src/Products/Products';
 import { GetMastersComplaint } from '../src/Profile/Complaint';
 import { GetComplaintsApiCallGlobal, uploadAllComplaintsGlobal } from '../src/Profile/HelpDesk';
-import { GetFAQDATA } from '../src/Profile/FAQ';
-import { getDataOfScanHistory, getProgramsList } from '../src/QRScanner/ScanHistory';
 import { getMasterForProgramDetails } from '../src/Dashboard/ProgramDetails';
 import { getYieldCalcMasters, SaveYieldCalcValues } from '../src/Dashboard/YieldCalculator';
 import { getFertilizerCalcRes, getMastersFertilizer } from '../src/Dashboard/FertilizerCalculator';
@@ -656,7 +654,6 @@ function EmployeeDashboardSDK({ route }) {
       console.log("Realm not initialized");
       return;
     }
-    scan
     try {
       // 1. sync call for seed calc
       const seedCalcRes = realm.objects('SeedCalSubmit');
@@ -693,12 +690,6 @@ function EmployeeDashboardSDK({ route }) {
       // 5.program details
       getMasterForProgramDetails()
 
-      // 6. scan history
-      getDataOfScanHistory()
-      getProgramsList()
-
-      //7. FAQ's
-      GetFAQDATA()
 
       // 8. help desk
       GetComplaintsApiCallGlobal()
@@ -711,9 +702,12 @@ function EmployeeDashboardSDK({ route }) {
 
       // 9. complaint
       GetMastersComplaint()
+      getCropsListPlanningTool()
+      getCompaniesListPlanningTool()
 
       // 10. products
       getOfflineProductsData()
+
       getCropsListMasterProducts()
 
 
