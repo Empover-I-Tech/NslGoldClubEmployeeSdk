@@ -59,7 +59,7 @@ export async function GetApiHeaders() {
         'fcmToken': fcmToken,
         'deviceToken': deviceToken,
         'userName': userName,
-        'applicationName': sdk_auth_id == "" ? strings.VyaparMitraTwo :strings.goldClubSDK, 
+        'applicationName': strings.VyaparMitraTwo, 
         "userCompanyCode": userData?.companyCode,
         "companyCode": userData?.companyCode,
         languageId: languageId || '1',
