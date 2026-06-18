@@ -943,7 +943,7 @@ function EmployeeDashboardSDK({ route }) {
       else if (item.title == strings.helpCenter || item?.title == strings.HelpDesk) {
         navigation.navigate('HelpDesk')
       }
-      else if ((item.title == strings.redemHistory) || (item.title == strings.redemHistory_title)) {
+       else if ((item.title == strings.redemHistory) || (item.title == strings.redemHistory_title) || (item?.title == strings.redemptions_history)) {
         navigation.navigate('EmployeeRedemptionsHistory', { roleid: (await retrieveData(ROLEID)) })
       }
     } else {
