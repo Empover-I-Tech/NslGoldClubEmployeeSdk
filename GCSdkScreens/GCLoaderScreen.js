@@ -85,6 +85,7 @@ const GCLoaderScreen = ({ route }) => {
 
                 var getloginURL = configs.BASE_URL + configs.AUTH.VALIDATE_SDK_LOGIN;
                 var getHeaders = await GetApiHeaders();
+                getHeaders.clientPackageName = "com.nslemployeesdkstestingproject"
                 var dataList = {
                     "mobileNumber": mobileNumber,
                 }
@@ -95,16 +96,17 @@ const GCLoaderScreen = ({ route }) => {
                         var verifyOTPResponse = APIResponse?.response;
                         if (verifyOTPResponse != undefined && verifyOTPResponse != null && verifyOTPResponse.length > 0) {
                             dispatch(setUser(verifyOTPResponse[0]))
-                            storeData(USER_ID, verifyOTPResponse[0].id);
-                            storeData(USER_NAME, verifyOTPResponse[0].roleName == 'Retailer' ? verifyOTPResponse[0].proprietorName : verifyOTPResponse[0].name);
-                            storeData(MOBILE_NUMBER, verifyOTPResponse[0].mobileNumber);
-                            storeData(DEVICE_TOKEN, "");
-                            storeData(LOGINONCE, true)
-                            storeData(USERMENU, verifyOTPResponse[0].userMenuControl);
-                            storeData(PROFILEIMAGE, verifyOTPResponse[0].profilePic)
-                            storeData(ROLEID, verifyOTPResponse[0].roleId);
-                            storeData(ROLENAME, verifyOTPResponse[0].roleName)
-                            storeData(SELECTEDCOMPANY, verifyOTPResponse[0].companyLogoPath);
+
+                            await storeData(USER_ID, verifyOTPResponse[0].id);
+                            await storeData(USER_NAME, verifyOTPResponse[0].roleName == 'Retailer' ? verifyOTPResponse[0].proprietorName : verifyOTPResponse[0].name);
+                            await storeData(MOBILE_NUMBER, verifyOTPResponse[0].mobileNumber);
+                            await storeData(DEVICE_TOKEN, "");
+                            await storeData(LOGINONCE, true)
+                            await storeData(USERMENU, verifyOTPResponse[0].userMenuControl);
+                            await storeData(PROFILEIMAGE, verifyOTPResponse[0].profilePic)
+                            await storeData(ROLEID, verifyOTPResponse[0].roleId);
+                            await storeData(ROLENAME, verifyOTPResponse[0].roleName)
+                            await storeData(SELECTEDCOMPANY, verifyOTPResponse[0].companyLogoPath);
 
                             const tempSlectedObject = {};
                             tempSlectedObject.primaryColor = (verifyOTPResponse[0]?.primaryColor != undefined && verifyOTPResponse[0]?.primaryColor != "") ? verifyOTPResponse[0]?.primaryColor : Colors.buttonColorPurple;
@@ -125,9 +127,16 @@ const GCLoaderScreen = ({ route }) => {
                                     }, 1500)
                                 }
                             }
-                            let navigateTo = (verifyOTPResponse[0]?.roleName === 'Retailer' || verifyOTPResponse[0]?.roleName === 'Distributor') ? 'RetailerDashboard' : 'EmployeeDashboardSDK';
-                            storeData(NAVIGATE_TO_CLASS, navigateTo)
-                            navigation.replace(navigateTo, { userData: {} })
+                            const roleName = verifyOTPResponse[0]?.roleName;
+
+                            if (roleName === 'Retailer' || roleName === 'Distributor') {
+                                await storeData(NAVIGATE_TO_CLASS, '');
+                                // Handle Retailer/Distributor flow here
+                            } else {
+                                const navigateTo = 'EmployeeDashboardSDK';
+                                await storeData(NAVIGATE_TO_CLASS, navigateTo);
+                                navigation.replace(navigateTo, { userData: {} });
+                            }
 
 
                         } else {
