@@ -13,7 +13,6 @@ import { HTTP_OK, MAP_MY_INDIA_URL, configs } from '../helpers/URLConstants';
 import SimpleToast from 'react-native-simple-toast';
 import CustomCalanderSelection from "../Components/CustomCalanderSelection";
 import CustomLoader from '../Components/CustomLoader';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import axios from 'axios';
 import CustomInputDropDown from '../Components/CustomInputDropDown';
 import CustomListViewModal from '../Modals/CustomListViewModal';
@@ -23,6 +22,7 @@ import { BuildStyleOverwrite } from '../assets/style/BuildStyle';
 import { Styles } from '../assets/style/styles';
 import { createStyles } from '../assets/style/createStyles';
 import { checkIfGpsEnabled } from '../assets/Utils/Utils';
+import DatePicker from 'react-native-date-picker';
 var styles = BuildStyleOverwrite(Styles);
 
 const WeatherScreen = ({ route }) => {
@@ -205,7 +205,7 @@ const WeatherScreen = ({ route }) => {
         const permission = status.trim();
         if (permission === RESULTS.GRANTED || permission === RESULTS.LIMITED) {
           console.log("iOS location permission granted");
-          navigation.navigate('Location', { primaryColor: dynamicStyles.primaryColor, secondaryColor: dynamicStyles.secondaryColor, textColor: dynamicStyles.textColor, screen: "WeatherScreen", address: localAddress, latitude: localLatitude !== null ? localLatitude : latitude, longitude: localLongitude !== null ? localLongitude : longitude, zoom: mapZoomingLevel, isComingFrom: (route?.params?.enablePestForecast === true) ? true : false  })
+          navigation.navigate('Location', { primaryColor: dynamicStyles.primaryColor, secondaryColor: dynamicStyles.secondaryColor, textColor: dynamicStyles.textColor, screen: "WeatherScreen", address: localAddress, latitude: localLatitude !== null ? localLatitude : latitude, longitude: localLongitude !== null ? localLongitude : longitude, zoom: mapZoomingLevel, isComingFrom: (route?.params?.enablePestForecast === true) ? true : false })
         } else {
           console.log("iOS location permission denied");
           showPermissionDeniedAlert();
@@ -450,7 +450,7 @@ const WeatherScreen = ({ route }) => {
     <View style={[styleSheetStyles.flexFull, styleSheetStyles.gray300bg]}>
       {loading && <CustomLoader loading={loading} message={loadingMessage} loaderImage={loaderImage} />}
       {Platform.OS === 'android' && <StatusBar backgroundColor={dynamicStyles.primaryColor} barStyle='dark-content' />}
-      <View style={[{ backgroundColor: dynamicStyles.primaryColor }, { width: "100%", paddingStart: 20, paddingEnd: 20, paddingBottom: 20, borderBottomStartRadius: 10, borderBottomEndRadius: 10, paddingTop: Platform.OS == 'ios' ? 60 : 20 }]}>
+      <View style={[{ backgroundColor: dynamicStyles.primaryColor }, { width: "100%", paddingStart: 20, paddingEnd: 20, paddingBottom: 20, borderBottomStartRadius: 10, borderBottomEndRadius: 10, paddingTop: Platform.OS == 'ios' ? 20 : 20 }]}>
         <TouchableOpacity style={[{ flexDirection: "row", alignItems: "center", maxWidth: "55%" }]} onPress={() => navigation.popToTop()}>
           <Image style={[{ tintColor: dynamicStyles.secondaryColor }, { height: 15, width: 20, marginRight: 10 }]} source={require('../assets/images/previous.png')}></Image>
           <Text style={[{ color: dynamicStyles.secondaryColor }, styles['font_size_18_bold'], Platform.OS === 'ios' && { minHeight: 25 }]}>{title}</Text>
@@ -472,7 +472,7 @@ const WeatherScreen = ({ route }) => {
           />
         )
       } */}
-      {
+      {/* {
         showDatePicker && (
           <DateTimePicker
             value={selectedDate || new Date()}
@@ -489,6 +489,24 @@ const WeatherScreen = ({ route }) => {
               if (date) {
                 handleConfirm(date);
               }
+            }}
+          />
+        )
+      } */}
+      {
+        showDatePicker && (
+          <DatePicker
+            modal
+            open={showDatePicker}
+            date={selectedDate || new Date()}
+            mode="date"
+            maximumDate={new Date()}
+            minimumDate={new Date(1901, 0, 1)}
+            onConfirm={(date) => {
+              handleConfirm(date);
+            }}
+            onCancel={() => {
+              handleCancel();
             }}
           />
         )

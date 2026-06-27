@@ -1,22 +1,20 @@
-import { Platform, Text, StatusBar, View, FlatList, StyleSheet, Image, TouchableOpacity, Modal, TouchableWithoutFeedback } from 'react-native';
-import React, { useEffect, useMemo, useState } from 'react';
+import { Platform, Text, StatusBar, View, FlatList, StyleSheet, Image, TouchableOpacity, Modal, TouchableWithoutFeedback, PermissionsAndroid } from 'react-native';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { PERMISSIONS, RESULTS, check, request } from 'react-native-permissions';
 import { BuildStyleOverwrite } from '../assets/style/BuildStyle';
 import { Styles } from '../assets/style/styles';
 import { Colors } from '../assets/Utils/Color';
 import ImagePicker from 'react-native-image-crop-picker';
 import { GetApiHeaders, GetRequest, getNetworkStatus, uploadFormData } from '../NetworkUtils/NetworkUtils';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import CustomLoader from '../Components/CustomLoader';
 import SimpleToast from 'react-native-simple-toast';
 import { HTTP_OK, configs } from '../helpers/URLConstants';
 import CustomButton from '../Components/CustomButton'
-import CustomSuccessLoader from '../Components/CustomSuccessLoader';
-import CustomErrorLoader from '../Components/CustomErrorLoader';
 import { getCompanyStyles } from '../redux/store/slices/CompanyStyleSlice';
 import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 import { translate } from '../Localisation/Localisation';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import CustomGalleryPopup from '../Components/CustomGalleryPopup';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ImageResizer from 'react-native-image-resizer';
@@ -33,10 +31,7 @@ const CropDiagonstic = ({ route }) => {
   const [loading, setLoading] = useState(false)
   const [cropLoading, setCropLoading] = useState(false)
   const [selectedFilter, setSelectedFilter] = useState(translate('Crop_Diagnostic'));
-  const [successLoading, setSuccessLoading] = useState(false)
-  const [errorLoading, setErrorLoading] = useState(false)
   const [loadingMessage, setLoadingMessage] = useState('')
-  const [successLoadingMessage, setSuccessLoadingMessage] = useState('')
   const [dynamicStyles, setDynamicStyles] = useState(companyStyle.value);
   const [showSelectionModal, setShowSelectionModal] = useState(false);
   const [ImageData, setImageData] = useState(null);
@@ -44,7 +39,6 @@ const CropDiagonstic = ({ route }) => {
   const [carouselIndex, setCarouselIndex] = useState(0);
   const [fromGallery, setFromGallery] = useState(false);
   const [diseases, setDiseases] = useState([]);
-  const [btnProceedDisabled, setBtnProceedDisabled] = useState(false)
 
 
 
@@ -53,6 +47,12 @@ const CropDiagonstic = ({ route }) => {
       getHistory();
     }
   }, [selectedFilter]);
+
+  useFocusEffect(
+  useCallback(() => {
+    requestLocation();
+  }, [])
+);
 
   const getHistory = async () => {
     const networkStatus = await getNetworkStatus();
@@ -92,7 +92,6 @@ const CropDiagonstic = ({ route }) => {
       } catch (error) {
         setTimeout(() => {
           setLoading(false)
-          setSuccessLoadingMessage(error.message)
         }, 1000);
       }
     } else {
@@ -154,14 +153,65 @@ const CropDiagonstic = ({ route }) => {
     setShowSelectionModal(false)
   }
 
+  async function requestLocation() {
+    try {
+
+      if (Platform.OS === 'android') {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+          {
+            title: translate("Location_Permission"),
+            message: translate('need_to_access'),
+            buttonNeutral: translate('storagePermissionNeutral'),
+            buttonNegative: translate('storagePermissionNegative'),
+            buttonPositive: translate("storagePermissionPositive")
+          }
+        );
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          console.log("Location permission granted");
+          const gpsEnabled = await checkIfGpsEnabled();
+          if (gpsEnabled) {
+           
+          }
+        } else {
+          console.log("Location permission denied");
+          showPermissionDeniedAlert();
+        }
+      } else {
+        const status = await request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
+        const permission = status.trim();
+        if (permission === RESULTS.GRANTED || permission === RESULTS.LIMITED) {
+          console.log("iOS location permission granted");
+         
+        } else {
+          console.log("iOS location permission denied");
+          showPermissionDeniedAlert();
+        }
+      }
+
+    } catch (err) {
+      console.warn(err, "<--------");
+    }
+  }
+
+  const showPermissionDeniedAlert = () => {
+    Alert.alert(
+      translate('Location_Permission_Required'),
+      translate("deny_desc"),
+      [
+        { text: translate('open_settings'), onPress: () => Linking.openSettings() },
+        { text: translate('storagePermissionNegative'), style: 'cancel' },
+      ]
+    );
+  };
+
   const submitCrop = async () => {
     const networkStatus = await getNetworkStatus()
     console.log('networkStatus', networkStatus)
     if (networkStatus) {
-      setBtnProceedDisabled(true)
+      setCameraRelatedPopUp(false)
       try {
         setLoading(true)
-        setCropLoading(true)
         setLoadingMessage(translate('Detecting_Problem'))
 
         var getloginURL = configs.BASE_URL + configs.CROPDETECTION.CROPDISEASEIDENTIFICATION;
@@ -222,7 +272,6 @@ const CropDiagonstic = ({ route }) => {
         if (APIResponse.response === null) {
           setTimeout(() => {
             setLoading(false)
-            setCropLoading(false)
             setLoadingMessage()
             SimpleToast.show(APIResponse?.message)
           }, 100);
@@ -231,7 +280,6 @@ const CropDiagonstic = ({ route }) => {
           setTimeout(() => {
             setLoadingMessage()
             setLoading(false)
-            setCropLoading(false)
           }, 100);
           if (APIResponse.statusCode == HTTP_OK) {
             const dashboardRespBYPASS = APIResponse.response
@@ -239,21 +287,15 @@ const CropDiagonstic = ({ route }) => {
             navigation.navigate("CropDesiesDetection", { data: dashboardRespBYPASS })
             setTimeout(() => {
               setLoading(false)
-              setCropLoading(false)
               setLoadingMessage()
             }, 100);
           } else {
-            // alert("reached to else condition")
             setLoading(false)
-            setCropLoading(false)
             setLoadingMessage()
-            // SimpleToast.show(translate('something_went_wrong'))
           }
         } else {
-          // Alert.alert("reached to other else  condition")
           setTimeout(() => {
             setLoading(false)
-            setCropLoading(false)
             setLoadingMessage()
             SimpleToast.show(translate('something_went_wrong'))
           }, 100);
@@ -262,15 +304,11 @@ const CropDiagonstic = ({ route }) => {
       catch (error) {
         setTimeout(() => {
           setLoading(false)
-          setCropLoading(false)
-          setSuccessLoadingMessage(error.message)
         }, 100);
       }
       finally {
-        setBtnProceedDisabled(false)
+
       }
-    } else {
-      // SimpleToast.show(translate('no_internet_conneccted'))
     }
     setCameraRelatedPopUp(false)
   }
@@ -408,7 +446,7 @@ const CropDiagonstic = ({ route }) => {
                         <Text style={[styles['font_size_14_semibold'], { color: dynamicStyles.iconPrimaryColor }]}>{fromGallery ? translate("ReSelect") : translate('Re-Take')}</Text>
                       </TouchableOpacity>
                       <TouchableOpacity
-                        disabled={btnProceedDisabled}
+                        // disabled={btnProceedDisabled}
                         onPress={() => {
                           submitCrop()
                         }} style={[styleSheetStyles.button, styleSheetStyles.saveButton, { borderColor: Colors.lightGray, backgroundColor: dynamicStyles.primaryColor, }]}>
@@ -530,10 +568,10 @@ const CropDiagonstic = ({ route }) => {
         </View>
       }
 
-      {cropLoading && <CustomLoader loading={loading} message={loadingMessage} loaderImage={loaderImage} fromCropDiag={cropLoading} />}
+      {/* {cropLoading && <CustomLoader loading={loading} message={loadingMessage} loaderImage={loaderImage} fromCropDiag={cropLoading} />} */}
       {loading && !cropLoading && <CustomLoader loading={loading} message={loadingMessage} loaderImage={loaderImage} fromCropDiag={false} />}
-      {successLoading && <CustomSuccessLoader loading={successLoading} message={successLoadingMessage} />}
-      {errorLoading && <CustomErrorLoader loading={errorLoading} message={errorLoadingMessage} />}
+
+
     </View>
   );
 };

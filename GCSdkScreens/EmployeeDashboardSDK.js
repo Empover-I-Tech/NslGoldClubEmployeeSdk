@@ -943,7 +943,7 @@ function EmployeeDashboardSDK({ route }) {
       else if (item.title == strings.helpCenter || item?.title == strings.HelpDesk) {
         navigation.navigate('HelpDesk')
       }
-       else if ((item.title == strings.redemHistory) || (item.title == strings.redemHistory_title) || (item?.title == strings.redemptions_history)) {
+      else if ((item.title == strings.redemHistory) || (item.title == strings.redemHistory_title) || (item?.title == strings.redemptions_history)) {
         navigation.navigate('EmployeeRedemptionsHistory', { roleid: (await retrieveData(ROLEID)) })
       }
     } else {
@@ -1091,18 +1091,7 @@ function EmployeeDashboardSDK({ route }) {
 
                 <CustomCircularImageView
                   onPressImageClick={() => { }}
-                  source={
-                    userImage !== undefined && userImage !== null
-                      ? networkStatus
-                        ? userImage.toString().includes("https:") ||
-                          userImage.toString().includes("http:")
-                          ? { uri: userImage }
-                          : require("../src/assets/images/profileIcon.png")
-                        : {
-                          uri: "file://" + userImage.toString().trim(),
-                        }
-                      : require("../src/assets/images/profileIcon.png")
-                  }
+                  source={userImage ? { uri: userImage } : require("../src/assets/images/profileIcon.png")}
                   size={30}
                   badgeIcon={null}
                   stylesOfBadge={{ height: 30, width: 30, resizeMode: "contain", position: "absolute", bottom: -responsiveWidth(2.5), left: responsiveWidth(3) }}

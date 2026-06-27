@@ -225,12 +225,9 @@ const Location = ({ route }) => {
             <View
                 style={{
                     backgroundColor: screen === 'SignUp' ? primaryColor : dynamicStyles?.primaryColor,
-                    paddingStart: 20,
-                    paddingEnd: 20,
-                    paddingBottom: 20,
+                    padding: 20,
                     borderBottomStartRadius: 10,
                     borderBottomEndRadius: 10,
-                    paddingTop: Platform.OS === 'ios' ? 60 : 20,
                 }}
             >
                 <TouchableOpacity style={[styles['flex_direction_row'], { alignItems: 'center' }]} onPress={goSignup}>
