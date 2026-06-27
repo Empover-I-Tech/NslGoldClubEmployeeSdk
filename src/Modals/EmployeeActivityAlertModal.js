@@ -132,7 +132,7 @@ const EmployeeActivityAlertModal = ({
                   styles.button,
                   {
                     backgroundColor:
-                      btnOneNavigateTo?.btnColor || DEFAULT_PRIMARY,
+                      btnOneNavigateTo?.btnColor || dynamicStyles.primaryColor ? dynamicStyles.primaryColor : DEFAULT_PRIMARY,
                   },
                 ]}
                 onPress={() =>
@@ -151,7 +151,7 @@ const EmployeeActivityAlertModal = ({
                   styles.button,
                   {
                     backgroundColor:
-                      btnTwoNavigateTo?.btnColor || DEFAULT_SECONDARY,
+                      btnTwoNavigateTo?.btnColor || dynamicStyles.primaryColor ? dynamicStyles.primaryColor : DEFAULT_SECONDARY,
                   },
                 ]}
                 onPress={() =>

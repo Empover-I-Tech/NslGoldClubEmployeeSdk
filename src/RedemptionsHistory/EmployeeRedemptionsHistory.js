@@ -14,7 +14,6 @@ import CustomSuccessLoader from "../Components/CustomSuccessLoader";
 import CustomErrorLoader from "../Components/CustomErrorLoader";
 import { HTTP_OK, configs } from "../helpers/URLConstants";
 import CustomListViewModal from "../Modals/CustomListViewModal";
-import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from "moment";
 import { useSelector } from "react-redux";
 import CustomSearchListViewModal from "../Modals/CustomSearchListViewModal";
@@ -24,6 +23,7 @@ import { translate } from "../Localisation/Localisation";
 import { createStyles } from "../assets/style/createStyles";
 import { getCompanyStyles } from "../redux/store/slices/CompanyStyleSlice";
 import CustomTextInput from "../Components/CustomTextInput";
+import DatePicker from "react-native-date-picker";
 
 var styles = BuildStyleOverwrite(Styles);
 
@@ -231,8 +231,11 @@ function EmployeeRedemptionsHistory({ route }) {
 
         if (networkStatus) {
             try {
-                setLoading(true);
-                setLoadingMessage(translate('please_wait_getting_data'))
+                if (Platform.OS == 'android') {
+                    setLoading(true);
+                    setLoadingMessage(translate('please_wait_getting_data'))
+                }
+
 
                 var getloginURL = configs.BASE_URL + configs.QRSCAN.DROPDOWNS_MASTERS;
                 var getHeaders = await GetApiHeaders();
@@ -250,6 +253,10 @@ function EmployeeRedemptionsHistory({ route }) {
 
                 var APIResponse = await PostRequest(getloginURL, getHeaders, dataList);
                 console.log('the dropdown Resp is001', JSON.stringify(APIResponse))
+                setTimeout(() => {
+                    setLoading(false);
+                    setLoadingMessage("");
+                }, 1000);
                 if (APIResponse.statusCode == HTTP_OK) {
 
                     console.log('the dropdown Resp is :', APIResponse.response)
@@ -357,8 +364,8 @@ function EmployeeRedemptionsHistory({ route }) {
                     }
                 } else {
                     setTimeout(() => {
-                        // setLoading(false)
-                        // setLoadingMessage()
+                        setLoading(false)
+                        setLoadingMessage()
                     }, 500);
                 }
             } catch (error) {
@@ -376,10 +383,10 @@ function EmployeeRedemptionsHistory({ route }) {
         value?.includes('Select') ? '' : value;
 
     const submitButtonPress = async (pageNo) => {
-        setTimeout(() => {
+        if (Platform.OS == 'android') {
             setLoading(true);
-            setLoadingMessage(translate('please_wait_getting_data'));
-        }, 50);
+            setLoadingMessage(translate('please_wait_getting_data'))
+        }
 
         const header = await GetApiHeaders();
         const input = {
@@ -866,14 +873,14 @@ function EmployeeRedemptionsHistory({ route }) {
     return (
         <View style={[styles['full_screen'], { backgroundColor: Colors.very_light_grey }]}>
             {Platform.OS === 'android' && <StatusBar backgroundColor={dynamicStyles.primaryColor} barStyle='dark-content' />}
-            <View style={[{ backgroundColor: dynamicStyles.primaryColor, borderBottomEndRadius: 10, borderBottomStartRadius: 10, paddingTop: Platform.OS === 'ios' ? 60 : 0, paddingBottom: 25 }]}>
+            <View style={[{ backgroundColor: dynamicStyles.primaryColor, borderBottomEndRadius: 10, borderBottomStartRadius: 10, paddingTop: Platform.OS === 'ios' ? 20 : 0, paddingBottom: 25, justifyContent: 'center' }]}>
                 <TouchableOpacity style={[styles['flex_direction_row'], { alignItems: 'center' }]} onPress={() => { goBack() }}>
-                    <Image style={[styles['margin_left_20'], styles[''], styles['tint_color_white'], { height: 15, width: 20, top: Platform.OS == 'ios' ? 10 : 0 }]} source={require('../assets/images/previous.png')}></Image>
+                    <Image style={[styles['margin_left_20'], styles[''], styles['tint_color_white'], { height: 15, width: 20 }]} source={require('../assets/images/previous.png')}></Image>
                     <Text style={[styles['margin_left_10'], styles[''], styles['text_color_white'], styles[''], styles['font_size_18_bold']]}>{translate('redemHistory')}</Text>
                 </TouchableOpacity>
             </View>
 
-            <ScrollView style={[{ marginTop: 5, marginBottom: numberOfPages > 1 ? 55 : 20, }]}>
+            <ScrollView style={[{ marginTop: 5, marginBottom: numberOfPages > 1 ? Platform.OS == 'android' ? 55 : 60 : 20, }]}>
                 <View style={[{ padding: 10, width: '95%', backgroundColor: 'white', marginTop: 10 }, styles['centerItems'], styles['border_radius_8']]}>
 
 
@@ -1062,7 +1069,7 @@ function EmployeeRedemptionsHistory({ route }) {
             </ScrollView>
 
             {numberOfPages > 1 && pagesArray.length > 0 && (
-                <View style={[{ minHeight: 40, width: '95%', position: 'absolute', bottom: 0, marginBottom: 8, borderRadius: 8, overflow: 'hidden', backgroundColor: 'white', borderTopWidth: 0.5, borderColor: Colors.lightish_grey }, styles['centerItems']]}>
+                <View style={[{ minHeight: Platform.OS == 'android' ? 40 : 60, width: '95%', position: 'absolute', bottom: 0, marginBottom: 8, borderRadius: 8, overflow: 'hidden', backgroundColor: 'white', borderTopWidth: 0.5, borderColor: Colors.lightish_grey }, styles['centerItems']]}>
                     <Text style={[styles['font_size_16_bold'], styles['text_color_black'], styles['text_align_left'], styles['left_5'], styles['width_100%'], styles['margin_top_minus_12']]}></Text>
                     <View style={[{ height: '100%', width: '100%', flexDirection: 'row', justifyContent: 'space-between' }]}>
                         <TouchableOpacity style={[styles['width_15%'], styles['centerItems'], { height: '100%' }]} onPress={() => { selectedPageIndex > 0 ? previousPage() : '' }}>
@@ -1134,12 +1141,12 @@ function EmployeeRedemptionsHistory({ route }) {
 
                 )
             } */}
-            {
+            {/* {
                 showDatePicker && (
                     <DateTimePicker
                         value={selectedDate || new Date()}
                         mode="date"
-                        display="default"
+                        display="inline"
                         is24Hour={false}
                         onChange={(event, date) => {
                             handleCancel();
@@ -1149,6 +1156,24 @@ function EmployeeRedemptionsHistory({ route }) {
                             if (date) {
                                 handleConfirm(date);
                             }
+                        }}
+                    />
+                )
+            } */}
+            {
+                showDatePicker && (
+                    <DatePicker
+                        modal
+                        open={showDatePicker}
+                        date={selectedDate || new Date()}
+                        mode="date"
+                        maximumDate={new Date()}
+                        minimumDate={new Date(1901, 0, 1)}
+                        onConfirm={(date) => {
+                            handleConfirm(date);
+                        }}
+                        onCancel={() => {
+                            handleCancel();
                         }}
                     />
                 )

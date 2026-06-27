@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Styles } from "../assets/style/styles";
 import { BuildStyleOverwrite } from "../assets/style/BuildStyle";
-import { View, Image, Text, TouchableOpacity, FlatList, ScrollView, Modal, Platform, StatusBar } from "react-native";
+import { View, Image, Text, TouchableOpacity, FlatList, ScrollView, Modal, Platform, StatusBar, Alert } from "react-native";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { Colors } from "../assets/Utils/Color";
 import { strings } from "../strings/strings";
@@ -12,7 +12,6 @@ import SimpleToast from "react-native-simple-toast";
 import CustomLoader from "../Components/CustomLoader";
 import { HTTP_OK, configs } from "../helpers/URLConstants";
 import CustomListViewModal from "../Modals/CustomListViewModal";
-import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from "moment";
 import { useSelector } from "react-redux";
 import { filterArrayOfObjects2, filterObjects } from "../assets/Utils/Utils";
@@ -20,7 +19,9 @@ import CustomCalanderSelection from "../Components/CustomCalanderSelection";
 import { translate } from "../Localisation/Localisation";
 import { createStyles } from "../assets/style/createStyles";
 import { getCompanyStyles } from "../redux/store/slices/CompanyStyleSlice";
+import CustomTextInputNew from "../Components/CustomTextInputNew";
 import CustomTextInput from "../Components/CustomTextInput";
+import DatePicker from "react-native-date-picker";
 
 var styles = BuildStyleOverwrite(Styles);
 
@@ -104,12 +105,20 @@ function EmpScanHistory({ route }) {
     const flatListRef = useRef(null);
 
     const startLoading = (msg = '') => {
+        console.log('START EMP');
         setLoadingMessage(msg);
-        setLoadingCount(prev => prev + 1);
+        setLoadingCount(prev => {
+            console.log('COUNT+', prev + 1);
+            return prev + 1;
+        });
     };
 
     const stopLoading = () => {
-        setLoadingCount(prev => Math.max(prev - 1, 0));
+        console.log('STOP EMP');
+        setLoadingCount(prev => {
+            console.log('COUNT-', Math.max(prev - 1, 0));
+            return Math.max(prev - 1, 0);
+        });
     };
 
     const loading = loadingCount > 0;
@@ -118,8 +127,7 @@ function EmpScanHistory({ route }) {
         if (subDistrictSelectedId != 0 || villageSelectedId != 0) {
             callVillageRetailerApiMaster(subDistrictSelectedId, villageSelectedId)
         }
-
-    }, [subDistrictSelectedId, subDistrictSelectedName, villageSelectedName, villageSelectedId])
+    }, [subDistrictSelectedId, villageSelectedId]) // ✅ Remove name dependencies
 
 
     useEffect(() => {
@@ -183,7 +191,8 @@ function EmpScanHistory({ route }) {
         var networkStatus = await getNetworkStatus()
 
         if (!networkStatus) return;
-        startLoading(translate('please_wait_getting_data'));
+        
+        Platform.OS == 'android' &&  startLoading(translate('please_wait_getting_data'));
 
         try {
 
@@ -207,14 +216,12 @@ function EmpScanHistory({ route }) {
                 setVillageMaster(response?.villageList);
                 setRetailerMaster(response?.retailersList);
             }
-
         } catch (error) {
             console.log("error", error)
         }
         finally {
             stopLoading()
         }
-
     }
 
 
@@ -310,7 +317,6 @@ function EmpScanHistory({ route }) {
             setNumberOfPages(total_pages);
             setKey(prevKey => prevKey + 1);  // Update key to force re-render
             console.log("pagesAr", pagesAr, "--", total_pages);
-
         } catch (error) {
             console.log("error", error)
         }
@@ -857,9 +863,9 @@ function EmpScanHistory({ route }) {
     return (
         <View style={[styles['full_screen'], { backgroundColor: Colors.very_light_grey }]}>
             {Platform.OS === 'android' && <StatusBar backgroundColor={dynamicStyles.primaryColor} barStyle='dark-content' />}
-            <View style={[{ backgroundColor: dynamicStyles.primaryColor, borderBottomEndRadius: 10, borderBottomStartRadius: 10, paddingTop: Platform.OS === 'ios' ? 60 : 0 }]}>
+            <View style={[{ backgroundColor: dynamicStyles.primaryColor, borderBottomEndRadius: 10, borderBottomStartRadius: 10, paddingTop: Platform.OS === 'ios' ? 20 : 0, justifyContent: 'center' }]}>
                 <TouchableOpacity style={[styles['flex_direction_row'], { alignItems: 'center' }]} onPress={() => { goBack() }}>
-                    <Image style={[styles['margin_left_20'], styles[''], styles['tint_color_white'], { height: 15, width: 20, top: Platform.OS == 'ios' ? 10 : 0 }]} source={require('../assets/images/previous.png')}></Image>
+                    <Image style={[styles['margin_left_20'], styles[''], styles['tint_color_white'], { height: 15, width: 20, top: 0 }]} source={require('../assets/images/previous.png')}></Image>
                     <Text style={[styles['margin_left_10'], styles[''], styles['text_color_white'], styles[''], styles['font_size_18_bold']]}>{translate('scan_history')}</Text>
                 </TouchableOpacity>
 
@@ -1322,7 +1328,7 @@ function EmpScanHistory({ route }) {
                 )
             } */}
 
-            {
+            {/* {
                 showDatePicker && (
                     <DateTimePicker
                         value={selectedDate || new Date()}
@@ -1337,6 +1343,24 @@ function EmpScanHistory({ route }) {
                             if (date) {
                                 handleConfirm(date);
                             }
+                        }}
+                    />
+                )
+            } */}
+            {
+                showDatePicker && (
+                    <DatePicker
+                        modal
+                        open={showDatePicker}
+                        date={selectedDate || new Date()}
+                        mode="date"
+                        maximumDate={new Date()}
+                        minimumDate={new Date(1901, 0, 1)}
+                        onConfirm={(date) => {
+                            handleConfirm(date);
+                        }}
+                        onCancel={() => {
+                            handleCancel();
                         }}
                     />
                 )

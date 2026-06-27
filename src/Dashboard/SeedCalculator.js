@@ -1735,6 +1735,7 @@ const SeedCalculator = ({ route }) => {
                                     <CustomBorderInputDropDown
                                         width={[{ width: '92%' }, styles['centerItems']]}
                                         defaultValue={rowSpacing != undefined && rowSpacing != translate('select') ? rowSpacing : translate('select')}
+                                        value={rowSpacing != undefined && rowSpacing != translate('select') ? rowSpacing : translate('select')}
                                         IsRequired={true}
                                         disabled={listRowSpace.length === 1}
                                         placeholder={translate('yieldFour')}
@@ -1750,6 +1751,7 @@ const SeedCalculator = ({ route }) => {
                                     <CustomBorderInputDropDown
                                         width={[{ width: '92%' }, styles['centerItems']]}
                                         defaultValue={plantSpacing != undefined && plantSpacing != translate('select') ? plantSpacing : translate('select')}
+                                        value={plantSpacing != undefined && plantSpacing != translate('select') ? plantSpacing : translate('select')}
                                         IsRequired={true}
                                         disabled={PlantToPlantArr.length === 1}
                                         placeholder={translate('yieldFive')}

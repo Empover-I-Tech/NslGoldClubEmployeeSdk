@@ -44,14 +44,11 @@ const CustomGalleryPopup = ({ showOrNot, onPressingOut, onPressingGallery, onPre
     try {
       if (Platform.OS === 'android') {
         const sdkVersion = Platform.Version;
-
         const cameraResult = await PermissionsAndroid.request(
           PermissionsAndroid.PERMISSIONS.CAMERA
         );
 
         let storageResult = PermissionsAndroid.RESULTS.GRANTED;
-
-        // Only Android 6-9 need storage permission
         if (sdkVersion >= 23 && sdkVersion < 29) {
           storageResult = await PermissionsAndroid.request(
             PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
@@ -62,7 +59,11 @@ const CustomGalleryPopup = ({ showOrNot, onPressingOut, onPressingGallery, onPre
           cameraResult === PermissionsAndroid.RESULTS.GRANTED &&
           storageResult === PermissionsAndroid.RESULTS.GRANTED
         ) {
-          onPressingCamera();
+          // Close modal first, then launch camera
+          onPressingOut();
+          setTimeout(() => {
+            onPressingCamera();
+          }, 500);
         } else if (
           cameraResult === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN ||
           storageResult === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN
@@ -71,11 +72,15 @@ const CustomGalleryPopup = ({ showOrNot, onPressingOut, onPressingGallery, onPre
         } else {
           showPermissionAlert('camera');
         }
+
       } else if (Platform.OS === 'ios') {
         const status = await request(PERMISSIONS.IOS.CAMERA);
-
         if (status === RESULTS.GRANTED) {
-          onPressingCamera();
+          // Close modal first, then launch camera
+          // onPressingOut();
+          setTimeout(() => {
+            onPressingCamera();
+          }, 500);
         } else {
           showPermissionAlert('camera');
         }
@@ -89,21 +94,19 @@ const CustomGalleryPopup = ({ showOrNot, onPressingOut, onPressingGallery, onPre
   const requestGalleryPermission = async () => {
     try {
       if (Platform.OS === 'android') {
-        onPressingGallery();
-        // let permission = Platform.Version >= 33
-        //   ? PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES
-        //   : PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE;
-
-        // const result = await PermissionsAndroid.request(permission);
-        // if (result === PermissionsAndroid.RESULTS.GRANTED) {
-        //   onPressingGallery();
-        // } else {
-        //   showPermissionAlert('gallery');
-        // }
+        // Close modal first, then launch gallery
+        onPressingOut();
+        setTimeout(() => {
+          onPressingGallery();
+        }, 500);
       } else if (Platform.OS === 'ios') {
         const status = await request(PERMISSIONS.IOS.PHOTO_LIBRARY);
         if (status === RESULTS.GRANTED || status === RESULTS.LIMITED) {
-          onPressingGallery();
+          // Close modal first, then launch gallery
+          // onPressingOut();
+          setTimeout(() => {
+            onPressingGallery();
+          }, 500);
         } else {
           showPermissionAlert('gallery');
         }
@@ -112,6 +115,79 @@ const CustomGalleryPopup = ({ showOrNot, onPressingOut, onPressingGallery, onPre
       console.warn('Gallery Permission Error:', error);
     }
   };
+
+  // const requestCameraPermission = async () => {
+  //   try {
+  //     if (Platform.OS === 'android') {
+  //       const sdkVersion = Platform.Version;
+
+  //       const cameraResult = await PermissionsAndroid.request(
+  //         PermissionsAndroid.PERMISSIONS.CAMERA
+  //       );
+
+  //       let storageResult = PermissionsAndroid.RESULTS.GRANTED;
+
+  //       // Only Android 6-9 need storage permission
+  //       if (sdkVersion >= 23 && sdkVersion < 29) {
+  //         storageResult = await PermissionsAndroid.request(
+  //           PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
+  //         );
+  //       }
+
+  //       if (
+  //         cameraResult === PermissionsAndroid.RESULTS.GRANTED &&
+  //         storageResult === PermissionsAndroid.RESULTS.GRANTED
+  //       ) {
+  //         onPressingCamera();
+  //       } else if (
+  //         cameraResult === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN ||
+  //         storageResult === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN
+  //       ) {
+  //         showPermissionAlert('camera');
+  //       } else {
+  //         showPermissionAlert('camera');
+  //       }
+  //     } else if (Platform.OS === 'ios') {
+  //       const status = await request(PERMISSIONS.IOS.CAMERA);
+
+  //       if (status === RESULTS.GRANTED) {
+  //         onPressingCamera();
+  //       } else {
+  //         showPermissionAlert('camera');
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.log('Camera Permission Error:', error);
+  //   }
+  // };
+
+
+  // const requestGalleryPermission = async () => {
+  //   try {
+  //     if (Platform.OS === 'android') {
+  //       onPressingGallery();
+  //       // let permission = Platform.Version >= 33
+  //       //   ? PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES
+  //       //   : PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE;
+
+  //       // const result = await PermissionsAndroid.request(permission);
+  //       // if (result === PermissionsAndroid.RESULTS.GRANTED) {
+  //       //   onPressingGallery();
+  //       // } else {
+  //       //   showPermissionAlert('gallery');
+  //       // }
+  //     } else if (Platform.OS === 'ios') {
+  //       const status = await request(PERMISSIONS.IOS.PHOTO_LIBRARY);
+  //       if (status === RESULTS.GRANTED || status === RESULTS.LIMITED) {
+  //         onPressingGallery();
+  //       } else {
+  //         showPermissionAlert('gallery');
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.warn('Gallery Permission Error:', error);
+  //   }
+  // };
 
   return (
     <Modal
@@ -122,7 +198,7 @@ const CustomGalleryPopup = ({ showOrNot, onPressingOut, onPressingGallery, onPre
     >
       <TouchableOpacity
         activeOpacity={1}
-        onPressOut={onPressingOut}
+
         style={stylesSheet.overallContainer}
       >
         <TouchableWithoutFeedback>

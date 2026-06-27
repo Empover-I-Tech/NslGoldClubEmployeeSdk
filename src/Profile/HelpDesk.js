@@ -740,40 +740,171 @@ function HelpDesk({ route }) {
 
 
   const renderItems = (item, index, lastItem) => {
-    // console.log(item, "Hello Brother!!=====================================================",item);
-    const showText = item.scanCouponLabel.length > 0 && item.scanCouponLabel[0].couponName !== '';
-    const couponNames = item.scanCouponLabel.map(label => label.couponName);
-    const joinedCouponNames = couponNames.filter(name => name).join(',');
+    const showText =
+      item?.scanCouponLabel?.length > 0 &&
+      item?.scanCouponLabel[0]?.couponName !== '';
+
+    const couponNames = item?.scanCouponLabel?.map(
+      label => label.couponName,
+    );
+    const joinedCouponNames = couponNames
+      ?.filter(name => name)
+      .join(',');
+
     return (
-      <TouchableOpacity disabled={item?.dupicateCount === 1} style={[styles['flex_direction_row'], styles['width_90%'], styles['margin_top_20'], styles['align_self_center'], styles['border_radius_6'], styles['bg_white'], { elevation: 2 }
-        , index === lastItem && { marginBottom: 20 }]}
-        onPress={() => {
-          setRenderModal(!renderModal)
-          setselectedComplaint(item)
-        }}>
-        <View style={[styles['flex_direction_column'], styles['centerItems'], styles['top_10'], styles['bottom_10'], { width: '90%', marginLeft: 10 }]}>
-          <Text style={[styles['font_size_14_semibold'], { color: dynamicStyles.textColor }, styles['text_align_left'], styles['left_5'], styles['width_100%'], styles['top_10']]}>{item?.categoryName} - {item?.subcategoryName}</Text>
-          {isNullOrEmpty(item?.remarks) && <Text style={[styles['font_size_12_regular'], { color: dynamicStyles.textColor }, styles['text_align_left'], styles['left_5'], styles['width_100%'], styles['top_10']]}>{translate('remarks')} : {item.remarks}</Text>}
-          {showText &&
-            <Text style={[styles['font_size_12_regular'], { color: dynamicStyles.textColor }, styles['text_align_left'], styles['left_5'], styles['width_100%'], styles['top_10']]}>{joinedCouponNames}  -  {translate('gotCouponsWhichareinvalid')}</Text>
-          }
-          {/* <Text style={[styles['font_size_12_regular'], styles['text_color_black'], styles['text_align_left'], styles['left_5'], styles['width_100%'], styles['top_10']]}>{item.remarks} - {translate('gotCouponsWhichareinvalid')}</Text> */}
-          <Text style={[styles['font_size_12_regular'], { color: dynamicStyles.textColor }, styles['text_align_left'], styles['left_5'], styles['width_100%'], styles['top_10']]}>{item.raisedBy}</Text>
-          <Text style={[styles['font_size_12_semibold'], { color: dynamicStyles.textColor }, styles['text_align_left'], styles['left_5'], styles['width_100%'], styles['top_10']]}>{translate('status')} - <Text style={[styles['text_color_orange']]}>{item?.complaintStatus}</Text></Text>
+      <View style={{ width: '100%' }}>
+        <TouchableOpacity
+          disabled={item?.dupicateCount === 1}
+          style={[
+            styles['width_90%'],
+            styles['margin_top_20'],
+            styles['align_self_center'],
+            styles['border_radius_6'],
+            styles['bg_white'],
+            {
+              elevation: 2,
+              padding: 12,
+              position: 'relative',
+            },
+            index === lastItem && { marginBottom: 20 },
+          ]}
+          onPress={() => {
+            setRenderModal(!renderModal);
+            setselectedComplaint(item);
+          }}
+        >
+          {/* Duplicate Count Badge */}
+          {item?.dupicateCount > 1 && (
+            <View
+              style={{
+                position: 'absolute',
+                top: 10,
+                right: 10,
+                minWidth: 24,
+                height: 24,
+                paddingHorizontal: 7,
+                backgroundColor: '#DB710E',
+                borderRadius: 12,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <Text
+                style={[
+                  styles['font_size_12_regular'],
+                  styles['tint_color_white'],
+                ]}
+              >
+                {item?.dupicateCount}
+              </Text>
+            </View>
+          )}
 
-        </View>
-        {item?.dupicateCount > 1 && <View style={{ backgroundColor: "rgba(219, 113, 14, 1)", alignItems: "center", justifyContent: "center", borderRadius: 50, height: 20, width: 20, top: 15, right: 15 }}>
-          {/* <Text style={[styles['font_size_12_regular'], {color:dynamicStyles.secondaryColor},]}>{item?.dupicateCount}</Text> */}
-          <Text style={[styles['font_size_12_regular'], styles['tint_color_white'],]}>{item?.dupicateCount}</Text>
-        </View>}
-        {item?.complaintImage &&
-          <TouchableOpacity style={[styles['absolute_position'], styles['width_height_60'], { right: 5, bottom: 10, justifyContent: 'center' }]} onPress={() => { viewCicked(item) }}>
-            <Image style={[styles['margin_left_10'], styles['width_height_40'], styles['align_self_center'], styles['absolute_position'], styles['right_10']]} source={{ uri: networkStatus ? item?.complaintImage : 'file://' + item?.complaintImage }}></Image>
-          </TouchableOpacity>}
-      </TouchableOpacity>
+          {/* Category */}
+          <Text
+            style={[
+              styles['font_size_14_semibold'],
+              {
+                color: dynamicStyles.textColor,
+                marginTop: 5,
+                paddingRight: item?.dupicateCount > 1 ? 35 : 0,
+              },
+            ]}
+          >
+            {item?.categoryName} - {item?.subcategoryName}
+          </Text>
 
-    )
-  }
+          {/* Remarks */}
+          {isNullOrEmpty(item?.remarks) && (
+            <Text
+              style={[
+                styles['font_size_12_regular'],
+                {
+                  color: dynamicStyles.textColor,
+                  marginTop: 8,
+                },
+              ]}
+            >
+              {translate('remarks')} : {item?.remarks}
+            </Text>
+          )}
+
+          {/* Coupons */}
+          {showText && (
+            <Text
+              style={[
+                styles['font_size_12_regular'],
+                {
+                  color: dynamicStyles.textColor,
+                  marginTop: 8,
+                },
+              ]}
+            >
+              {joinedCouponNames} -{' '}
+              {translate('gotCouponsWhichareinvalid')}
+            </Text>
+          )}
+
+          {/* Raised By */}
+          <Text
+            style={[
+              styles['font_size_12_regular'],
+              {
+                color: dynamicStyles.textColor,
+                marginTop: 8,
+              },
+            ]}
+          >
+            {item?.raisedBy}
+          </Text>
+
+          {/* Status + Image */}
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'flex-end',
+              marginTop: 12,
+            }}
+          >
+            <View style={{ flex: 1, paddingRight: 10 }}>
+              <Text
+                style={[
+                  styles['font_size_12_semibold'],
+                  {
+                    color: dynamicStyles.textColor,
+                  },
+                ]}
+              >
+                {translate('status')} -{' '}
+                <Text style={styles['text_color_orange']}>
+                  {item?.complaintStatus}
+                </Text>
+              </Text>
+            </View>
+
+            {item?.complaintImage && (
+              <TouchableOpacity onPress={() => viewCicked(item)}>
+                <Image
+                  source={{
+                    uri: networkStatus
+                      ? item?.complaintImage
+                      : 'file://' + item?.complaintImage,
+                  }}
+                  style={{
+                    width: 60,
+                    height: 60,
+                    borderRadius: 6,
+                  }}
+                  resizeMode="cover"
+                />
+              </TouchableOpacity>
+            )}
+          </View>
+        </TouchableOpacity>
+      </View>
+    );
+  };
 
   const cancelBtnPress = () => {
     setShowDetailViewModal(false)

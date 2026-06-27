@@ -59,7 +59,7 @@ export async function GetApiHeaders() {
         'fcmToken': fcmToken,
         'deviceToken': deviceToken,
         'userName': userName,
-        'applicationName': strings.VyaparMitraTwo, 
+        'applicationName': sdk_auth_id == "" ? strings.VyaparMitraTwo : strings.goldClubSDK,
         "userCompanyCode": userData?.companyCode,
         "companyCode": userData?.companyCode,
         languageId: languageId || '1',
@@ -110,11 +110,18 @@ export async function GetRequest(url, headers) {
     var networkStatus = await getNetworkStatus()
     if (networkStatus) {
         try {
+            const controller = new AbortController();
+
+            const timeoutId = setTimeout(() => {
+                controller.abort();
+            }, REQUEST_TIMEOUT);
+
             const response = await fetch(url, {
                 method: 'GET',
-                headers: headers
+                headers,
+                signal: controller.signal,
             });
-
+            clearTimeout(timeoutId);
             if (response.status == 200 || response.status == 412) {
                 const responseJson = await response.json();
 
@@ -171,9 +178,16 @@ export async function GetRequest(url, headers) {
                 }
             }
         } catch (error) {
-            console.log("this is the error in the get")
-            console.log(error.message);
-            return constructFailureObject(translate('something_went_wrong'))
+
+            if (error.name === 'AbortError') {
+                return constructFailureObject('Request timed out');
+            }
+
+            console.log("GET ERROR", error);
+
+            return constructFailureObject(
+                error?.message || translate('something_went_wrong')
+            );
         }
     } else {
         // SimpleToast.show(translate('no_internet_conneccted'))
@@ -187,11 +201,18 @@ export async function PostRequest(url, headers, inputObject) {
     console.log("Headers ===>", JSON.stringify(headers));
     console.log("Input Request ===>", JSON.stringify(inputObject));
     try {
+        const controller = new AbortController();
+
+        const timeoutId = setTimeout(() => {
+            controller.abort();
+        }, REQUEST_TIMEOUT);
         const response = await fetch(url, {
             method: 'POST',
             headers: headers,
             body: JSON.stringify(inputObject),
+            signal: controller.signal,
         });
+        clearTimeout(timeoutId);
 
         switch (response?.status) {
             case 200:
@@ -207,7 +228,7 @@ export async function PostRequest(url, headers, inputObject) {
                 } else if (responseJson?.statusCode == 601) {
                     forceLogoutUser();
                     return responseJson;
-                } else if(responseJson?.message === "User Does Not Exist"){
+                } else if (responseJson?.message === "User Does Not Exist") {
                     forceLogoutUser();
                     return responseJson;
                 }
@@ -237,14 +258,16 @@ export async function PostRequest(url, headers, inputObject) {
         }
 
     } catch (error) {
-        console.error('Network or server error:', error);
 
-        // Handle network request failure specifically
-        // if (error instanceof TypeError && error.message === "Failed to fetch") {
-        //     return constructFailureObject("Network request failed: Network request failed");
-        // }else if(error instanceof TypeError && error.message)
+        if (error.name === 'AbortError') {
+            return constructFailureObject('Request timed out');
+        }
 
-        return constructFailureObject(translate('request_failed_with_message'));
+        console.log("POST ERROR", error);
+
+        return constructFailureObject(
+            error?.message || translate('request_failed_with_message')
+        );
     }
 }
 

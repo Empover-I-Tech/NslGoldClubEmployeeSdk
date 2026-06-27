@@ -43,7 +43,7 @@ const fs = require('fs');
 
 export const GetMastersComplaint = async () => {
   // let realm = new Realm({ path: 'User.realm' });
-  
+
   if (!realm) {
     console.log("Realm not initialized");
     return;
@@ -91,7 +91,7 @@ export const GetMastersComplaint = async () => {
 function Complaint() {
   styles = useMemo(() => createStyles(), [global.selectedLanguageCode]);
   // var realm = new Realm({ path: 'User.realm' });
- 
+
   if (!realm) {
     console.log("Realm not initialized");
     return;
@@ -238,7 +238,7 @@ function Complaint() {
   }, []);
 
   const goBack = async () => {
-    navigation.goBack()
+    navigation.navigate('HelpDesk')
   };
 
   const changeDropDownData = (dropDownData, type, selectedItem) => {
@@ -751,128 +751,128 @@ function Complaint() {
   }
   return (
 
-      <View style={[{ position: "relative", flex: 1, backgroundColor: 'white' }]}>
-        {/* {Platform.OS === 'android' && <StatusBar backgroundColor={dynamicStyles.primaryColor} barStyle='dark-content' />} */}
-        <View style={[{ backgroundColor: dynamicStyles.primaryColor }, { borderBottomStartRadius: 10, borderBottomEndRadius: 10, padding: 15 }]}>
-          <TouchableOpacity style={[styles['flex_direction_row']]} onPress={() => navigation.goBack()}>
-            <Image style={[{ tintColor: dynamicStyles.secondaryColor }, { height: 15, width: 20, top: 5 }]} source={require('../assets/images/previous.png')}></Image>
-            <Text style={[styles['margin_left_10'], { color: dynamicStyles.secondaryColor, lineHeight : 24 }, styles['font_size_18_bold'], Platform.OS === 'ios' && { minHeight: 25 }]}>{translate('complaint')}</Text>
-          </TouchableOpacity>
-        </View>
-        {/* <View style={[styles['height_100%'], styles['width_100%']]}> */}
+    <View style={[{ position: "relative", flex: 1, backgroundColor: 'white' }]}>
+      {/* {Platform.OS === 'android' && <StatusBar backgroundColor={dynamicStyles.primaryColor} barStyle='dark-content' />} */}
+      <View style={[{ backgroundColor: dynamicStyles.primaryColor }, { borderBottomStartRadius: 10, borderBottomEndRadius: 10, padding: 15 }]}>
+        <TouchableOpacity style={[styles['flex_direction_row']]} onPress={() => navigation.goBack()}>
+          <Image style={[{ tintColor: dynamicStyles.secondaryColor }, { height: 15, width: 20, top: 5 }]} source={require('../assets/images/previous.png')}></Image>
+          <Text style={[styles['margin_left_10'], { color: dynamicStyles.secondaryColor, lineHeight: 24 }, styles['font_size_18_bold'], Platform.OS === 'ios' && { minHeight: 25 }]}>{translate('complaint')}</Text>
+        </TouchableOpacity>
+      </View>
+      {/* <View style={[styles['height_100%'], styles['width_100%']]}> */}
 
-        {/* <TouchableOpacity style={[styles['flex_direction_row']]} onPress={() => { goBack() }}>
+      {/* <TouchableOpacity style={[styles['flex_direction_row']]} onPress={() => { goBack() }}>
           <Image style={[styles['margin_left_20'], styles[''], styles['tint_color_black'], { height: 20, width: 25, top: 5 }]} source={require('../assets/images/previous.png')}></Image>
           <Text style={[styles['margin_left_10'], styles[''], styles['text_color_black'], styles[''], styles['font_size_14_bold'], { marginTop: 5 }]}>{translate('complaint')}</Text>
         </TouchableOpacity> */}
-        <View style={{ flex: 1 }}>
-          <KeyboardAvoidingView
-            style={{ flex: 1 }}
-            behavior={Platform.OS === 'ios' ? 'padding' : 'height'} // For iOS use padding, for Android use height
-          >
-            <ScrollView
-              keyboardShouldPersistTaps={'handled'}
-              automaticallyAdjustKeyboardInsets={Platform.OS == 'ios' ? false : true}
-              showsVerticalScrollIndicator={false}
-              contentContainerStyle={{ flexGrow: 1 }}
-              style={{
-                flex: 1,
-                // marginBottom: subCategory == translate('damagedCoupons') || subCategory == translate('invalid_coupons') ? responsiveHeight(2) : 0
-              }} >
+      <View style={{ flex: 1 }}>
+        <KeyboardAvoidingView
+          style={{ flex: 1 }}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'} // For iOS use padding, for Android use height
+        >
+          <ScrollView
+            keyboardShouldPersistTaps={'handled'}
+            automaticallyAdjustKeyboardInsets={Platform.OS == 'ios' ? false : true}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ flexGrow: 1 }}
+            style={{
+              flex: 1,
+              // marginBottom: subCategory == translate('damagedCoupons') || subCategory == translate('invalid_coupons') ? responsiveHeight(2) : 0
+            }} >
 
-              <View style={[styles['padding_top_10'], styles['width_100%']]}>
+            <View style={[styles['padding_top_10'], styles['width_100%']]}>
 
-                <Text style={[styles['top_5'], styles['height_40'], { color: dynamicStyles.textColor }, styles['centerItems'], styles['font_size_24_bold']]}>{translate('customersupport')}</Text>
-                <View style={[styles['bg_lightish_grey'], styles['width_90%'], styles['height_0.5'], styles['centerItems'], { marginVertical: 10 }]} ></View>
+              <Text style={[styles['top_5'], styles['height_40'], { color: dynamicStyles.textColor }, styles['centerItems'], styles['font_size_24_bold']]}>{translate('customersupport')}</Text>
+              <View style={[styles['bg_lightish_grey'], styles['width_90%'], styles['height_0.5'], styles['centerItems'], { marginVertical: 10 }]} ></View>
 
-                {/* DropDown  */}
+              {/* DropDown  */}
 
-                <CustomInputDropDown
-                  width={[styles['width_90%'], styles['margin_top_20']]}
-                  defaultValue={category != undefined && category != translate('select') ? category : translate('select')}
-                  labelName={translate('selectCategory')}
-                  IsRequired={true}
-                  placeholder={translate('selectCategory')}
-                  onEndEditing={async event => {
-                    // calculateTotalOrderValue()
-                  }}
-                  onFocus={() => {
-                    changeDropDownData(categoryList, strings.selectCategory, category)
-                  }}
-                />
+              <CustomInputDropDown
+                width={[styles['width_90%'], styles['margin_top_20']]}
+                defaultValue={category != undefined && category != translate('select') ? category : translate('select')}
+                labelName={translate('selectCategory')}
+                IsRequired={true}
+                placeholder={translate('selectCategory')}
+                onEndEditing={async event => {
+                  // calculateTotalOrderValue()
+                }}
+                onFocus={() => {
+                  changeDropDownData(categoryList, strings.selectCategory, category)
+                }}
+              />
 
-                <CustomInputDropDown
-                  width={[styles['width_90%'], styles['margin_top_10']]}
-                  defaultValue={subCategory != undefined && subCategory != translate('select') ? subCategory : translate('select')}
-                  labelName={translate('selectSubCategory')}
-                  placeholder={translate('selectSubCategory')}
-                  IsRequired={true}
-                  onEndEditing={async event => {
-                    // calculateTotalOrderValue()
-                  }}
-                  onFocus={() => {
-                    changeDropDownData(subCategoryList, strings.selectSubCategory, subCategory)
-                  }}
-                />
+              <CustomInputDropDown
+                width={[styles['width_90%'], styles['margin_top_10']]}
+                defaultValue={subCategory != undefined && subCategory != translate('select') ? subCategory : translate('select')}
+                labelName={translate('selectSubCategory')}
+                placeholder={translate('selectSubCategory')}
+                IsRequired={true}
+                onEndEditing={async event => {
+                  // calculateTotalOrderValue()
+                }}
+                onFocus={() => {
+                  changeDropDownData(subCategoryList, strings.selectSubCategory, subCategory)
+                }}
+              />
 
-                {(subCategory == strings.damagedCoupons || subCategory == strings.invalid_coupons) &&
+              {(subCategory == strings.damagedCoupons || subCategory == strings.invalid_coupons) &&
 
-                  <View style={[styles['width_90%'], styles['top_10'], styles['align_self_center']]}>
-                    <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], styles['margin_left_5'], styles['top_5']]}>{translate('scanCouponLabel')}</Text>
-                    <View style={[styles['width_100%'], styles['border_radius_normal'], styles['border_color_grey'], styles['padding_5'], styles['top_10'], styles['border_width_1']]}>
+                <View style={[styles['width_90%'], styles['top_10'], styles['align_self_center']]}>
+                  <Text style={[{ color: dynamicStyles.textColor }, styles['font_size_14_regular'], styles['margin_left_5'], styles['top_5']]}>{translate('scanCouponLabel')}</Text>
+                  <View style={[styles['width_100%'], styles['border_radius_normal'], styles['border_color_grey'], styles['padding_5'], styles['top_10'], styles['border_width_1']]}>
 
-                      {/* remove Button */}
-                      < View style={[styles['align_self_flex_end'], styles['top_10'], styles['right_10']]}>
-                        <TouchableOpacity onPress={(item, index) => { removeProductCategory(item, index) }}>
-                          <Image source={require('../assets/images/close.png')} style={[styles['width_height_25'], { tintColor: 'red' }]} />
+                    {/* remove Button */}
+                    < View style={[styles['align_self_flex_end'], styles['top_10'], styles['right_10']]}>
+                      <TouchableOpacity onPress={(item, index) => { removeProductCategory(item, index) }}>
+                        <Image source={require('../assets/images/close.png')} style={[styles['width_height_25'], { tintColor: 'red' }]} />
+                      </TouchableOpacity>
+                    </View>
+                    <View style={[styles['bottom_10']]}>
+                      <FlatList
+                        data={addCouponsList}
+                        keyExtractor={(index) => index.toString()}
+                        renderItem={({ item, index }) => _renderProductCategory(item, index)}
+                      >
+                      </FlatList>
+                    </View>
+
+                    {/* Add More Button */}
+                    {addCouponsList.length < 10 &&
+                      < View style={[styles['align_self_flex_end'], styles['top_10'], styles['bottom_10'], styles['right_10']]}>
+                        <TouchableOpacity onPress={async (item, index) => { handleAddProcuts(index) }}>
+                          <Image source={require('../assets/images/addGreen.png')} style={[styles['width_height_20'], { tintColor: 'green' }]} />
                         </TouchableOpacity>
                       </View>
-                      <View style={[styles['bottom_10']]}>
-                        <FlatList
-                          data={addCouponsList}
-                          keyExtractor={(index) => index.toString()}
-                          renderItem={({ item, index }) => _renderProductCategory(item, index)}
-                        >
-                        </FlatList>
-                      </View>
-
-                      {/* Add More Button */}
-                      {addCouponsList.length < 10 &&
-                        < View style={[styles['align_self_flex_end'], styles['top_10'], styles['bottom_10'], styles['right_10']]}>
-                          <TouchableOpacity onPress={async (item, index) => { handleAddProcuts(index) }}>
-                            <Image source={require('../assets/images/addGreen.png')} style={[styles['width_height_20'], { tintColor: 'green' }]} />
-                          </TouchableOpacity>
-                        </View>
-                      }
-                    </View>
+                    }
                   </View>
-                }
-                <View style={[styles['centerItems'], styles['margin_top_20'], styles['width_90%']]}>
-                  <View style={[styles['margin_bottom_5']]}>
-                    <Text style={[styles['text_color_grey'], styles['absolute_position'], styles['margin_top_minus_7'], styles['margin_left_15'], styles['zindex_9999'], styles['bg_lightwhiteGray'], styles['padding_5'], styles['font_size_12_bold']]}>{translate('imageUpload')}</Text>
-                    <View style={[styles['flex_direction_row'], styles['width_99%']]}>
-                      <TouchableOpacity
-                        style={[styles['width_100%'], styles['flex_direction_row'], styles['height_150'], styles["bg_lightwhiteGray"], styles['centerItems'],
-                        styles['top_5'], styles['border_width_1'], styles['border_radius_6'], styles['border_color_light_grey']]} onPress={() => { imageUploadBtn() }}>
-                        <View style={[styles['flex_direction_column'], styles['width_90%'], styles['height_120'], styles['bg_grey_light'], styles['centerItems']]}>
-                          {imageData == '' &&
-                            // <Image style={[styles['align_self_center'], styles['width_height_50'],]} source={require('../assets/images/imageUploadAdd.png')} resizeMode='contain' ></Image>
-                            <View>
-                              <View style={[styles['align_self_center'], styles['width_height_50'], styles['bg_white'], styles['border_radius_30'], styles['alignItems_center'], styles['justify_content_center']]}>
-                                <Image style={[styles['align_self_center'], styles['width_height_20'], { tintColor: dynamicStyles.primaryColor }]} source={require('../assets/images/gallery_new.png')} resizeMode='contain' ></Image>
-                              </View>
-                              <View style={[styles['align_self_center'], styles['width_height_20'], styles['border_radius_30'], styles['alignItems_center'], styles['justify_content_center'], styles['absolute_position'], styles['top_30'], { left: 36 }, { backgroundColor: dynamicStyles.primaryColor }]}>
-                                <Image style={[styles['align_self_center'], styles['width_height_10']]} source={require('../assets/images/add_icon_new.png')} resizeMode='contain' ></Image>
-                              </View>
+                </View>
+              }
+              <View style={[styles['centerItems'], styles['margin_top_20'], styles['width_90%']]}>
+                <View style={[styles['margin_bottom_5']]}>
+                  <Text style={[styles['text_color_grey'], styles['absolute_position'], styles['margin_top_minus_7'], styles['margin_left_15'], styles['zindex_9999'], styles['bg_lightwhiteGray'], styles['padding_5'], styles['font_size_12_bold']]}>{translate('imageUpload')}</Text>
+                  <View style={[styles['flex_direction_row'], styles['width_99%']]}>
+                    <TouchableOpacity
+                      style={[styles['width_100%'], styles['flex_direction_row'], styles['height_150'], styles["bg_lightwhiteGray"], styles['centerItems'],
+                      styles['top_5'], styles['border_width_1'], styles['border_radius_6'], styles['border_color_light_grey']]} onPress={() => { imageUploadBtn() }}>
+                      <View style={[styles['flex_direction_column'], styles['width_90%'], styles['height_120'], styles['bg_grey_light'], styles['centerItems']]}>
+                        {imageData == '' &&
+                          // <Image style={[styles['align_self_center'], styles['width_height_50'],]} source={require('../assets/images/imageUploadAdd.png')} resizeMode='contain' ></Image>
+                          <View>
+                            <View style={[styles['align_self_center'], styles['width_height_50'], styles['bg_white'], styles['border_radius_30'], styles['alignItems_center'], styles['justify_content_center']]}>
+                              <Image style={[styles['align_self_center'], styles['width_height_20'], { tintColor: dynamicStyles.primaryColor }]} source={require('../assets/images/gallery_new.png')} resizeMode='contain' ></Image>
                             </View>
-                          }
-                          {/* {imageData != '' &&
+                            <View style={[styles['align_self_center'], styles['width_height_20'], styles['border_radius_30'], styles['alignItems_center'], styles['justify_content_center'], styles['absolute_position'], styles['top_30'], { left: 36 }, { backgroundColor: dynamicStyles.primaryColor }]}>
+                              <Image style={[styles['align_self_center'], styles['width_height_10']]} source={require('../assets/images/add_icon_new.png')} resizeMode='contain' ></Image>
+                            </View>
+                          </View>
+                        }
+                        {/* {imageData != '' &&
                         <Image style={[styles['align_self_center'], styles['width_height_100']]} source={imageData != '' ? { uri: imageData.uri } : require('../assets/images/imageUploadAdd.png')} resizeMode='contain' ></Image>
                       } */}
-                          {imageData !== '' &&
-                            <Image style={[styles['align_self_center'], styles['width_height_80']]} source={{ uri: imageData.uri }} resizeMode="contain" />
-                          }
-                          {/* {imageData == '' &&
+                        {imageData !== '' &&
+                          <Image style={[styles['align_self_center'], styles['width_height_80']]} source={{ uri: imageData.uri }} resizeMode="contain" />
+                        }
+                        {/* {imageData == '' &&
                        <View>
                          <View style={[styles['align_self_center'], styles['width_height_50'], styles['bg_white'], styles['border_radius_30'], styles['alignItems_center'], styles['justify_content_center']]}>
                            <Image style={[styles['align_self_center'], styles['width_height_20'], { tintColor: dynamicStyles.primaryColor }]} source={require('../assets/images/gallery_new.png')} resizeMode='contain' ></Image>
@@ -882,88 +882,88 @@ function Complaint() {
                          </View>
                        </View>
                      } */}
-                          {imageData == '' &&
-                            <Text style={[styles['align_self_center'], styles['font_size_12_regular'], styles['height_30'], { color: dynamicStyles.textColor }, styles['padding_top_8']]}>{translate('imageUpload')}</Text>
-                          }
-                        </View>
-                      </TouchableOpacity>
-                    </View>
+                        {imageData == '' &&
+                          <Text style={[styles['align_self_center'], styles['font_size_12_regular'], styles['height_30'], { color: dynamicStyles.textColor }, styles['padding_top_8']]}>{translate('imageUpload')}</Text>
+                        }
+                      </View>
+                    </TouchableOpacity>
                   </View>
                 </View>
-
-                <View style={[styles['margin_top_10'], styles['width_90%'], styles['centerItems']]}>
-                  <CustomRemarksInput
-                    style={[styles['top_10'], styles['width_95%'], { marginLeft: 8 }]}
-                    labelName={translate('remarks')}
-                    IsRequired={false}
-                    marginLeft={3}
-                    paddingLeft={5}
-                    multiline={true}
-                    maxLength={320}
-                    paddingLeftlBL={5}
-                    keyboardType='default'
-                    placeholder={translate('enter') + " " + translate('remarks')}
-                    value={remarks}
-                    editable={true}
-                    onFocus={() => {
-                    }}
-                    onChangeText={(text) => {
-                      var enteredText = text.replace(/[^\w\s]/gi, '');
-                      setRemarks(enteredText)
-                    }}
-                    onEndEditing={event => {
-
-                    }}
-                  />
-                </View>
-
-
               </View>
 
-              <View style={{ height: responsiveHeight(14) }} />
-            </ScrollView>
-          </KeyboardAvoidingView>
-          {!isSubmitting && <View style={[styles['align_self_center'], styles['width_100%'], styles['bottom_10']]}>
-            <CustomButton title={translate('submit')} onPress={submitButtonPress} buttonBg={dynamicStyles.primaryColor} btnWidth={"90%"} titleTextColor={dynamicStyles.secondaryColor} />
-          </View>}
-        </View>
-        {/* </View> */}
+              <View style={[styles['margin_top_10'], styles['width_90%'], styles['centerItems']]}>
+                <CustomRemarksInput
+                  style={[styles['top_10'], styles['width_95%'], { marginLeft: 8 }]}
+                  labelName={translate('remarks')}
+                  IsRequired={false}
+                  marginLeft={3}
+                  paddingLeft={5}
+                  multiline={true}
+                  maxLength={320}
+                  paddingLeftlBL={5}
+                  keyboardType='default'
+                  placeholder={translate('enter') + " " + translate('remarks')}
+                  value={remarks}
+                  editable={true}
+                  onFocus={() => {
+                  }}
+                  onChangeText={(text) => {
+                    var enteredText = text.replace(/[^\w\s]/gi, '');
+                    setRemarks(enteredText)
+                  }}
+                  onEndEditing={event => {
 
-        <CustomGalleryPopup
-          showOrNot={showSelectionModal}
-          onPressingOut={() => setShowSelectionModal(false)}
-          onPressingCamera={openCameraProfilePic}
-          onPressingGallery={openImagePickerProfilePic}
-        />
+                  }}
+                />
+              </View>
 
-        {showAlert && (
-          <CustomAlert
-            onPressClose={() => { handleCancelAlert() }}
-            title={alertTitle}
-            showHeader={showAlertHeader}
-            showHeaderText={showAlertHeaderText}
-            message={alertMessage}
-            onPressOkButton={() => { handleOkAlert() }}
-            onPressNoButton={() => { handleCancelAlert() }}
-            showYesButton={showAlertYesButton}
-            showNoButton={showAlertNoButton}
-            yesButtonText={showAlertyesButtonText}
-            noButtonText={showAlertNoButtonText} />
-        )}
 
-        {showDropDowns &&
-          <CustomListViewModal
-            dropDownType={dropDownType}
-            listItems={dropDownData}
-            selectedItem={selectedDropDownItem}
-            onSelectedCategory={(item) => onSelectedCategory(item)}
-            onSelectedSubCategory={(item) => onSelectedSubCategory(item)}
-            closeModal={() => setShowDropDowns(false)} />}
+            </View>
 
-        {loading && <CustomLoader loading={loading} message={loadingMessage} loaderImage={loaderImage} />}
-        {successLoading && <CustomSuccessLoader loading={successLoading} message={successLoadingMessage} />}
-        {errorLoading && <CustomErrorLoader loading={errorLoading} message={errorLoadingMessage} />}
+            <View style={{ height: responsiveHeight(14) }} />
+          </ScrollView>
+        </KeyboardAvoidingView>
+        {!isSubmitting && <View style={[styles['align_self_center'], styles['width_100%'], styles['bottom_10']]}>
+          <CustomButton title={translate('submit')} onPress={submitButtonPress} buttonBg={dynamicStyles.primaryColor} btnWidth={"90%"} titleTextColor={dynamicStyles.secondaryColor} />
+        </View>}
       </View>
+      {/* </View> */}
+
+      <CustomGalleryPopup
+        showOrNot={showSelectionModal}
+        onPressingOut={() => setShowSelectionModal(false)}
+        onPressingCamera={() => openCameraProfilePic()}
+        onPressingGallery={() => openImagePickerProfilePic()}
+      />
+
+      {showAlert && (
+        <CustomAlert
+          onPressClose={() => { handleCancelAlert() }}
+          title={alertTitle}
+          showHeader={showAlertHeader}
+          showHeaderText={showAlertHeaderText}
+          message={alertMessage}
+          onPressOkButton={() => { handleOkAlert() }}
+          onPressNoButton={() => { handleCancelAlert() }}
+          showYesButton={showAlertYesButton}
+          showNoButton={showAlertNoButton}
+          yesButtonText={showAlertyesButtonText}
+          noButtonText={showAlertNoButtonText} />
+      )}
+
+      {showDropDowns &&
+        <CustomListViewModal
+          dropDownType={dropDownType}
+          listItems={dropDownData}
+          selectedItem={selectedDropDownItem}
+          onSelectedCategory={(item) => onSelectedCategory(item)}
+          onSelectedSubCategory={(item) => onSelectedSubCategory(item)}
+          closeModal={() => setShowDropDowns(false)} />}
+
+      {loading && <CustomLoader loading={loading} message={loadingMessage} loaderImage={loaderImage} />}
+      {successLoading && <CustomSuccessLoader loading={successLoading} message={successLoadingMessage} />}
+      {errorLoading && <CustomErrorLoader loading={errorLoading} message={errorLoadingMessage} />}
+    </View>
 
   )
 

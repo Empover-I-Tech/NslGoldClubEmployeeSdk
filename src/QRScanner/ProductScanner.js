@@ -509,7 +509,7 @@ function ProductScanner({ route }) {
     }
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: Colors.blackTransparent }} edges={['top']}>
+        <View style={{ flex: 1, backgroundColor: Colors.blackTransparent, paddingTop : Platform.OS == 'ios' ? 20 : 0 }}>
             <View style={[{ backgroundColor: Colors.blackTransparent, flex: 1 }]}>
                 {Platform.OS === 'android' && <StatusBar backgroundColor={'rgba(51, 51, 51, 1)'} barStyle='light-content' />}
                 <View style={{ flex: 1 }}>
@@ -926,7 +926,7 @@ function ProductScanner({ route }) {
                     noButtonText={showAlertNoButtonText} />
 
             }
-        </SafeAreaView>
+        </View>
     )
 
 }
