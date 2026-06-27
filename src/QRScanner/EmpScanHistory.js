@@ -19,7 +19,6 @@ import CustomCalanderSelection from "../Components/CustomCalanderSelection";
 import { translate } from "../Localisation/Localisation";
 import { createStyles } from "../assets/style/createStyles";
 import { getCompanyStyles } from "../redux/store/slices/CompanyStyleSlice";
-import CustomTextInputNew from "../Components/CustomTextInputNew";
 import CustomTextInput from "../Components/CustomTextInput";
 import DatePicker from "react-native-date-picker";
 
