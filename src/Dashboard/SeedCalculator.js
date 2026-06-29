@@ -603,8 +603,25 @@ const SeedCalculator = ({ route }) => {
             // let selectedRowSpc = rowSpcLst?.find(item => item.crop === selectedCrop && item.seasonSoilType === selectedSoil)?.selectRowSpacingCm;
             // // filter objects as per the selection of crop and soil
             // let rowSspc = rowSpcLst?.filter(item => item.crop === selectedCrop && item.seasonSoilType === selectedSoil)
+            // if (rowSspc !== undefined && rowSspc.length > 0) {
+            //     rowSspc = rowSspc.reduce((acc, item) => {    // to avoid duplication i have used this
+            //         if (!acc.some(existingItem => existingItem.selectRowSpacingCm === item.selectRowSpacingCm)) {
+            //             item.code = acc.length + 1;
+            //             item.name = item.selectRowSpacingCm;
+            //             acc.push(item);
+            //         }
+            //         return acc;
+            //     }, []);
+            //     // set array of row space
+            //     setListRowSpace(rowSspc);
+            //     // Only set row space if ls length is 1
+            //     if (rowSspc.length === 1) {
+            //         setRowSpacing(selectedRowSpc);
+            //     }
+            // }
+            // FIND THIS:
             if (rowSspc !== undefined && rowSspc.length > 0) {
-                rowSspc = rowSspc.reduce((acc, item) => {    // to avoid duplication i have used this
+                rowSspc = rowSspc.reduce((acc, item) => {
                     if (!acc.some(existingItem => existingItem.selectRowSpacingCm === item.selectRowSpacingCm)) {
                         item.code = acc.length + 1;
                         item.name = item.selectRowSpacingCm;
@@ -616,6 +633,9 @@ const SeedCalculator = ({ route }) => {
                 setListRowSpace(rowSspc);
                 // Only set row space if ls length is 1
                 if (rowSspc.length === 1) {
+                    setRowSpacing(selectedRowSpc);
+                }
+                if (retreivedFrmSavedData && selectedRowSpc) {
                     setRowSpacing(selectedRowSpc);
                 }
             }
@@ -637,22 +657,22 @@ const SeedCalculator = ({ route }) => {
             );
 
             if (plantObj !== undefined && plantObj.length > 0) {
-                    plantObj = plantObj.reduce((acc, item) => {    // to avoid duplication i have used this
-                        if (!acc.some(existingItem => existingItem.selectPlantSpacingCm === item.selectPlantSpacingCm)) {
-                            item.code = acc.length + 1;
-                            item.name = item.selectPlantSpacingCm;
-                            acc.push(item);
-                        }
-                        return acc;
-                    }, []);
-                    // set plant arr
-                    setPlantToPlantArr(plantObj)
-                    console.log("plantObj", plantObj + "" + plantObj.length)
-                    if (plantObj.length === 1) {
-                        //set direct value if length is 1
-                        setPlantSpacing(selectedPlantSpc);
+                plantObj = plantObj.reduce((acc, item) => {    // to avoid duplication i have used this
+                    if (!acc.some(existingItem => existingItem.selectPlantSpacingCm === item.selectPlantSpacingCm)) {
+                        item.code = acc.length + 1;
+                        item.name = item.selectPlantSpacingCm;
+                        acc.push(item);
                     }
+                    return acc;
+                }, []);
+                // set plant arr
+                setPlantToPlantArr(plantObj)
+                console.log("plantObj", plantObj + "" + plantObj.length)
+                if (plantObj.length === 1) {
+                    //set direct value if length is 1
+                    setPlantSpacing(selectedPlantSpc);
                 }
+            }
 
             //setAvgGrainsPannicleListtt
             //reset values   
