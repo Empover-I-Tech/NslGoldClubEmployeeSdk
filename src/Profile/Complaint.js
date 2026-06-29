@@ -436,7 +436,8 @@ function Complaint() {
               setSuccessLoading(false);
               setSuccessLoadingMessage();
               setIsSubmitting(false)
-              navigation.navigate('HelpDesk');
+              // navigation.navigate('HelpDesk');
+               navigation.pop()
             }, 3000);
           } else {
             const errorMessage = APIResponse ? APIResponse.message : 'Unknown error occurred';
