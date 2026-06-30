@@ -1124,7 +1124,7 @@ function EmployeeDashboardSDK({ route }) {
               }} onPress={() => {
                 networkStatus ? setRefreshButtonClicked(true) : SimpleToast.show(translate('no_internet_conneccted'))
               }}>
-                <Image style={[{ tintColor: dynamicStyles.secondaryColor }, { height: 30, width: 30, resizeMode: "contain" }]} source={require('../src/assets/images/dataRefresh.png')}></Image>
+                <Image style={[{ tintColor: dynamicStyles.secondaryColor }, { height: 30, width: 30, resizeMode: "contain", tintColor : Colors.white }]} source={require('../src/assets/images/dataRefresh.png')}></Image>
               </TouchableOpacity>
             </View>
 
