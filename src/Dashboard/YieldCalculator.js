@@ -425,26 +425,53 @@ const YieldCalculator = ({ route }) => {
         setSeaonsArray()
     }, [selectedCrop])
 
-    let setSeaonsArray = () => {
-        let a = allSeasonsList;
-        let crops = []
-        a?.forEach((item) => {
-            if (crops?.includes(item.crop)) return
-            else crops?.push(item.crop)
-        })
-        crops?.forEach((crop) => {
-            let cropList = a?.filter(item => item.crop === crop);
-            cropList?.forEach((item, index) => {
-                item.name = item.seasonOrSoilType;
-                item.code = `${index + 1}`;
-            });
-            this[crop.toLowerCase()] = cropList;
+    const setSeaonsArray = () => {
+        const seasonMap = {};
+        const crops = [];
+
+        allSeasonsList?.forEach(item => {
+            if (!crops.includes(item.crop)) {
+                crops.push(item.crop);
+            }
         });
 
-        if (selectedCrop !== '') {
-            setSeasonsalList(this[selectedCrop?.toLowerCase()]);
+        crops.forEach(crop => {
+            const cropList = allSeasonsList
+                ?.filter(item => item.crop === crop)
+                ?.map((item, index) => ({
+                    ...item,
+                    name: item.seasonOrSoilType,
+                    code: `${index + 1}`,
+                }));
+
+            seasonMap[crop.toLowerCase()] = cropList;
+        });
+
+        if (selectedCrop) {
+            setSeasonsalList(seasonMap[selectedCrop.toLowerCase()] || []);
         }
-    }
+    };
+
+    // let setSeaonsArray = () => {
+    //     let a = allSeasonsList;
+    //     let crops = []
+    //     a?.forEach((item) => {
+    //         if (crops?.includes(item.crop)) return
+    //         else crops?.push(item.crop)
+    //     })
+    //     crops?.forEach((crop) => {
+    //         let cropList = a?.filter(item => item.crop === crop);
+    //         cropList?.forEach((item, index) => {
+    //             item.name = item.seasonOrSoilType;
+    //             item.code = `${index + 1}`;
+    //         });
+    //         this[crop.toLowerCase()] = cropList;
+    //     });
+
+    //     if (selectedCrop !== '') {
+    //         setSeasonsalList(this[selectedCrop?.toLowerCase()]);
+    //     }
+    // }
 
     let setArraysList = () => {
         let list = vrtyOrPlntngList;
@@ -559,7 +586,9 @@ const YieldCalculator = ({ route }) => {
 
         //row spacing 
         //reset values
-        setRowSpacing('')
+        if (!retreivedFrmSavedData) {
+            setRowSpacing('');
+        }
         setListRowSpace([])
         // find if single val of row spacing
         let selectedRowSpc = rowSpcLst?.find(item => item.crop === selectedCrop && item.seasonOrSoilType === selectedSoil)?.selectRowToRowSpacingCm;
@@ -580,11 +609,17 @@ const YieldCalculator = ({ route }) => {
             if (rowSspc.length === 1) {
                 setRowSpacing(selectedRowSpc);
             }
+            // ← ADD ONLY THESE 3 LINES:
+            if (retreivedFrmSavedData && selectedRowSpc) {
+                setRowSpacing(selectedRowSpc);
+            }
         }
 
         //plant spacing
         //reset values
-        setPlantSpacing('')
+        if (!retreivedFrmSavedData) {
+            setPlantSpacing('');
+        }
         setPlantToPlantArr([])
         // find if single val of row spacing
         let selectedPlantSpc = plantoPlanLs?.find(item => item.crop === selectedCrop && item.seasonOrSoilType === selectedSoil)?.selectPlantToplantSpacingCm;
@@ -690,44 +725,59 @@ const YieldCalculator = ({ route }) => {
     }, [selectedCrop, selectedSoil])
 
     useEffect(() => {
-        if (rowSpacing !== '') {
-            // !retreivedFrmSavedData && 
-            let plantoPlanLs = plantToPlantList;
-            setPlantSpacing('')
-            setPlantToPlantArr([])
-            // find if single val of row spacing
-            let selectedPlantSpc = plantoPlanLs?.find(item => item.crop === selectedCrop && item.seasonOrSoilType === selectedSoil && (rowSpacing != null ? item.selectRowToRowSpacingCm == rowSpacing : true))?.selectPlantToplantSpacingCm;
-            // filter objects as per the selection of crop and soil
-            let plantObj = plantoPlanLs?.filter(item => item.crop === selectedCrop && item.seasonOrSoilType === selectedSoil && (rowSpacing != null ? item.selectRowToRowSpacingCm == rowSpacing : true))
-            if (plantObj !== undefined && plantObj.length > 0) {
-                plantObj = plantObj.reduce((acc, item) => {    // to avoid duplication i have used this
-                    if (!acc.some(existingItem => existingItem.selectPlantToplantSpacingCm === item.selectPlantToplantSpacingCm)) {
-                        item.code = acc.length + 1;
-                        item.name = item.selectPlantToplantSpacingCm;
-                        acc.push(item);
-                    }
-                    return acc;
-                }, []);
-                // set plant arr
-                setPlantToPlantArr(plantObj)
-                if (plantObj.length === 1) {
-                    //set direct value if length is 1
-                    setPlantSpacing(selectedPlantSpc);
+        setTimeout(() => {
+            if (rowSpacing !== '') {
+                // !retreivedFrmSavedData && 
+                let plantoPlanLs = plantToPlantList;
+                if (!retreivedFrmSavedData) {
+                    setPlantSpacing('');
+                    setPlantToPlantArr([]);
                 }
+                // find if single val of row spacing
+                let selectedPlantSpc = plantoPlanLs?.find(item => item.crop === selectedCrop && item.seasonOrSoilType === selectedSoil && (rowSpacing != null ? item.selectRowToRowSpacingCm == rowSpacing : true))?.selectPlantToplantSpacingCm;
+                // filter objects as per the selection of crop and soil
+                let plantObj = plantoPlanLs?.filter(item => item.crop === selectedCrop && item.seasonOrSoilType === selectedSoil && (rowSpacing != null ? item.selectRowToRowSpacingCm == rowSpacing : true))
+                if (plantObj !== undefined && plantObj.length > 0) {
+                    plantObj = plantObj.reduce((acc, item) => {    // to avoid duplication i have used this
+                        if (!acc.some(existingItem => existingItem.selectPlantToplantSpacingCm === item.selectPlantToplantSpacingCm)) {
+                            item.code = acc.length + 1;
+                            item.name = item.selectPlantToplantSpacingCm;
+                            acc.push(item);
+                        }
+                        return acc;
+                    }, []);
+                    // set plant arr
+                    setPlantToPlantArr(plantObj)
+                    if (plantObj.length === 1) {
+                        //set direct value if length is 1
+                        setPlantSpacing(selectedPlantSpc);
+                    }
+                }
+                // callApiRowPlant()
             }
-            // callApiRowPlant()
-        }
+        }, 600);
+
     }, [rowSpacing])
 
     useEffect(() => {
         if (rowSpacing !== '' && plantSpacing !== '') {
+            console.log("===== AREA EFFECT =====");
+            console.log("selectedCrop =", selectedCrop);
+            console.log("selectedSoil =", selectedSoil);
+            console.log("rowSpacing =", rowSpacing);
+            console.log("plantSpacing =", plantSpacing);
+            console.log("VarietyOrPlantingSystem =", VarietyOrPlantingSystem);
+            console.log("areaPlantedValues =", areaPlantedValues?.length);
             let areaPlantedValues = areaToPlantedList;
             let grainCobLs = grainYieldCobsList;
             let prdctTillerLs = productiveTillersList;
 
             // Reset values   
-            setAreaToPlanted('');
-            setAreaPlantedArr([]);
+            if (!retreivedFrmSavedData) {
+                setAreaToPlanted('');
+                setAreaPlantedArr([]);
+            }
+
 
             // Add varietyOrPlantingSys condition
             let selectedAreaPlantedVal = areaPlantedValues?.find(item =>
@@ -2195,8 +2245,8 @@ const YieldCalculator = ({ route }) => {
         <View style={[styleSheetStyles.flexFull, styleSheetStyles.gray300bg]}>
             {Platform.OS === 'android' && <StatusBar backgroundColor={dynamicStyles.primaryColor} barStyle='dark-content' />}
             <View style={[{ backgroundColor: dynamicStyles.primaryColor }, { borderBottomStartRadius: 10, borderBottomEndRadius: 10, padding: 15 }]}>
-                <TouchableOpacity style={[styles['flex_direction_row'], {alignItems:'center'}]} onPress={() => navigation.goBack()}>
-                    <Image style={[{ tintColor: dynamicStyles.secondaryColor }, { height: 15, width: 20}]} source={require('../assets/images/previous.png')}></Image>
+                <TouchableOpacity style={[styles['flex_direction_row'], { alignItems: 'center' }]} onPress={() => navigation.goBack()}>
+                    <Image style={[{ tintColor: dynamicStyles.secondaryColor }, { height: 15, width: 20 }]} source={require('../assets/images/previous.png')}></Image>
                     <Text style={[styles['margin_left_10'], { color: dynamicStyles.secondaryColor }, styles['font_size_18_bold'], Platform.OS === 'ios' && { minHeight: 25 }]}>{calcType}</Text>
                 </TouchableOpacity>
             </View>
