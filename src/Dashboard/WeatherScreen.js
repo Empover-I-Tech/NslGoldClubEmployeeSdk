@@ -1085,7 +1085,7 @@ const stylesheetStyles = StyleSheet.create({
     width: "45%",
     marginLeft: 'auto',
   },
-  tempText: { marginHorizontal: 5 },
+  tempText: { marginHorizontal: 5, lineHeight : Platform.OS == 'ios' ? 30 : 24 },
   degreeText: { marginLeft: 2 },
   weatherIcon: { width: 50, height: 50, resizeMode: "contain", marginLeft: 2, marginRight: 10 },
   weatherDescription: { marginLeft: 5, marginTop: 1 },
