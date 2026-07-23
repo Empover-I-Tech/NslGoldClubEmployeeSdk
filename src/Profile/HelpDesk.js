@@ -455,9 +455,22 @@ function HelpDesk({ route }) {
   }, []);
 
 
+  // const goBack = async () => {
+  //   const dashboardScreen = await retrieveData(NAVIGATE_TO_CLASS);
+  //   navigation.navigate(dashboardScreen);
+  // };
+
   const goBack = async () => {
     const dashboardScreen = await retrieveData(NAVIGATE_TO_CLASS);
-    navigation.navigate(dashboardScreen);
+
+    navigation.reset({
+      index: 0,
+      routes: [
+        {
+          name: dashboardScreen,
+        },
+      ],
+    });
   };
 
   const showAlertWithMessage = (title, header, heaertext, message, yesBtn, noBtn, yesText, noText) => {
